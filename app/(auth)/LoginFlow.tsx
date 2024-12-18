@@ -1,6 +1,10 @@
 import React from "react";
 
-const LoginFlow = () => {
+interface ILoginFlow {
+  handleViewToggle: () => void;
+}
+
+const LoginFlow = (props: ILoginFlow) => {
   return <div>LoginFlow</div>;
 };
 
