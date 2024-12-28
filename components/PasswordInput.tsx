@@ -2,12 +2,12 @@ import { Input, XStack, YStack } from "tamagui";
 import { Eye, EyeOff } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 
-interface IInputWithIcon {
+interface IPasswordInput {
   value: string;
   setValue: (value: string) => void;
 }
 
-const InputWithIcon = (props: IInputWithIcon) => {
+const PasswordInput = (props: IPasswordInput) => {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState<boolean>(true);
 
   const toggleSecureTextEntry = () =>
@@ -49,4 +49,4 @@ const InputWithIcon = (props: IInputWithIcon) => {
   );
 };
 
-export default InputWithIcon;
+export default PasswordInput;

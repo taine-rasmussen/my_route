@@ -1,25 +1,28 @@
 {
   "expo": {
     "name": "my_route",
-    "slug": "my_route",
+    "slug": "myroute",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.quick-qoute.myroute"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.quick_qoute.myroute"
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +35,25 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "linking": {
+        "prefixes": ["exp://192.168.0.223:8081", "http://localhost:8081"],
+        "config": {
+          "screens": {
+            "Home": "",
+            "Profile": "profile/:id",
+            "NotFound": "*"
+          }
+        }
+      },
+      "eas": {
+        "projectId": "14e09e01-3110-4336-881e-a2a0b1c57634"
+      }
+    },
+    "owner": "quick_qoute"
   }
 }
