@@ -26,9 +26,21 @@ const SignUpFlow = (props: ISignUpFlow) => {
           </SizableText>
         </SizableText>
       </YStack>
-      <YStack alignSelf="center" gap={8}>
-        <Input flex={1} size="$5" placeholder="Name..." borderWidth={3} />
-        <Input flex={1} size="$5" placeholder="Email..." borderWidth={3} />
+      <YStack gap={8} height="50%" alignItems="center">
+        <Input
+          flex={1}
+          size="$5"
+          placeholder="Name..."
+          borderWidth={3}
+          width="70%"
+        />
+        <Input
+          flex={1}
+          size="$5"
+          placeholder="Email..."
+          borderWidth={3}
+          width="70%"
+        />
         <PasswordInput value={value} setValue={setValue} />
       </YStack>
     </>
