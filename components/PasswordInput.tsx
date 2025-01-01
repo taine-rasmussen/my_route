@@ -3,8 +3,9 @@ import { Eye, EyeOff } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 
 interface IPasswordInput {
-  value: string;
   setValue: (value: string) => void;
+  value: string;
+  width?: number | string;
 }
 
 const PasswordInput = (props: IPasswordInput) => {
@@ -15,17 +16,16 @@ const PasswordInput = (props: IPasswordInput) => {
 
   return (
     <XStack
-      borderWidth={1}
+      width={props.width || "auto"}
       borderRadius="$4"
       alignItems="center"
       borderColor="$borderColor"
       backgroundColor="$background"
     >
       <Input
+        borderWidth={3}
         flex={1}
         size={"$5"}
-        borderWidth={3}
-        paddingRight={40}
         value={props.value}
         placeholder="Password..."
         onChangeText={props.setValue}

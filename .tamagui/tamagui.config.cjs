@@ -1319,6 +1319,7 @@ var require_validStyleProps = __commonJS({
       fontSize: true,
       fontStyle: true,
       fontWeight: true,
+      fontVariant: true,
       letterSpacing: true,
       lineHeight: true,
       textTransform: true
@@ -2904,32 +2905,68 @@ var require_Headings = __commonJS({
     var H12 = (0, import_web23.styled)(Heading2, {
       name: "H1",
       tag: "h1",
-      size: "$10"
+      variants: {
+        unstyled: {
+          false: {
+            size: "$10"
+          }
+        }
+      }
     });
     var H22 = (0, import_web23.styled)(Heading2, {
       name: "H2",
       tag: "h2",
-      size: "$9"
+      variants: {
+        unstyled: {
+          false: {
+            size: "$9"
+          }
+        }
+      }
     });
     var H32 = (0, import_web23.styled)(Heading2, {
       name: "H3",
       tag: "h3",
-      size: "$8"
+      variants: {
+        unstyled: {
+          false: {
+            size: "$8"
+          }
+        }
+      }
     });
     var H42 = (0, import_web23.styled)(Heading2, {
       name: "H4",
       tag: "h4",
-      size: "$7"
+      variants: {
+        unstyled: {
+          false: {
+            size: "$7"
+          }
+        }
+      }
     });
     var H52 = (0, import_web23.styled)(Heading2, {
       name: "H5",
       tag: "h5",
-      size: "$6"
+      variants: {
+        unstyled: {
+          false: {
+            size: "$6"
+          }
+        }
+      }
     });
     var H62 = (0, import_web23.styled)(Heading2, {
       name: "H6",
       tag: "h6",
-      size: "$5"
+      variants: {
+        unstyled: {
+          false: {
+            size: "$5"
+          }
+        }
+      }
     });
   }
 });
@@ -29188,6 +29225,7 @@ var stylePropsFont = {
   fontSize: true,
   fontStyle: true,
   fontWeight: true,
+  fontVariant: true,
   letterSpacing: true,
   lineHeight: true,
   textTransform: true
@@ -31548,32 +31586,68 @@ var Heading = (0, import_web9.styled)(Paragraph, {
 var H1 = (0, import_web9.styled)(Heading, {
   name: "H1",
   tag: "h1",
-  size: "$10"
+  variants: {
+    unstyled: {
+      false: {
+        size: "$10"
+      }
+    }
+  }
 });
 var H2 = (0, import_web9.styled)(Heading, {
   name: "H2",
   tag: "h2",
-  size: "$9"
+  variants: {
+    unstyled: {
+      false: {
+        size: "$9"
+      }
+    }
+  }
 });
 var H3 = (0, import_web9.styled)(Heading, {
   name: "H3",
   tag: "h3",
-  size: "$8"
+  variants: {
+    unstyled: {
+      false: {
+        size: "$8"
+      }
+    }
+  }
 });
 var H4 = (0, import_web9.styled)(Heading, {
   name: "H4",
   tag: "h4",
-  size: "$7"
+  variants: {
+    unstyled: {
+      false: {
+        size: "$7"
+      }
+    }
+  }
 });
 var H5 = (0, import_web9.styled)(Heading, {
   name: "H5",
   tag: "h5",
-  size: "$6"
+  variants: {
+    unstyled: {
+      false: {
+        size: "$6"
+      }
+    }
+  }
 });
 var H6 = (0, import_web9.styled)(Heading, {
   name: "H6",
   tag: "h6",
-  size: "$5"
+  variants: {
+    unstyled: {
+      false: {
+        size: "$5"
+      }
+    }
+  }
 });
 
 // node_modules/@tamagui/text/dist/esm/wrapChildrenInText.mjs
@@ -33245,6 +33319,7 @@ function createCheckbox(createProps) {
           checked,
           disabled: checkboxProps.disabled,
           ...checkboxProps,
+          style: checkboxProps.style,
           children: propsActive.children
         }), bubbleInput]
       })

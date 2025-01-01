@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { YStack, H1, SizableText, Input, Text } from "tamagui";
+import { YStack, H1, SizableText, Input, Text, XStack } from "tamagui";
 import PasswordInput from "@/components/PasswordInput";
+import { Dimensions } from "react-native";
 
 interface ISignUpFlow {
   handleViewToggle: () => void;
@@ -8,6 +9,8 @@ interface ISignUpFlow {
 
 const SignUpFlow = (props: ISignUpFlow) => {
   const [value, setValue] = useState<string>("");
+  const screenWidth = Dimensions.get("window").width;
+  const inputWidth = screenWidth * 0.9 + 16;
 
   return (
     <>
@@ -26,22 +29,28 @@ const SignUpFlow = (props: ISignUpFlow) => {
           </SizableText>
         </SizableText>
       </YStack>
-      <YStack gap={8} height="50%" alignItems="center">
+      <YStack gap={16} alignItems="center">
+        <XStack gap={16}>
+          <Input
+            size="$5"
+            placeholder="First Name..."
+            borderWidth={3}
+            width="45%"
+          />
+          <Input
+            size="$5"
+            placeholder="Last Name..."
+            borderWidth={3}
+            width="45%"
+          />
+        </XStack>
         <Input
-          flex={1}
-          size="$5"
-          placeholder="Name..."
-          borderWidth={3}
-          width="70%"
-        />
-        <Input
-          flex={1}
           size="$5"
           placeholder="Email..."
           borderWidth={3}
-          width="70%"
+          width={inputWidth}
         />
-        <PasswordInput value={value} setValue={setValue} />
+        <PasswordInput value={value} setValue={setValue} width={inputWidth} />
       </YStack>
     </>
   );
