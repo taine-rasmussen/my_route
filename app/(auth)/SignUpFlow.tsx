@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { YStack, H1, SizableText, Input, Text, XStack } from "tamagui";
+import {
+  YStack,
+  H1,
+  SizableText,
+  Input,
+  Text,
+  XStack,
+  Button,
+  Separator,
+} from "tamagui";
 import PasswordInput from "@/components/PasswordInput";
 import { Dimensions } from "react-native";
 
@@ -51,6 +60,37 @@ const SignUpFlow = (props: ISignUpFlow) => {
           width={inputWidth}
         />
         <PasswordInput value={value} setValue={setValue} width={inputWidth} />
+        <Button
+          size="$5"
+          theme="active"
+          justifyContent="center"
+          width={inputWidth}
+        >
+          Create account
+        </Button>
+        <XStack width={inputWidth}>
+          <Separator alignSelf="center" />
+          <Text>Or register with</Text>
+          <Separator alignSelf="center" />
+        </XStack>
+        <XStack gap={16}>
+          <Button
+            size="$5"
+            variant="outlined"
+            justifyContent="center"
+            width={inputWidth / 2 - 16}
+          >
+            Google
+          </Button>
+          <Button
+            size="$5"
+            variant="outlined"
+            justifyContent="center"
+            width={inputWidth / 2 - 16}
+          >
+            Apple
+          </Button>
+        </XStack>
       </YStack>
     </>
   );
