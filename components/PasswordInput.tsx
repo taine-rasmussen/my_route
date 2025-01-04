@@ -3,7 +3,7 @@ import { Eye, EyeOff } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 
 interface IPasswordInput {
-  setValue: (value: string) => void;
+  onChange: (value: string) => void;
   value: string;
   width?: number | string;
 }
@@ -28,7 +28,7 @@ const PasswordInput = (props: IPasswordInput) => {
         size={"$5"}
         value={props.value}
         placeholder="Password..."
-        onChangeText={props.setValue}
+        onChangeText={props.onChange}
         secureTextEntry={isSecureTextEntry}
       />
       <YStack

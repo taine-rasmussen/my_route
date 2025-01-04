@@ -7,9 +7,14 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useState, useMemo } from "react";
+import FormInput from "@/components/FormInput";
 
 const Form = () => {
-  const [value, setValue] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const screenWidth = Dimensions.get("window").width;
   const inputWidth = useMemo(() => screenWidth * 0.9 + 16, [screenWidth]);
 
@@ -18,33 +23,34 @@ const Form = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <YStack gap={16} alignItems="center">
           <XStack gap={16}>
-            <Input
-              size="$5"
+            <FormInput
+              value={firstName}
+              onChange={setFirstName}
               placeholder="First Name..."
-              borderWidth={3}
-              width="45%"
             />
-            <Input
-              size="$5"
+            <FormInput
+              value={lastName}
+              onChange={setLastName}
               placeholder="Last Name..."
-              borderWidth={3}
-              width="45%"
             />
           </XStack>
-          <Input
-            size="$5"
-            placeholder="Email..."
-            borderWidth={3}
+          <FormInput
+            value={email}
+            width={inputWidth}
+            onChange={setEmail}
+            placeholder="Email.."
+          />
+          <PasswordInput
+            value={password}
+            onChange={setPassword}
             width={inputWidth}
           />
-          <PasswordInput value={value} setValue={setValue} width={inputWidth} />
           <YStack gap={16} marginBlock={36}>
             <Button
               size="$5"
               theme="active"
               justifyContent="center"
               width={inputWidth}
-              disabled={true}
             >
               Create account
             </Button>
