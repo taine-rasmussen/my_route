@@ -1,5 +1,5 @@
 import { InputErrorKeys } from "@/app/types";
-import { Input, Text, YStack } from "tamagui";
+import { Input, Text, YStack, Card } from "tamagui";
 
 interface IFormInput extends React.ComponentProps<typeof Input> {
   value: string;
@@ -24,9 +24,11 @@ const FormInput = (props: IFormInput) => {
       />
       <YStack height={24}>
         {props.error && (
-          <Text paddingLeft={8} color="red">
-            {errorMessage}
-          </Text>
+          <Card elevate size="$4" bordered>
+            <Text paddingLeft={8} color="red">
+              {errorMessage}
+            </Text>
+          </Card>
         )}
       </YStack>
     </YStack>

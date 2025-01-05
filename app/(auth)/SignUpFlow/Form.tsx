@@ -18,8 +18,8 @@ const Form = () => {
   const [inputErrors, setInputErrors] = useState({
     firstName: false,
     lastName: false,
-    email: false,
-    password: false,
+    email: true,
+    password: true,
   });
 
   const screenWidth = Dimensions.get("window").width;
