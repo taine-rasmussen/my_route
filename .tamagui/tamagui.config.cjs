@@ -828,6 +828,7 @@ var require_concatClassName = __commonJS({
       focus: "focusStyle",
       press: "pressStyle",
       focusVisible: "focusVisibleStyle",
+      focusWithin: "focusWithinStyle",
       disabled: "disabledStyle"
     };
   }
@@ -1355,6 +1356,7 @@ var require_validStyleProps = __commonJS({
       pressStyle: true,
       focusStyle: true,
       disabledStyle: true,
+      focusWithinStyle: true,
       focusVisibleStyle: true
     };
     var validStyles2 = {
@@ -2911,6 +2913,9 @@ var require_Headings = __commonJS({
             size: "$10"
           }
         }
+      },
+      defaultVariants: {
+        unstyled: process.env.TAMAGUI_HEADLESS === "1"
       }
     });
     var H22 = (0, import_web23.styled)(Heading2, {
@@ -2922,6 +2927,9 @@ var require_Headings = __commonJS({
             size: "$9"
           }
         }
+      },
+      defaultVariants: {
+        unstyled: process.env.TAMAGUI_HEADLESS === "1"
       }
     });
     var H32 = (0, import_web23.styled)(Heading2, {
@@ -2933,6 +2941,9 @@ var require_Headings = __commonJS({
             size: "$8"
           }
         }
+      },
+      defaultVariants: {
+        unstyled: process.env.TAMAGUI_HEADLESS === "1"
       }
     });
     var H42 = (0, import_web23.styled)(Heading2, {
@@ -2944,6 +2955,9 @@ var require_Headings = __commonJS({
             size: "$7"
           }
         }
+      },
+      defaultVariants: {
+        unstyled: process.env.TAMAGUI_HEADLESS === "1"
       }
     });
     var H52 = (0, import_web23.styled)(Heading2, {
@@ -2955,6 +2969,9 @@ var require_Headings = __commonJS({
             size: "$6"
           }
         }
+      },
+      defaultVariants: {
+        unstyled: process.env.TAMAGUI_HEADLESS === "1"
       }
     });
     var H62 = (0, import_web23.styled)(Heading2, {
@@ -2966,6 +2983,9 @@ var require_Headings = __commonJS({
             size: "$5"
           }
         }
+      },
+      defaultVariants: {
+        unstyled: process.env.TAMAGUI_HEADLESS === "1"
       }
     });
   }
@@ -28926,6 +28946,7 @@ var pseudoInvert = {
   focus: "focusStyle",
   press: "pressStyle",
   focusVisible: "focusVisibleStyle",
+  focusWithin: "focusWithinStyle",
   disabled: "disabledStyle"
 };
 
@@ -29261,6 +29282,7 @@ var validPseudoKeys = {
   pressStyle: true,
   focusStyle: true,
   disabledStyle: true,
+  focusWithinStyle: true,
   focusVisibleStyle: true
 };
 var validStyles = {
@@ -30668,12 +30690,11 @@ var import_core10 = require("@tamagui/core");
 // node_modules/@tamagui/use-did-finish-ssr/dist/esm/index.mjs
 var React22 = __toESM(require("react"), 1);
 function useDidFinishSSR(value) {
-  const [cur, setCur] = React22.useState(value);
-  return React22.useEffect(() => {
-    setCur(value ?? true);
-  }, []), cur ?? false;
+  return React22.useSyncExternalStore(subscribe, () => value ?? true, () => false);
 }
 __name(useDidFinishSSR, "useDidFinishSSR");
+var subscribe = /* @__PURE__ */ __name(() => () => {
+}, "subscribe");
 
 // node_modules/@tamagui/sheet/dist/esm/createSheet.mjs
 var import_react21 = require("react");
@@ -30882,18 +30903,19 @@ var SheetImplementationCustom = import_react19.default.forwardRef(function(props
     open,
     controller,
     isHidden: isHidden2
-  } = state, sheetRef = import_react19.default.useRef(null), ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef), animationConfig = (() => {
+  } = state, sheetRef = import_react19.default.useRef(null), ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef), {
+    animationDriver
+  } = (0, import_core9.useConfiguration)(), animationConfig = (() => {
+    if (animationDriver.supportsCSSVars) return {};
     const [animationProp, animationPropConfig] = animation ? Array.isArray(animation) ? animation : [animation] : [];
     return animationConfigProp ?? (animationProp ? {
-      ...(0, import_core9.getConfig)().animations.animations[animationProp],
+      ...animationDriver.animations[animationProp],
       ...animationPropConfig
     } : null);
   })(), [isShowingInnerSheet, setIsShowingInnerSheet] = import_react19.default.useState(false), shouldHideParentSheet = !isWeb && modal && isShowingInnerSheet && // if not using weird portal limitation we dont need to hide parent sheet
   USE_NATIVE_PORTAL, sheetInsideSheet = import_react19.default.useContext(SheetInsideSheetContext), onInnerSheet = import_react19.default.useCallback((hasChild) => {
     setIsShowingInnerSheet(hasChild);
   }, []), positions = import_react19.default.useMemo(() => snapPoints.map((point) => getYPositions(snapPointsMode, point, screenSize, frameSize)), [screenSize, frameSize, snapPoints, snapPointsMode]), {
-    animationDriver
-  } = (0, import_core9.useConfiguration)(), {
     useAnimatedNumber,
     useAnimatedNumberStyle,
     useAnimatedNumberReaction
@@ -31042,6 +31064,7 @@ var SheetImplementationCustom = import_react19.default.forwardRef(function(props
     }
   }, [open]);
   const forcedContentHeight = hasFit ? void 0 : snapPointsMode === "percent" ? `${maxSnapPoint}${isWeb ? "dvh" : "%"}` : maxSnapPoint;
+  console.warn("animatedStyle", animatedStyle);
   let contents = /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ParentSheetContext.Provider, {
     value: nextParentContext,
     children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(SheetProvider, {
@@ -31592,6 +31615,9 @@ var H1 = (0, import_web9.styled)(Heading, {
         size: "$10"
       }
     }
+  },
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === "1"
   }
 });
 var H2 = (0, import_web9.styled)(Heading, {
@@ -31603,6 +31629,9 @@ var H2 = (0, import_web9.styled)(Heading, {
         size: "$9"
       }
     }
+  },
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === "1"
   }
 });
 var H3 = (0, import_web9.styled)(Heading, {
@@ -31614,6 +31643,9 @@ var H3 = (0, import_web9.styled)(Heading, {
         size: "$8"
       }
     }
+  },
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === "1"
   }
 });
 var H4 = (0, import_web9.styled)(Heading, {
@@ -31625,6 +31657,9 @@ var H4 = (0, import_web9.styled)(Heading, {
         size: "$7"
       }
     }
+  },
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === "1"
   }
 });
 var H5 = (0, import_web9.styled)(Heading, {
@@ -31636,6 +31671,9 @@ var H5 = (0, import_web9.styled)(Heading, {
         size: "$6"
       }
     }
+  },
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === "1"
   }
 });
 var H6 = (0, import_web9.styled)(Heading, {
@@ -31647,6 +31685,9 @@ var H6 = (0, import_web9.styled)(Heading, {
         size: "$5"
       }
     }
+  },
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === "1"
   }
 });
 
@@ -32764,7 +32805,7 @@ function useButton({
     size: size6
   } : void 0), inner2 = (0, import_web13.spacedChildren)({
     // a bit arbitrary but scaling to font size is necessary so long as button does
-    space: spaceSize,
+    space: spaceSize === false ? 0 : spaceSize == true ? "$true" : spaceSize,
     spaceFlex,
     ensureKeys: true,
     separator,
@@ -41772,10 +41813,10 @@ function useEmitter() {
   listeners.current || (listeners.current = /* @__PURE__ */ new Set());
   const emit = /* @__PURE__ */ __name((value) => {
     listeners.current.forEach((l) => l(value));
-  }, "emit"), subscribe2 = React63.useCallback((listener) => (listeners.current.add(listener), () => {
+  }, "emit"), subscribe3 = React63.useCallback((listener) => (listeners.current.add(listener), () => {
     listeners.current.delete(listener);
   }), []);
-  return [emit, subscribe2];
+  return [emit, subscribe3];
 }
 __name(useEmitter, "useEmitter");
 function SelectInner(props) {
@@ -42636,7 +42677,7 @@ function createSwitch(createProps) {
       unstyled,
       ...unstyled === false && {
         size: size6,
-        ...!disableActiveTheme && {
+        ...!disableActiveTheme && !unstyled && {
           theme: checked ? "active" : null
         }
       },
@@ -42695,7 +42736,7 @@ function createSwitch(createProps) {
           type: "button"
         },
         ...switchProps,
-        ...!disableActiveTheme && {
+        ...!disableActiveTheme && !props.unstyled && {
           theme: checked ? "active" : null,
           themeShallow: true
         },
@@ -43688,14 +43729,14 @@ import_react_native_web9.Dimensions.addEventListener("change", () => {
   cbs.forEach((cb) => cb(window));
 });
 var cbs = /* @__PURE__ */ new Set();
-function subscribe(cb) {
+function subscribe2(cb) {
   return cbs.add(cb), () => cbs.delete(cb);
 }
-__name(subscribe, "subscribe");
+__name(subscribe2, "subscribe");
 function useWindowDimensions({
   serverValue = initialValue
 } = {}) {
-  return import_react48.default.useSyncExternalStore(subscribe, () => import_react_native_web9.Dimensions.get("window"), () => isWeb ? serverValue : import_react_native_web9.Dimensions.get("window"));
+  return import_react48.default.useSyncExternalStore(subscribe2, () => import_react_native_web9.Dimensions.get("window"), () => isWeb ? serverValue : import_react_native_web9.Dimensions.get("window"));
 }
 __name(useWindowDimensions, "useWindowDimensions");
 

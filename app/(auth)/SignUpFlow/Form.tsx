@@ -16,14 +16,14 @@ const Form = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [inputErrors, setInputErrors] = useState({
-    firstName: true,
+    firstName: false,
     lastName: false,
     email: false,
     password: false,
   });
 
   const screenWidth = Dimensions.get("window").width;
-  const inputWidth = useMemo(() => screenWidth * 0.9 + 16, [screenWidth]);
+  const inputWidth = useMemo(() => screenWidth * 0.9 + 24, [screenWidth]);
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
     field,
@@ -38,9 +38,10 @@ const Form = () => {
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <YStack gap={16} alignItems="center">
-          <XStack gap={16}>
+        <YStack alignItems="center">
+          <XStack gap={24}>
             <FormInput
+              inputType="name"
               value={firstName}
               setError={setError}
               onChange={setFirstName}
@@ -48,6 +49,7 @@ const Form = () => {
               error={inputErrors.firstName}
             />
             <FormInput
+              inputType="name"
               value={lastName}
               setError={setError}
               onChange={setLastName}
@@ -57,6 +59,7 @@ const Form = () => {
           </XStack>
           <FormInput
             value={email}
+            inputType="email"
             width={inputWidth}
             setError={setError}
             onChange={setEmail}
@@ -70,7 +73,7 @@ const Form = () => {
             onChange={setPassword}
             error={inputErrors.password}
           />
-          <YStack gap={16} marginBlock={36}>
+          <YStack gap={24} marginBlock={64}>
             <Button
               size="$5"
               theme="active"

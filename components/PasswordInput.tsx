@@ -1,5 +1,5 @@
-import { Input, XStack, YStack } from "tamagui";
-import { Eye, EyeOff } from "@tamagui/lucide-icons";
+import { Input, XStack, YStack, Text } from "tamagui";
+import { AlertCircle, Eye, EyeOff } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import { InputErrorKeys } from "@/app/types";
 
@@ -13,40 +13,57 @@ interface IPasswordInput {
 
 const PasswordInput = (props: IPasswordInput) => {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState<boolean>(true);
+  const errorMessage = "Does not meet password requierments";
 
   const toggleSecureTextEntry = () =>
     setIsSecureTextEntry((prevState) => !prevState);
 
+  const handleBlur = () => {
+    console.log("pwd blur");
+  };
+
   return (
-    <XStack
-      width={props.width || "auto"}
-      borderRadius="$4"
-      alignItems="center"
-      borderColor="$borderColor"
-      backgroundColor="$background"
-    >
-      <Input
-        borderWidth={3}
-        flex={1}
-        size={"$5"}
-        value={props.value}
-        placeholder="Password..."
-        onChangeText={props.onChange}
-        secureTextEntry={isSecureTextEntry}
-      />
-      <YStack
-        right={10}
-        height="100%"
-        position="absolute"
-        justifyContent="center"
+    <YStack width={props.width || "auto"} space={4}>
+      <XStack
+        borderRadius="$4"
+        alignItems="center"
+        borderColor="$borderColor"
+        backgroundColor="$background"
       >
-        {isSecureTextEntry ? (
-          <Eye size={20} color="$color" onPress={toggleSecureTextEntry} />
-        ) : (
-          <EyeOff size={20} color="$color" onPress={toggleSecureTextEntry} />
+        <Input
+          flex={1}
+          size={"$5"}
+          borderWidth={3}
+          onBlur={handleBlur}
+          value={props.value}
+          placeholder="Password..."
+          onChangeText={props.onChange}
+          secureTextEntry={isSecureTextEntry}
+        />
+        <YStack
+          right={10}
+          height="100%"
+          position="absolute"
+          justifyContent="center"
+        >
+          {isSecureTextEntry ? (
+            <Eye size={20} color="$color" onPress={toggleSecureTextEntry} />
+          ) : (
+            <EyeOff size={20} color="$color" onPress={toggleSecureTextEntry} />
+          )}
+        </YStack>
+      </XStack>
+      <YStack height={24}>
+        {props.error && (
+          <XStack paddingInlineStart={8} alignItems="center">
+            <AlertCircle size={"$1"} color="red" />
+            <Text paddingLeft={8} color="red">
+              {errorMessage}
+            </Text>
+          </XStack>
         )}
       </YStack>
-    </XStack>
+    </YStack>
   );
 };
 
