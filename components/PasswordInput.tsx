@@ -1,5 +1,5 @@
-import { Card, Input, XStack, YStack, Text } from "tamagui";
-import { Eye, EyeOff } from "@tamagui/lucide-icons";
+import { Input, XStack, YStack, Text } from "tamagui";
+import { AlertCircle, Eye, EyeOff } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import { InputErrorKeys } from "@/app/types";
 
@@ -50,11 +50,12 @@ const PasswordInput = (props: IPasswordInput) => {
       </XStack>
       <YStack height={24}>
         {props.error && (
-          <Card elevate size="$4" bordered>
+          <XStack paddingInlineStart={8} alignItems="center">
+            <AlertCircle size={"$1"} color="red" />
             <Text paddingLeft={8} color="red">
               {errorMessage}
             </Text>
-          </Card>
+          </XStack>
         )}
       </YStack>
     </YStack>

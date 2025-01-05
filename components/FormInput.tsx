@@ -1,5 +1,6 @@
 import { InputErrorKeys } from "@/app/types";
-import { Input, Text, YStack, Card } from "tamagui";
+import { Input, Text, YStack, XStack } from "tamagui";
+import { AlertCircle } from "@tamagui/lucide-icons";
 
 interface IFormInput extends React.ComponentProps<typeof Input> {
   value: string;
@@ -24,11 +25,12 @@ const FormInput = (props: IFormInput) => {
       />
       <YStack height={24}>
         {props.error && (
-          <Card elevate size="$4" bordered>
+          <XStack paddingInlineStart={8} alignItems="center">
+            <AlertCircle size={"$1"} color="red" />
             <Text paddingLeft={8} color="red">
               {errorMessage}
             </Text>
-          </Card>
+          </XStack>
         )}
       </YStack>
     </YStack>
