@@ -18,6 +18,10 @@ const PasswordInput = (props: IPasswordInput) => {
   const toggleSecureTextEntry = () =>
     setIsSecureTextEntry((prevState) => !prevState);
 
+  const handleBlur = () => {
+    console.log("pwd blur");
+  };
+
   return (
     <YStack width={props.width || "auto"} space={4}>
       <XStack
@@ -27,9 +31,10 @@ const PasswordInput = (props: IPasswordInput) => {
         backgroundColor="$background"
       >
         <Input
-          borderWidth={3}
           flex={1}
           size={"$5"}
+          borderWidth={3}
+          onBlur={handleBlur}
           value={props.value}
           placeholder="Password..."
           onChangeText={props.onChange}

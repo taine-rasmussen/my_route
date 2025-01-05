@@ -18,8 +18,8 @@ const Form = () => {
   const [inputErrors, setInputErrors] = useState({
     firstName: false,
     lastName: false,
-    email: true,
-    password: true,
+    email: false,
+    password: false,
   });
 
   const screenWidth = Dimensions.get("window").width;
@@ -41,6 +41,7 @@ const Form = () => {
         <YStack alignItems="center">
           <XStack gap={24}>
             <FormInput
+              inputType="name"
               value={firstName}
               setError={setError}
               onChange={setFirstName}
@@ -48,6 +49,7 @@ const Form = () => {
               error={inputErrors.firstName}
             />
             <FormInput
+              inputType="name"
               value={lastName}
               setError={setError}
               onChange={setLastName}
@@ -57,6 +59,7 @@ const Form = () => {
           </XStack>
           <FormInput
             value={email}
+            inputType="email"
             width={inputWidth}
             setError={setError}
             onChange={setEmail}
