@@ -1,5 +1,5 @@
 import { InputErrorKeys } from "@/app/types";
-import { Input } from "tamagui";
+import { Input, Text, YStack } from "tamagui";
 
 interface IFormInput extends React.ComponentProps<typeof Input> {
   value: string;
@@ -10,8 +10,10 @@ interface IFormInput extends React.ComponentProps<typeof Input> {
 }
 
 const FormInput = (props: IFormInput) => {
+  const errorMessage = "Invalid Input";
+
   return (
-    <>
+    <YStack width={props.width ? props.width : "45%"} space={4}>
       <Input
         size="$5"
         {...props}
@@ -19,9 +21,15 @@ const FormInput = (props: IFormInput) => {
         value={props.value}
         onChangeText={props.onChange}
         placeholder={props.placeholder}
-        width={props.width ? props.width : "45%"}
       />
-    </>
+      <YStack height={24}>
+        {props.error && (
+          <Text paddingLeft={8} color="red">
+            {errorMessage}
+          </Text>
+        )}
+      </YStack>
+    </YStack>
   );
 };
 
