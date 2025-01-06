@@ -7,19 +7,23 @@ interface IPasswordInput {
   onChange: (value: string) => void;
   value: string;
   width?: number | string;
-  error?: boolean;
-  setError?: (field: InputErrorKeys, value: boolean) => void;
+  error: boolean;
+  setError: (field: InputErrorKeys, value: boolean) => void;
 }
 
 const PasswordInput = (props: IPasswordInput) => {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState<boolean>(true);
-  const errorMessage = "Does not meet password requierments";
+  const errorMessage = "Password must be at least 7 characters long";
 
   const toggleSecureTextEntry = () =>
     setIsSecureTextEntry((prevState) => !prevState);
 
   const handleBlur = () => {
-    console.log("pwd blur");
+    if (props.value.length < 7) {
+      return props.setError("password", true);
+    } else {
+      return props.setError("password", false);
+    }
   };
 
   return (
