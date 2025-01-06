@@ -10,19 +10,20 @@ import { useState, useMemo } from "react";
 import FormInput from "@/components/FormInput";
 import { InputErrorKeys } from "@/app/types";
 
-const Form = () => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [inputErrors, setInputErrors] = useState({
-    firstName: false,
-    lastName: false,
-    email: false,
-    password: false,
-  });
+const initState = {
+  firstName: false,
+  lastName: false,
+  email: false,
+  password: false,
+};
 
+const Form = () => {
+  const [email, setEmail] = useState<string>("");
   const screenWidth = Dimensions.get("window").width;
+  const [lastName, setLastName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [inputErrors, setInputErrors] = useState(initState);
   const inputWidth = useMemo(() => screenWidth * 0.9 + 24, [screenWidth]);
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
@@ -33,6 +34,23 @@ const Form = () => {
       ...prev,
       [field]: value,
     }));
+  };
+
+  const disableSubmit = useMemo(() => {
+    return (
+      Object.values(inputErrors).some(Boolean) ||
+      ![firstName, lastName, email, password].every((input) => input.length > 0)
+    );
+  }, [inputErrors, firstName, lastName, email, password]);
+
+  const handleFormSubmit = () => {
+    const body = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password, // encrypt
+    };
+    console.log(body);
   };
 
   return (
@@ -79,6 +97,9 @@ const Form = () => {
               theme="active"
               width={inputWidth}
               justifyContent="center"
+              disabled={disableSubmit}
+              onPress={handleFormSubmit}
+              opacity={disableSubmit ? 0.5 : 1}
             >
               Create account
             </Button>
