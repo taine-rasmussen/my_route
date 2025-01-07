@@ -23,7 +23,7 @@ const Form = () => {
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
-  const [inputErrors, setInputErrors] = useState(initState);
+  const [inputErrors, setInputErrors] = useState(initState); // TS
   const inputWidth = useMemo(() => screenWidth * 0.9 + 24, [screenWidth]);
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (

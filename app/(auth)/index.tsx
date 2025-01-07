@@ -1,11 +1,11 @@
 import SignUpFlow from "./SignUpFlow";
-import LoginFlow from "./LoginFlow";
+import LoginFlow from "./LoginFLow";
 import { useState } from "react";
 import SafeAreaWrapper from "@/components/SafeAreaWrapper";
 
 const index = () => {
-  const [isLoginView, setisLoginView] = useState<boolean>(false);
-  const handleViewToggle = () => setisLoginView((prevState) => !prevState);
+  const [isLoginView, setIsLoginView] = useState<boolean>(true);
+  const handleViewToggle = () => setIsLoginView((prevState) => !prevState);
 
   return (
     <SafeAreaWrapper>
