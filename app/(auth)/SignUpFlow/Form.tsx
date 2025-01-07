@@ -52,9 +52,6 @@ const Form = () => {
       password: password, // encrypt
     };
     console.log(body);
-
-    // handle changed input where its invalid but disabled hasnt updated
-    // if len 0 then show requiered  how to handle names
   };
 
   return (
