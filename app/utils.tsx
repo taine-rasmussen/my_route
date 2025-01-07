@@ -5,8 +5,10 @@ export const isValidEmail = (email: string): boolean => {
 
 export const getInputErrorMessage = (inputType: string): string => {
   switch (inputType) {
-    case "name":
-      return "Invalid name input";
+    case "firstName":
+      return "Required";
+    case "lastName":
+      return "Required";
     case "email":
       return "Invalid email address";
     case "password":

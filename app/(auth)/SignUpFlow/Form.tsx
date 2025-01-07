@@ -1,5 +1,5 @@
 import PasswordInput from "@/components/PasswordInput";
-import { YStack, XStack, Input, Separator, Button, Text } from "tamagui";
+import { YStack, XStack, Separator, Button, Text } from "tamagui";
 import {
   Dimensions,
   TouchableWithoutFeedback,
@@ -44,6 +44,7 @@ const Form = () => {
   }, [inputErrors, firstName, lastName, email, password]);
 
   const handleFormSubmit = () => {
+    if (password.length < 7) return setError("password", true);
     const body = {
       firstName: firstName,
       lastName: lastName,
@@ -59,17 +60,17 @@ const Form = () => {
         <YStack alignItems="center">
           <XStack gap={24}>
             <FormInput
-              inputType="name"
               value={firstName}
               setError={setError}
+              inputType="firstName"
               onChange={setFirstName}
               placeholder="First Name..."
               error={inputErrors.firstName}
             />
             <FormInput
-              inputType="name"
               value={lastName}
               setError={setError}
+              inputType="lastName"
               onChange={setLastName}
               placeholder="Last Name..."
               error={inputErrors.lastName}
