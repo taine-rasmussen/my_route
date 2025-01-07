@@ -21,7 +21,13 @@ const FormInput = (props: IFormInput) => {
   const handleBlur = () => {
     if (props.inputType === "email") {
       const isValid = isValidEmail(props.value);
-      props.setError("email", !isValid);
+      return props.setError("email", !isValid);
+    } else if (
+      props.inputType === "firstName" ||
+      props.inputType === "lastName"
+    ) {
+      const hasLen = props.value.length === 0;
+      return props.setError(props.inputType, hasLen);
     }
   };
 
