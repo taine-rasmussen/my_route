@@ -92,7 +92,7 @@ const Form = () => {
             onChange={setPassword}
             error={inputErrors.password}
           />
-          <YStack gap={24} marginBlock={64}>
+          <YStack gap={24} marginBlock={24}>
             <Button
               size="$5"
               theme="active"
