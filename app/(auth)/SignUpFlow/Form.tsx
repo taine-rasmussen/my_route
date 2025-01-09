@@ -43,15 +43,34 @@ const Form = () => {
     );
   }, [inputErrors, firstName, lastName, email, password]);
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     if (password.length < 7) return setError("password", true);
+
     const body = {
-      firstName: firstName,
-      lastName: lastName,
+      first_name: firstName,
+      last_name: lastName,
       email: email,
-      password: password, // encrypt
+      password: password,
     };
-    console.log(body);
+
+    try {
+      const response = await fetch("http://localhost:8000/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create user");
+      }
+
+      const data = await response.json();
+      console.log("User created successfully:", data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
