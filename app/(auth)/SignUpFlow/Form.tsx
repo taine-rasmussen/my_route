@@ -9,6 +9,7 @@ import {
 import { useState, useMemo } from "react";
 import FormInput from "@/components/FormInput";
 import { InputErrorKeys } from "@/app/types";
+import { BASE_URL } from "@env";
 
 const initState = {
   firstName: false,
@@ -43,8 +44,11 @@ const Form = () => {
     );
   }, [inputErrors, firstName, lastName, email, password]);
 
+  console.log(BASE_URL);
+
   const handleFormSubmit = async () => {
     if (password.length < 7) return setError("password", true);
+    // check for errors early return if true
 
     const body = {
       first_name: firstName,
@@ -54,7 +58,7 @@ const Form = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/users/", {
+      const response = await fetch(`${BASE_URL}users/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
