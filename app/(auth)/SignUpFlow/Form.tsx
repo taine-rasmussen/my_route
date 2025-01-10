@@ -45,6 +45,7 @@ const Form = () => {
 
   const handleFormSubmit = async () => {
     if (password.length < 7) return setError("password", true);
+    if (Object.values(inputErrors).some(Boolean)) return;
 
     const body = {
       first_name: firstName,
@@ -54,13 +55,16 @@ const Form = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/users/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}users/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create user");

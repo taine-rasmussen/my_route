@@ -29405,7 +29405,6 @@ var SheetImplementationCustom = import_react18.default.forwardRef(function(props
     }
   }, [open]);
   const forcedContentHeight = hasFit ? void 0 : snapPointsMode === "percent" ? `${maxSnapPoint}${isWeb ? "dvh" : "%"}` : maxSnapPoint;
-  console.warn("animatedStyle", animatedStyle);
   let contents = /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ParentSheetContext.Provider, {
     value: nextParentContext,
     children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(SheetProvider, {
@@ -33081,7 +33080,7 @@ __name(isTopLayer, "isTopLayer");
 function isContainingBlock(elementOrCss) {
   const webkit = isWebKit();
   const css = isElement(elementOrCss) ? getComputedStyle2(elementOrCss) : elementOrCss;
-  return css.transform !== "none" || css.perspective !== "none" || (css.containerType ? css.containerType !== "normal" : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== "none" : false) || !webkit && (css.filter ? css.filter !== "none" : false) || ["transform", "perspective", "filter"].some((value) => (css.willChange || "").includes(value)) || ["paint", "layout", "strict", "content"].some((value) => (css.contain || "").includes(value));
+  return ["transform", "translate", "scale", "rotate", "perspective"].some((value) => css[value] ? css[value] !== "none" : false) || (css.containerType ? css.containerType !== "normal" : false) || !webkit && (css.backdropFilter ? css.backdropFilter !== "none" : false) || !webkit && (css.filter ? css.filter !== "none" : false) || ["transform", "translate", "scale", "rotate", "perspective", "filter"].some((value) => (css.willChange || "").includes(value)) || ["paint", "layout", "strict", "content"].some((value) => (css.contain || "").includes(value));
 }
 __name(isContainingBlock, "isContainingBlock");
 function getContainingBlock(element) {
@@ -33622,6 +33621,10 @@ var platform = {
   isElement,
   isRTL
 };
+function rectsAreEqual(a, b) {
+  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
+}
+__name(rectsAreEqual, "rectsAreEqual");
 function observeMove(element, onMove) {
   let io = null;
   let timeoutId2;
@@ -33641,12 +33644,13 @@ function observeMove(element, onMove) {
       threshold = 1;
     }
     cleanup2();
+    const elementRectForRootMargin = element.getBoundingClientRect();
     const {
       left,
       top,
       width,
       height
-    } = element.getBoundingClientRect();
+    } = elementRectForRootMargin;
     if (!skip) {
       onMove();
     }
@@ -33676,6 +33680,9 @@ function observeMove(element, onMove) {
         } else {
           refresh(false, ratio);
         }
+      }
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+        refresh();
       }
       isFirstUpdate = false;
     }
@@ -33743,7 +33750,7 @@ function autoUpdate(reference, floating, update, options) {
   }
   function frameLoop() {
     const nextRefRect = getBoundingClientRect(reference);
-    if (prevRefRect && (nextRefRect.x !== prevRefRect.x || nextRefRect.y !== prevRefRect.y || nextRefRect.width !== prevRefRect.width || nextRefRect.height !== prevRefRect.height)) {
+    if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
       update();
     }
     prevRefRect = nextRefRect;
