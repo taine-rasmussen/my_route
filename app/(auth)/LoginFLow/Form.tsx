@@ -38,13 +38,34 @@ const Form = (props: IForm) => {
     );
   }, [inputErrors, email, password]);
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     if (password.length < 7) return setError("password", true);
     const body = {
       email: email,
-      password: password, // encrypt
+      password: password,
     };
-    console.log(body);
+
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}login/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to login");
+      }
+
+      const data = await response.json();
+      console.log("Login successful:", data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
