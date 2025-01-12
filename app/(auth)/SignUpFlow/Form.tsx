@@ -71,6 +71,10 @@ const Form = () => {
       }
 
       const data = await response.json();
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
       console.log("User created successfully:", data);
     } catch (error) {
       console.error(error);
