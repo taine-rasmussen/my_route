@@ -62,6 +62,8 @@ const Form = (props: IForm) => {
       }
 
       const data = await response.json();
+      setEmail("");
+      setPassword("");
       console.log("Login successful:", data);
     } catch (error) {
       console.error(error);
