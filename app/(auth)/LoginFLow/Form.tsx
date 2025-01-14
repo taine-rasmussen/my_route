@@ -4,6 +4,7 @@ import { Button, SizableText, YStack, Text, Separator, XStack } from "tamagui";
 import { useState, useMemo } from "react";
 import { Dimensions } from "react-native";
 import { InputErrorKeys } from "@/app/types";
+import { saveToSecureStore } from "@/app/utils";
 
 interface IForm {
   handleViewToggle: () => void;
@@ -62,6 +63,9 @@ const Form = (props: IForm) => {
       }
 
       const data = await response.json();
+      await saveToSecureStore("access_token", data.access_token);
+      await saveToSecureStore("refresh_token", data.refresh_token);
+      await saveToSecureStore("token_type", data.token_type);
       setEmail("");
       setPassword("");
       console.log("Login successful:", data);
