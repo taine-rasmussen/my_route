@@ -68,7 +68,6 @@ const Form = (props: IForm) => {
       await saveToSecureStore("token_type", data.token_type);
       setEmail("");
       setPassword("");
-      console.log("Login successful:", data);
     } catch (error) {
       console.error(error);
     }
