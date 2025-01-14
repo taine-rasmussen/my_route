@@ -1,8 +1,15 @@
 import React from "react";
-import { View } from "tamagui";
+import { View, Text } from "tamagui";
+import SafeAreaWrapper from "@/components/SafeAreaWrapper";
 
 const index = () => {
-  return <View>Main app test test</View>;
+  return (
+    <SafeAreaWrapper>
+      <View>
+        <Text>Main app test test</Text>
+      </View>
+    </SafeAreaWrapper>
+  );
 };
 
 export default index;
