@@ -29801,13 +29801,16 @@ var PortalHost = (0, import_react7.memo)(function(props) {
   });
 });
 function PortalHostWeb(props) {
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", {
+  const [mounted, setMounted] = (0, import_react7.useState)(false);
+  return (0, import_react7.useEffect)(() => (setMounted(true), () => {
+    setMounted(false), allPortalHosts.delete(props.name);
+  }), [props.name]), /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", {
     style: {
       display: "contents"
     },
     ref: /* @__PURE__ */ __name((node) => {
       var _a;
-      node ? (allPortalHosts.set(props.name, node), (_a = portalListeners[props.name]) == null ? void 0 : _a.forEach((x) => x(node))) : allPortalHosts.delete(props.name);
+      node && mounted && (allPortalHosts.set(props.name, node), (_a = portalListeners[props.name]) == null ? void 0 : _a.forEach((x) => x(node)));
     }, "ref")
   });
 }
@@ -42809,12 +42812,6 @@ var TRIGGER_NAME5 = "TabsTrigger";
 var TabsTriggerFrame = (0, import_web18.styled)(ThemeableStack, {
   name: TRIGGER_NAME5,
   tag: "button",
-  justifyContent: "center",
-  alignItems: "center",
-  flexWrap: "nowrap",
-  flexDirection: "row",
-  cursor: "pointer",
-  userSelect: "none",
   variants: {
     size: {
       "...size": getButtonSized
@@ -42836,7 +42833,14 @@ var TabsTriggerFrame = (0, import_web18.styled)(ThemeableStack, {
     },
     unstyled: {
       false: {
+        borderWidth: 0,
         backgroundColor: "$background",
+        userSelect: "none",
+        justifyContent: "center",
+        alignItems: "center",
+        flexWrap: "nowrap",
+        flexDirection: "row",
+        cursor: "pointer",
         pressStyle: {
           backgroundColor: "$backgroundPress"
         },
