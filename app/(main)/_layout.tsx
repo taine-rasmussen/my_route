@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Plus } from "@tamagui/lucide-icons";
+import { LayoutDashboard, BarChart, Network } from "@tamagui/lucide-icons";
 import Dashboard from "./dashboard";
 import Tracker from "./tracker";
 import Projects from "./projects";
@@ -11,7 +11,13 @@ export default function MainLayout() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          return <Plus color={color} size={size} />;
+          if (route.name === "Dashboard") {
+            return <LayoutDashboard color={color} size={size} />;
+          } else if (route.name === "Tracker") {
+            return <BarChart color={color} size={size} />;
+          } else if (route.name === "Projects") {
+            return <Network color={color} size={size} />;
+          }
         },
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "gray",
@@ -19,7 +25,7 @@ export default function MainLayout() {
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="Tracker" component={Tracker} />
-      <Tab.Screen name="Porjects" component={Projects} />
+      <Tab.Screen name="Projects" component={Projects} />
     </Tab.Navigator>
   );
 }
