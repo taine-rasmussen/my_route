@@ -1,11 +1,11 @@
 import React from "react";
-import { Text } from "tamagui";
 import SafeAreaWrapper from "@/components/SafeAreaWrapper";
+import UserWidget from "./userWidget/UserWidget";
 
 const Dashboard = () => {
   return (
     <SafeAreaWrapper>
-      <Text>Dashboard</Text>;
+      <UserWidget />
     </SafeAreaWrapper>
   );
 };
