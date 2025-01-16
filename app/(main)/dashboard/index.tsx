@@ -1,8 +1,13 @@
 import React from "react";
 import { Text } from "tamagui";
+import SafeAreaWrapper from "@/components/SafeAreaWrapper";
 
 const Dashboard = () => {
-  return <Text>Dashboard</Text>;
+  return (
+    <SafeAreaWrapper>
+      <Text>Dashboard</Text>;
+    </SafeAreaWrapper>
+  );
 };
 
 export default Dashboard;
