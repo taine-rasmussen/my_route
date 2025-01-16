@@ -21,6 +21,7 @@ export default function MainLayout() {
         },
         tabBarActiveTintColor: "tomato",
         tabBarInactiveTintColor: "gray",
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Dashboard" component={Dashboard} />
