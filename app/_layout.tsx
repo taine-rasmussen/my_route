@@ -11,6 +11,7 @@ import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import { getFromSecureStore } from "./utils";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { UserProvider } from "./UserContext";
 
 interface DecodedToken {
   exp: number;
@@ -68,13 +69,15 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <ToastProvider>
           <ToastViewport />
-          <Stack>
-            {isLoggedIn ? (
-              <Stack.Screen name="(main)" options={{ headerShown: false }} />
-            ) : (
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            )}
-          </Stack>
+          <UserProvider>
+            <Stack>
+              {isLoggedIn ? (
+                <Stack.Screen name="(main)" options={{ headerShown: false }} />
+              ) : (
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+              )}
+            </Stack>
+          </UserProvider>
         </ToastProvider>
       </ThemeProvider>
     </TamaguiProvider>
