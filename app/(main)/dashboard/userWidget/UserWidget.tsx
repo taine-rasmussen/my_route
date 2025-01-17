@@ -6,9 +6,8 @@ import {
   YStack,
   Separator,
   View,
-  Spinner,
 } from "tamagui";
-import { MapPin, Settings } from "@tamagui/lucide-icons";
+import { MapPin, Settings, Home } from "@tamagui/lucide-icons";
 import { useUser } from "@/app/UserContext";
 import { useEffect, useState } from "react";
 import { IUser } from "@/app/types";
@@ -60,9 +59,16 @@ const UserWidget = () => {
         <YStack gap={4}>
           <SizableText size="$6">{username}</SizableText>
           <Separator />
-          <XStack gap={4}>
-            <MapPin size="$1" />
-            <SizableText size="$4">London</SizableText>
+          <XStack gap={8}>
+            <XStack gap={4}>
+              <MapPin size="$1" />
+              <SizableText size="$4">{state.location}</SizableText>
+            </XStack>
+            <Separator vertical />
+            <XStack gap={4}>
+              <Home size="$1" />
+              <SizableText size="$4">{state.home_gym}</SizableText>
+            </XStack>
           </XStack>
         </YStack>
         <View position="absolute" top={16} right={16}>
