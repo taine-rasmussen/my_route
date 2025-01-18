@@ -1,5 +1,5 @@
-import { Sheet, Text, View } from "tamagui";
-import { ChevronDown } from "@tamagui/lucide-icons";
+import { Sheet, Text, View } from 'tamagui';
+import { ChevronDown } from '@tamagui/lucide-icons';
 
 interface ISettingsDialog {
   openDialog: boolean;
@@ -37,8 +37,3 @@ const SettingsDialog = (props: ISettingsDialog) => {
 };
 
 export default SettingsDialog;
-
-// TODO:
-// refresh token not refreshing after 15 mins?
-// switch to main app on 200 login
-// linting && TS
