@@ -7,16 +7,16 @@ import {
   Separator,
   View,
   Dialog,
-} from "tamagui";
-import { MapPin, Settings, Home } from "@tamagui/lucide-icons";
-import { useUser } from "@/app/UserContext";
-import { useEffect, useState } from "react";
-import { IUser } from "@/app/types";
-import SettingsDialog from "./SettingsDialog";
+} from 'tamagui';
+import { MapPin, Settings, Home } from '@tamagui/lucide-icons';
+import { useUser } from '@/app/UserContext';
+import { useEffect, useState } from 'react';
+import { IUser } from '@/app/types';
+import SettingsDialog from '../settingsDialog/SettingsDialog';
 
 const UserWidget = () => {
   const { user } = useUser();
-  const [state, setState] = useState<IUser>({} as IUser);
+  const [userObj, setUserObj] = useState<IUser>({} as IUser);
   const [loading, setLoading] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -28,18 +28,18 @@ const UserWidget = () => {
         const response = await fetch(
           `${process.env.EXPO_PUBLIC_BASE_URL}get_user/?id=${user?.id}`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
+          },
         );
         if (!response.ok) {
-          throw new Error("Failed to create user");
+          throw new Error('Failed to create user');
         }
 
         const data = await response.json();
-        setState(data);
+        setUserObj(data);
       } catch (error) {
         console.error(error);
       } finally {
@@ -54,13 +54,12 @@ const UserWidget = () => {
     setOpenDialog((prevState) => !prevState);
   };
 
-  const username = `${state.first_name} ${state.last_name}`;
-
-  console.log(openDialog);
+  const username = `${userObj.first_name} ${userObj.last_name}`;
 
   return (
     <>
       <SettingsDialog
+        user={userObj}
         openDialog={openDialog}
         toggleDialog={handleDialogToggle}
       />
@@ -79,12 +78,12 @@ const UserWidget = () => {
             <XStack gap={8}>
               <XStack gap={4}>
                 <MapPin size="$1" />
-                <SizableText size="$4">{state.location}</SizableText>
+                <SizableText size="$4">{userObj.location}</SizableText>
               </XStack>
               <Separator vertical />
               <XStack gap={4}>
                 <Home size="$1" />
-                <SizableText size="$4">{state.home_gym}</SizableText>
+                <SizableText size="$4">{userObj.home_gym}</SizableText>
               </XStack>
             </XStack>
           </YStack>
