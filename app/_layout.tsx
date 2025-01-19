@@ -117,7 +117,7 @@ export default function RootLayout() {
     } else {
       router.push('/(auth)');
     }
-  }, [isLoggedIn, loading, router]);
+  }, [isLoggedIn, loading, router, checkAuthStatus]);
 
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>

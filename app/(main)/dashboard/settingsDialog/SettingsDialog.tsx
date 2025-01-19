@@ -4,6 +4,7 @@ import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import { IUser } from '@/app/types';
 import UserHeader from './UserHeader';
 import { useState } from 'react';
+import SettingsMenu from './SettingsMenu';
 
 interface ISettingsDialog {
   openDialog: boolean;
@@ -40,6 +41,7 @@ const SettingsDialog = (props: ISettingsDialog) => {
           </View>
 
           <UserHeader user={props.user} />
+          <SettingsMenu />
         </SafeAreaWrapper>
       </Sheet.Frame>
     </Sheet>
