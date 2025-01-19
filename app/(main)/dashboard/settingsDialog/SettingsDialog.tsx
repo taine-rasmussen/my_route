@@ -1,4 +1,4 @@
-import { Sheet, View } from 'tamagui';
+import { Sheet, View, YStack } from 'tamagui';
 import { ChevronDown } from '@tamagui/lucide-icons';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import { IUser } from '@/app/types';
@@ -39,9 +39,10 @@ const SettingsDialog = (props: ISettingsDialog) => {
           >
             <ChevronDown size="$3" />
           </View>
-
-          <UserHeader user={props.user} />
-          <SettingsMenu />
+          <YStack gap={64}>
+            <UserHeader user={props.user} />
+            <SettingsMenu />
+          </YStack>
         </SafeAreaWrapper>
       </Sheet.Frame>
     </Sheet>
