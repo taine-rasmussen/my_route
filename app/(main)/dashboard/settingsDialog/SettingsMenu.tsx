@@ -13,7 +13,7 @@ const SettingsMenu = () => {
         display="flex"
         justifyContent="space-between"
       >
-        <Card>
+        <Card padding={4} elevate size="$5" bordered>
           <YGroup separator={<Separator />}>
             <YGroup.Item>
               <DarkModeListItem />
