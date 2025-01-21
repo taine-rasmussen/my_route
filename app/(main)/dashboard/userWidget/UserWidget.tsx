@@ -6,13 +6,13 @@ import {
   YStack,
   Separator,
   View,
-  Dialog,
 } from 'tamagui';
 import { MapPin, Settings, Home } from '@tamagui/lucide-icons';
-import { useUser } from '@/app/UserContext';
+import { useUser } from '@/app/contexts/UserContext';
 import { useEffect, useState } from 'react';
 import { IUser } from '@/app/types';
 import SettingsDialog from '../settingsDialog/SettingsDialog';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 const UserWidget = () => {
   const { user } = useUser();
@@ -56,12 +56,15 @@ const UserWidget = () => {
 
   const username = `${userObj.first_name} ${userObj.last_name}`;
 
+  const { signOut } = useAuth();
+
   return (
     <>
       <SettingsDialog
         user={userObj}
         openDialog={openDialog}
         toggleDialog={handleDialogToggle}
+        signOut={signOut}
       />
       <Card elevate size="$10" bordered>
         <XStack padding={16} gap={24}>

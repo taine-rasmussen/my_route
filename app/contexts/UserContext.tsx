@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { getFromSecureStore } from "./utils";
-import { jwtDecode } from "jwt-decode";
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { getFromSecureStore } from '../utils';
+import { jwtDecode } from 'jwt-decode';
 
 interface User {
   email: string;
@@ -19,7 +19,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
+    throw new Error('useUser must be used within a UserProvider');
   }
   return context;
 };
@@ -32,7 +32,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        const accessToken = await getFromSecureStore("access_token");
+        const accessToken = await getFromSecureStore('access_token');
         if (accessToken) {
           const decodedToken = jwtDecode(accessToken) as User;
 
@@ -40,11 +40,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           if (decodedToken.exp > currentTime) {
             setUser(decodedToken);
           } else {
-            console.log("Access token expired");
+            console.log('Access token expired');
           }
         }
       } catch (error) {
-        console.error("Error loading user data:", error);
+        console.error('Error loading user data:', error);
       }
     };
 

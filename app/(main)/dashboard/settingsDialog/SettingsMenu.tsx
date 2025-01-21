@@ -4,7 +4,11 @@ import GradingStyleListItem from './settingsMenuItems/GradingStyleListItem';
 import DashboardLayoutListItem from './settingsMenuItems/DashboardLayoutListItem';
 import UserLogout from './settingsMenuItems/UserLogout';
 
-const SettingsMenu = () => {
+interface ISettingsMenu {
+  signOut: () => Promise<void>;
+}
+
+const SettingsMenu = (props: ISettingsMenu) => {
   return (
     <View alignItems="center">
       <YStack
@@ -26,7 +30,7 @@ const SettingsMenu = () => {
             </YGroup.Item>
           </YGroup>
         </Card>
-        <UserLogout />
+        <UserLogout signOut={props.signOut} />
       </YStack>
     </View>
   );
