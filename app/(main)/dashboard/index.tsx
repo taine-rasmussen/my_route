@@ -1,6 +1,6 @@
-import React from "react";
-import SafeAreaWrapper from "@/components/SafeAreaWrapper";
-import UserWidget from "./userWidget/UserWidget";
+import React from 'react';
+import SafeAreaWrapper from '@/components/SafeAreaWrapper';
+import UserWidget from './userWidget/UserWidget';
 
 const Dashboard = () => {
   return (

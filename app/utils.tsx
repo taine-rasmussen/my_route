@@ -1,4 +1,4 @@
-import * as SecureStore from "expo-secure-store";
+import * as SecureStore from 'expo-secure-store';
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -7,16 +7,16 @@ export const isValidEmail = (email: string): boolean => {
 
 export const getInputErrorMessage = (inputType: string): string => {
   switch (inputType) {
-    case "firstName":
-      return "Required";
-    case "lastName":
-      return "Required";
-    case "email":
-      return "Invalid email address";
-    case "password":
-      return "Invalid password";
+    case 'firstName':
+      return 'Required';
+    case 'lastName':
+      return 'Required';
+    case 'email':
+      return 'Invalid email address';
+    case 'password':
+      return 'Invalid password';
     default:
-      return "Invalid input";
+      return 'Invalid input';
   }
 };
 

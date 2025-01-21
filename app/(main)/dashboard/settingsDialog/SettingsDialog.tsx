@@ -10,6 +10,7 @@ interface ISettingsDialog {
   openDialog: boolean;
   toggleDialog: () => void;
   user: IUser;
+  signOut: () => Promise<void>;
 }
 
 const SettingsDialog = (props: ISettingsDialog) => {
@@ -41,7 +42,7 @@ const SettingsDialog = (props: ISettingsDialog) => {
           </View>
           <YStack gap={64}>
             <UserHeader user={props.user} />
-            <SettingsMenu />
+            <SettingsMenu signOut={props.signOut} />
           </YStack>
         </SafeAreaWrapper>
       </Sheet.Frame>
