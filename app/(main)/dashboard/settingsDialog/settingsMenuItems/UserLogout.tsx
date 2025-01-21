@@ -1,13 +1,16 @@
 import { LogOut } from '@tamagui/lucide-icons';
 import { Button, AlertDialog, XStack } from 'tamagui';
+import { deleteFromSecureStore } from '@/app/utils';
 
 const UserLogout = () => {
-  // Plug into backend logout
+  // TODO
   // remove tokens
   // navigate to login flow
 
   const handleSignOut = () => {
-    console.log('SIGNED OUT');
+    console.log('HIT');
+    deleteFromSecureStore('refresh_token');
+    deleteFromSecureStore('access_token');
   };
 
   return (
@@ -48,10 +51,8 @@ const UserLogout = () => {
             <AlertDialog.Cancel asChild>
               <Button>No</Button>
             </AlertDialog.Cancel>
-            <AlertDialog.Action asChild>
-              <Button theme="active" onPress={handleSignOut}>
-                Yes
-              </Button>
+            <AlertDialog.Action asChild onPress={handleSignOut}>
+              <Button theme="active">Yes</Button>
             </AlertDialog.Action>
           </XStack>
         </AlertDialog.Content>
