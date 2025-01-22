@@ -6,7 +6,9 @@ interface IUserHeader {
 }
 
 const UserHeader = (props: IUserHeader) => {
-  const username = `${props.user.first_name} ${props.user.last_name}`;
+  const username = props.user
+    ? `${props.user.first_name} ${props.user.last_name}`
+    : '';
 
   return (
     <YStack gap={8} alignItems="center">
