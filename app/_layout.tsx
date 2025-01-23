@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { Spinner, TamaguiProvider } from 'tamagui';
+import { TamaguiProvider } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import {
   DarkTheme,
