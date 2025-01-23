@@ -16,14 +16,13 @@ import { useAuth } from '@/app/contexts/AuthContext';
 
 const UserWidget = () => {
   const { user } = useUser();
+  const { signOut } = useAuth();
   const [userObj, setUserObj] = useState<IUser>({} as IUser);
-  const [loading, setLoading] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   useEffect(() => {
     if (!user?.id) return;
     const getUserData = async () => {
-      setLoading(true);
       try {
         const response = await fetch(
           `${process.env.EXPO_PUBLIC_BASE_URL}get_user/?id=${user?.id}`,
@@ -43,7 +42,6 @@ const UserWidget = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false);
       }
     };
 
@@ -55,8 +53,6 @@ const UserWidget = () => {
   };
 
   const username = `${userObj.first_name} ${userObj.last_name}`;
-
-  const { signOut } = useAuth();
 
   return (
     <>

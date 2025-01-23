@@ -106,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         router.push('/(auth)');
       }
     });
-  }, [isLoggedIn]);
+  }, [isLoggedIn, setIsLoggedIn]);
 
   return (
     <AuthContext.Provider
