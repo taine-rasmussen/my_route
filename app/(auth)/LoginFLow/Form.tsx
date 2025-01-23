@@ -1,10 +1,11 @@
-import FormInput from "@/components/FormInput";
-import PasswordInput from "@/components/PasswordInput";
-import { Button, SizableText, YStack, Text, Separator, XStack } from "tamagui";
-import { useState, useMemo } from "react";
-import { Dimensions } from "react-native";
-import { InputErrorKeys } from "@/app/types";
-import { saveToSecureStore } from "@/app/utils";
+import FormInput from '@/components/FormInput';
+import PasswordInput from '@/components/PasswordInput';
+import { Button, SizableText, YStack, Text, Separator, XStack } from 'tamagui';
+import { useState, useMemo } from 'react';
+import { Dimensions } from 'react-native';
+import { InputErrorKeys } from '@/app/types';
+import { saveToSecureStore } from '@/app/utils';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 interface IForm {
   handleViewToggle: () => void;
@@ -16,15 +17,16 @@ const initState = {
 };
 
 const Form = (props: IForm) => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [inputErrors, setInputErrors] = useState(initState);
-  const screenWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get('window').width;
   const inputWidth = useMemo(() => screenWidth * 0.9 + 24, [screenWidth]);
+  const { checkAuthStatus } = useAuth();
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
     field,
-    value
+    value,
   ) => {
     setInputErrors((prev) => ({
       ...prev,
@@ -40,7 +42,7 @@ const Form = (props: IForm) => {
   }, [inputErrors, email, password]);
 
   const handleFormSubmit = async () => {
-    if (password.length < 7) return setError("password", true);
+    if (password.length < 7) return setError('password', true);
     const body = {
       email: email,
       password: password,
@@ -50,24 +52,25 @@ const Form = (props: IForm) => {
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}login/`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(body),
-        }
+        },
       );
 
       if (!response.ok) {
-        throw new Error("Failed to login");
+        throw new Error('Failed to login');
       }
 
       const data = await response.json();
-      await saveToSecureStore("access_token", data.access_token);
-      await saveToSecureStore("refresh_token", data.refresh_token);
-      await saveToSecureStore("token_type", data.token_type);
-      setEmail("");
-      setPassword("");
+      await saveToSecureStore('access_token', data.access_token);
+      await saveToSecureStore('refresh_token', data.refresh_token);
+      await saveToSecureStore('token_type', data.token_type);
+      checkAuthStatus();
+      setEmail('');
+      setPassword('');
     } catch (error) {
       console.error(error);
     }
@@ -127,10 +130,10 @@ const Form = (props: IForm) => {
           </Button>
         </XStack>
         <SizableText theme="alt1" size="$4">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <Text
             onPress={props.handleViewToggle}
-            style={{ textDecorationLine: "underline", cursor: "pointer" }}
+            style={{ textDecorationLine: 'underline', cursor: 'pointer' }}
           >
             Sign up
           </Text>
