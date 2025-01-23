@@ -5,6 +5,7 @@ import { IUser } from '@/app/types';
 import UserHeader from './UserHeader';
 import { useState } from 'react';
 import SettingsMenu from './SettingsMenu';
+import EditProfile from './EditProfile';
 
 interface ISettingsDialog {
   openDialog: boolean;
@@ -15,12 +16,15 @@ interface ISettingsDialog {
 
 const SettingsDialog = (props: ISettingsDialog) => {
   const [toggleProfileEdit, setToggleProfileEdit] = useState<boolean>(false);
+
+  console.log(toggleProfileEdit);
+
   return (
     <Sheet
       modal={true}
       dismissOnSnapToBottom
       open={props.openDialog}
-      snapPoints={[95, 50, 25]}
+      snapPoints={[94, 50, 25]}
       onOpenChange={props.toggleDialog}
       forceRemoveScrollEnabled={props.openDialog}
     >
@@ -41,8 +45,15 @@ const SettingsDialog = (props: ISettingsDialog) => {
             <ChevronDown size="$3" />
           </View>
           <YStack gap={64}>
-            <UserHeader user={props.user} />
-            <SettingsMenu signOut={props.signOut} />
+            <UserHeader
+              user={props.user}
+              setToggleProfileEdit={setToggleProfileEdit}
+            />
+            {toggleProfileEdit ? (
+              <EditProfile />
+            ) : (
+              <SettingsMenu signOut={props.signOut} />
+            )}
           </YStack>
         </SafeAreaWrapper>
       </Sheet.Frame>
