@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getFromSecureStore } from '../utils';
 import { jwtDecode } from 'jwt-decode';
+import { ThemePreference } from '../types';
 
 interface User {
   email: string;
@@ -12,6 +13,8 @@ interface User {
 interface UserContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  themePreference: string;
+  toggleTheme: (preference: ThemePreference) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -28,6 +31,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [themePreference, setThemePreference] =
+    useState<ThemePreference>('system');
+
+  const toggleTheme = (preference: ThemePreference) => {
+    setThemePreference(preference);
+  };
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -52,7 +61,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, themePreference, toggleTheme }}
+    >
       {children}
     </UserContext.Provider>
   );

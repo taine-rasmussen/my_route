@@ -1,6 +1,8 @@
-export type InputErrorKeys = "firstName" | "lastName" | "email" | "password";
+export type InputErrorKeys = 'firstName' | 'lastName' | 'email' | 'password';
 
-export type InputType = "firstName" | "lastName" | "email" | "password";
+export type InputType = 'firstName' | 'lastName' | 'email' | 'password';
+
+export type ThemePreference = 'system' | 'dark' | 'light';
 
 export interface IUser {
   location: string;

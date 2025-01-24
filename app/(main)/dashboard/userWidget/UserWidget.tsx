@@ -58,9 +58,9 @@ const UserWidget = () => {
     <>
       <SettingsDialog
         user={userObj}
+        signOut={signOut}
         openDialog={openDialog}
         toggleDialog={handleDialogToggle}
-        signOut={signOut}
       />
       <Card elevate size="$10" bordered>
         <XStack padding={16} gap={24}>
