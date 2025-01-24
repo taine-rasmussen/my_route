@@ -16,12 +16,8 @@ const DarkModeListItem = () => {
   }, [toggleTheme]);
 
   const handleCheckedChange = (checked: boolean) => {
-    // Toggle between 'dark' and 'light' based on the switch state
     toggleTheme(checked ? 'dark' : 'light');
   };
-
-  // dark === isChecked TRUE
-  // light === isChecked FALSE
 
   return (
     <ListItem>

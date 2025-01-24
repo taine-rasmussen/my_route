@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router';
-import { TamaguiProvider } from 'tamagui';
+import { Stack, useRouter } from 'expo-router';
+import { Spinner, TamaguiProvider } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import {
   DarkTheme,
@@ -8,25 +8,32 @@ import {
 } from '@react-navigation/native';
 import { tamaguiConfig } from '../tamagui.config';
 import { UserProvider, useUser } from './contexts/UserContext';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-function AppContent() {
+const AppContent = () => {
   const systemColorScheme = useColorScheme();
   const { themePreference } = useUser();
+  const { loading, isLoggedIn } = useAuth();
 
   const colorScheme =
     themePreference === 'system' ? systemColorScheme : themePreference;
+
+  const screenName = isLoggedIn ? '(main)' : '(auth)';
+
+  if (loading) {
+    return <Spinner size="large" color="$orange10" />;
+  }
 
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name="customLayout" options={{ headerShown: false }} />
+          <Stack.Screen name={screenName} options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>
     </TamaguiProvider>
   );
-}
+};
 
 export default function RootLayout() {
   return (
