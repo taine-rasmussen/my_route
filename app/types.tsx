@@ -1,8 +1,22 @@
-export type InputErrorKeys = 'firstName' | 'lastName' | 'email' | 'password';
+export type InputErrorKeys =
+  | 'firstName'
+  | 'lastName'
+  | 'email'
+  | 'password'
+  | 'location'
+  | 'homeGym';
 
-export type InputType = 'firstName' | 'lastName' | 'email' | 'password';
+export type InputType =
+  | 'firstName'
+  | 'lastName'
+  | 'email'
+  | 'password'
+  | 'location'
+  | 'homeGym';
 
 export type ThemePreference = 'system' | 'dark' | 'light';
+
+export type GradeStyle = 'VGrade' | 'French';
 
 export interface IUser {
   location: string;

@@ -11,6 +11,8 @@ export const getInputErrorMessage = (inputType: string): string => {
       return 'Required';
     case 'lastName':
       return 'Required';
+    case 'location':
+      return 'Required';
     case 'email':
       return 'Invalid email address';
     case 'password':
