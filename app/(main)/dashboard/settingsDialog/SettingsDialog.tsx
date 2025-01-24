@@ -8,9 +8,9 @@ import SettingsMenu from './SettingsMenu';
 import EditProfile from './EditProfile';
 
 interface ISettingsDialog {
+  user: IUser;
   openDialog: boolean;
   toggleDialog: () => void;
-  user: IUser;
   signOut: () => Promise<void>;
 }
 

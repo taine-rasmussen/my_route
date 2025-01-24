@@ -7,26 +7,33 @@ import {
   ThemeProvider,
 } from '@react-navigation/native';
 import { tamaguiConfig } from '../tamagui.config';
-import { UserProvider } from './contexts/UserContext';
+import { UserProvider, useUser } from './contexts/UserContext';
 import { AuthProvider } from './contexts/AuthContext';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+function AppContent() {
+  const systemColorScheme = useColorScheme();
+  const { themePreference } = useUser();
+
+  const colorScheme =
+    themePreference === 'system' ? systemColorScheme : themePreference;
 
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AuthProvider>
-          <UserProvider>
-            <Stack>
-              <Stack.Screen
-                name="customLayout"
-                options={{ headerShown: false }}
-              />
-            </Stack>
-          </UserProvider>
-        </AuthProvider>
+        <Stack>
+          <Stack.Screen name="customLayout" options={{ headerShown: false }} />
+        </Stack>
       </ThemeProvider>
     </TamaguiProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
+    </AuthProvider>
   );
 }
