@@ -74,9 +74,6 @@ const Form = () => {
       home_gym: homeGym,
       grade_style: gradeStyle,
     };
-    console.log(body);
-
-    if (body) return;
 
     try {
       const response = await fetch(
