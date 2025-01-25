@@ -1,11 +1,19 @@
 import { LogOut } from '@tamagui/lucide-icons';
 import { Button, AlertDialog, XStack } from 'tamagui';
+import { useUser } from '@/app/contexts/UserContext';
 
 interface IUserLogout {
   signOut: () => Promise<void>;
 }
 
 const UserLogout = (props: IUserLogout) => {
+  const { setUser } = useUser();
+
+  const handleSignOut = () => {
+    props.signOut();
+    setUser(null);
+  };
+
   return (
     <AlertDialog native>
       <AlertDialog.Trigger asChild>
@@ -44,7 +52,7 @@ const UserLogout = (props: IUserLogout) => {
             <AlertDialog.Cancel asChild>
               <Button>No</Button>
             </AlertDialog.Cancel>
-            <AlertDialog.Action asChild onPress={props.signOut}>
+            <AlertDialog.Action asChild onPress={handleSignOut}>
               <Button theme="active">Yes</Button>
             </AlertDialog.Action>
           </XStack>
