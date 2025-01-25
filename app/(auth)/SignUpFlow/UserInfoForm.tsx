@@ -2,10 +2,11 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  View,
 } from 'react-native';
 import FormInput from '@/components/FormInput';
 import { GradeStyle, InputErrorKeys } from '@/app/types';
+import { SizableText, View, YStack } from 'tamagui';
+import GradeStyleSelector from './GradeStyleSelector';
 
 interface IUserInfoForm {
   inputWidth: number;
@@ -23,7 +24,7 @@ const UserInfoForm = (props: IUserInfoForm) => {
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View>
+        <YStack>
           <FormInput
             value={props.location}
             setError={props.setError}
@@ -42,7 +43,17 @@ const UserInfoForm = (props: IUserInfoForm) => {
             placeholder="Home Gym..."
             error={props.inputErrors.homeGym}
           />
-        </View>
+          <GradeStyleSelector
+            width={props.inputWidth}
+            gradeStyle={props.gradeStyle}
+            setGradeStyle={props.setGradeStyle}
+          />
+          <View alignSelf="center" paddingBlockStart={16}>
+            <SizableText theme="alt1" size="$4">
+              Options can be changed in settings later
+            </SizableText>
+          </View>
+        </YStack>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

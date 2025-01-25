@@ -23,14 +23,14 @@ const initState = {
 const Form = () => {
   const [email, setEmail] = useState<string>('');
   const screenWidth = Dimensions.get('window').width;
+  const [homeGym, setHomeGym] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [inputErrors, setInputErrors] = useState(initState);
+  const [gradeStyle, setGradeStyle] = useState<GradeStyle>('V Grade');
   const [changeFormPage, setChangeFormPage] = useState<boolean>(false);
-  const [location, setLocation] = useState<string>('');
-  const [homeGym, setHomeGym] = useState<string>('');
-  const [gradeStyle, setGradeStyle] = useState<GradeStyle>('VGrade');
   const inputWidth = useMemo(() => screenWidth * 0.9 + 24, [screenWidth]);
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
@@ -71,8 +71,8 @@ const Form = () => {
       email: email,
       password: password,
       location: location,
-      homeGym: homeGym,
-      gradeStyle: gradeStyle,
+      home_gym: homeGym,
+      grade_style: gradeStyle,
     };
 
     try {
