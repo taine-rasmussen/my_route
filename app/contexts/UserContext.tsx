@@ -15,6 +15,7 @@ interface UserContextType {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   themePreference: string;
   toggleTheme: (preference: ThemePreference) => void;
+  loading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -31,6 +32,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [themePreference, setThemePreference] =
     useState<ThemePreference>('system');
 
@@ -40,8 +42,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const loadUserData = async () => {
+      setLoading(true);
       try {
         const accessToken = await getFromSecureStore('access_token');
+
         if (accessToken) {
           const decodedToken = jwtDecode(accessToken) as User;
 
@@ -54,6 +58,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       } catch (error) {
         console.error('Error loading user data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -62,7 +68,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, themePreference, toggleTheme }}
+      value={{ user, setUser, themePreference, toggleTheme, loading }}
     >
       {children}
     </UserContext.Provider>
