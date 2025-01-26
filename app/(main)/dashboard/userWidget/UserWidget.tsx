@@ -52,7 +52,7 @@ const UserWidget = () => {
     setOpenDialog((prevState) => !prevState);
   };
 
-  const username = `${userObj.first_name} ${userObj.last_name}`;
+  const username = user ? `${userObj.first_name} ${userObj.last_name}` : 'nah';
 
   return (
     <>
