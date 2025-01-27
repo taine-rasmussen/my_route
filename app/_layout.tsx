@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { Spinner, TamaguiProvider } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import {
