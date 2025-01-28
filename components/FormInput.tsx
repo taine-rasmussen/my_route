@@ -11,6 +11,7 @@ interface IFormInput extends React.ComponentProps<typeof Input> {
   inputType: InputType;
   onChange: (e: any) => void;
   setError: (field: InputErrorKeys, value: boolean) => void;
+  isNotRequired?: boolean;
 }
 
 const FormInput = (props: IFormInput) => {
@@ -19,13 +20,14 @@ const FormInput = (props: IFormInput) => {
   }, [props.error]);
 
   const handleBlur = () => {
-    if (props.inputType === 'email') {
+    if (props.inputType === 'email' && !props.isNotRequired) {
       const isValid = isValidEmail(props.value);
       return props.setError('email', !isValid);
     } else if (
-      props.inputType === 'firstName' ||
-      props.inputType === 'lastName' ||
-      props.inputType === 'location'
+      (props.inputType === 'firstName' ||
+        props.inputType === 'lastName' ||
+        props.inputType === 'location') &&
+      !props.isNotRequired
     ) {
       const hasLen = props.value.length === 0;
       return props.setError(props.inputType, hasLen);

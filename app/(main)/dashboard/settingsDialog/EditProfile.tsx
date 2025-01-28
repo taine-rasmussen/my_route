@@ -43,8 +43,10 @@ const EditProfile = () => {
         onChange={setNewLocation}
         placeholder="New location.."
         error={inputErrors.location}
+        isNotRequired
       />
       <FormInput
+        isNotRequired
         value={newHomeGym}
         inputType="homeGym"
         width={'100%'}
@@ -54,6 +56,7 @@ const EditProfile = () => {
         error={inputErrors.homeGym}
       />
       <FormInput
+        isNotRequired
         value={newEmail}
         inputType="email"
         width={'100%'}
