@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getFromSecureStore } from '../utils';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from './AuthContext';
 import { ThemePreference } from '../types';
 
 interface User {
@@ -31,6 +32,7 @@ export const useUser = () => {
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { isLoggedIn } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [themePreference, setThemePreference] =
@@ -40,31 +42,33 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     setThemePreference(preference);
   };
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      setLoading(true);
-      try {
-        const accessToken = await getFromSecureStore('access_token');
-
-        if (accessToken) {
-          const decodedToken = jwtDecode(accessToken) as User;
-
-          const currentTime = Math.floor(Date.now() / 1000);
-          if (decodedToken.exp > currentTime) {
-            setUser(decodedToken);
-          } else {
-            console.log('Access token expired');
-          }
+  const loadUserData = async () => {
+    setLoading(true);
+    try {
+      const accessToken = await getFromSecureStore('access_token');
+      if (accessToken) {
+        const decodedToken = jwtDecode(accessToken) as User;
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (decodedToken.exp > currentTime) {
+          setUser(decodedToken);
+        } else {
+          console.log('Access token expired');
         }
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    loadUserData();
-  }, []);
+  useEffect(() => {
+    if (isLoggedIn) {
+      loadUserData();
+    } else {
+      setUser(null);
+    }
+  }, [isLoggedIn]);
 
   return (
     <UserContext.Provider

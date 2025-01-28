@@ -68,7 +68,9 @@ const Form = (props: IForm) => {
       await saveToSecureStore('access_token', data.access_token);
       await saveToSecureStore('refresh_token', data.refresh_token);
       await saveToSecureStore('token_type', data.token_type);
-      checkAuthStatus();
+
+      await checkAuthStatus();
+
       setEmail('');
       setPassword('');
     } catch (error) {

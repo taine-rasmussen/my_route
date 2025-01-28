@@ -3,13 +3,20 @@ import { Avatar, SizableText, YStack, Button } from 'tamagui';
 
 interface IUserHeader {
   user: IUser;
-  setToggleProfileEdit: (bol: boolean) => void;
+  setToggleProfileEdit: (updater: (prevState: boolean) => boolean) => void;
+  toggleProfileEdit: boolean;
 }
 
 const UserHeader = (props: IUserHeader) => {
   const username = props.user
     ? `${props.user.first_name} ${props.user.last_name}`
     : '';
+
+  const btnText = props.toggleProfileEdit ? 'Return' : 'Edit Profile';
+
+  const handleProfileEditToggle = () => {
+    props.setToggleProfileEdit((prevState) => !prevState);
+  };
 
   return (
     <YStack gap={8} alignItems="center">
@@ -22,8 +29,8 @@ const UserHeader = (props: IUserHeader) => {
       </Avatar>
       <SizableText size="$9">{username}</SizableText>
       <SizableText>{props.user.email}</SizableText>
-      <Button onPress={() => props.setToggleProfileEdit(true)}>
-        Edit profile
+      <Button onPress={handleProfileEditToggle} minWidth={120}>
+        {btnText}
       </Button>
     </YStack>
   );

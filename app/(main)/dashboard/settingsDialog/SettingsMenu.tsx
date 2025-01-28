@@ -3,6 +3,7 @@ import DarkModeListItem from './settingsMenuItems/DarkModeListItem';
 import GradingStyleListItem from './settingsMenuItems/GradingStyleListItem';
 import DashboardLayoutListItem from './settingsMenuItems/DashboardLayoutListItem';
 import UserLogout from './settingsMenuItems/UserLogout';
+import ChangePwdListListItem from './settingsMenuItems/ChangePwdListItem';
 
 interface ISettingsMenu {
   signOut: () => Promise<void>;
@@ -27,6 +28,9 @@ const SettingsMenu = (props: ISettingsMenu) => {
             </YGroup.Item>
             <YGroup.Item>
               <GradingStyleListItem />
+            </YGroup.Item>
+            <YGroup.Item>
+              <ChangePwdListListItem />
             </YGroup.Item>
           </YGroup>
         </Card>
