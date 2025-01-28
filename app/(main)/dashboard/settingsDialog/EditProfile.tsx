@@ -4,10 +4,9 @@ import { useState } from 'react';
 import { InputErrorKeys } from '@/app/types';
 
 const initState = {
-  newLocation: false,
-  newHomeGym: false,
-  newEmail: false,
-  newPassword: false,
+  location: false,
+  homeGym: false,
+  email: false,
 };
 
 const EditProfile = () => {
@@ -32,6 +31,8 @@ const EditProfile = () => {
   const hasErrors = Object.values(inputErrors).some(Boolean);
   const disableSubmit = !hasAnyInput || hasErrors;
 
+  console.log(inputErrors);
+
   return (
     <YStack width={'100%'} padding={8}>
       <FormInput
@@ -41,7 +42,7 @@ const EditProfile = () => {
         setError={setError}
         onChange={setNewLocation}
         placeholder="New location.."
-        error={inputErrors.newLocation}
+        error={inputErrors.location}
       />
       <FormInput
         value={newHomeGym}
@@ -50,9 +51,8 @@ const EditProfile = () => {
         setError={setError}
         onChange={setNewHomeGym}
         placeholder="New home gym..."
-        error={inputErrors.newHomeGym}
+        error={inputErrors.homeGym}
       />
-
       <FormInput
         value={newEmail}
         inputType="email"
@@ -60,7 +60,7 @@ const EditProfile = () => {
         setError={setError}
         onChange={setNewEmail}
         placeholder="New email..."
-        error={inputErrors.newEmail}
+        error={inputErrors.email}
       />
       <Button
         disabled={disableSubmit}
