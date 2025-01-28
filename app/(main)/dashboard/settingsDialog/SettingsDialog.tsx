@@ -17,8 +17,6 @@ interface ISettingsDialog {
 const SettingsDialog = (props: ISettingsDialog) => {
   const [toggleProfileEdit, setToggleProfileEdit] = useState<boolean>(false);
 
-  console.log(toggleProfileEdit);
-
   return (
     <Sheet
       modal={true}
@@ -48,6 +46,7 @@ const SettingsDialog = (props: ISettingsDialog) => {
             <UserHeader
               user={props.user}
               setToggleProfileEdit={setToggleProfileEdit}
+              toggleProfileEdit={toggleProfileEdit}
             />
             {toggleProfileEdit ? (
               <EditProfile />
