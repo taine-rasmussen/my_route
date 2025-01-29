@@ -1,7 +1,8 @@
 import FormInput from '@/components/FormInput';
 import { YStack, Button } from 'tamagui';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { InputErrorKeys } from '@/app/types';
+import { isValidEmail } from '@/app/utils';
 
 const initState = {
   location: false,
@@ -29,27 +30,42 @@ const EditProfile = () => {
     newLocation.length > 0 || newHomeGym.length > 0 || newEmail.length > 0;
 
   const hasErrors = Object.values(inputErrors).some(Boolean);
-  const disableSubmit = !hasAnyInput || hasErrors;
 
-  console.log(inputErrors);
+  const disableSubmit = useMemo(() => {
+    return !hasAnyInput || hasErrors;
+  }, [hasAnyInput, hasErrors]);
+
+  const handleSubmit = () => {
+    const isEmailValid = isValidEmail(newEmail);
+
+    if (!isEmailValid) {
+      return setError('email', true);
+    }
+
+    // If email included but invalid early return and update error Input
+    // getBody() - only feilds that have a length
+    // Write back end update function
+    // submit and notify user of save
+    // ensure that all contexts are update to include changes
+  };
 
   return (
     <YStack width={'100%'} padding={8}>
       <FormInput
-        value={newLocation}
-        inputType="location"
+        isNotRequired
         width={'100%'}
+        value={newLocation}
         setError={setError}
+        inputType="location"
         onChange={setNewLocation}
         placeholder="New location.."
         error={inputErrors.location}
-        isNotRequired
       />
       <FormInput
+        width={'100%'}
         isNotRequired
         value={newHomeGym}
         inputType="homeGym"
-        width={'100%'}
         setError={setError}
         onChange={setNewHomeGym}
         placeholder="New home gym..."
@@ -57,18 +73,25 @@ const EditProfile = () => {
       />
       <FormInput
         isNotRequired
+        width={'100%'}
         value={newEmail}
         inputType="email"
-        width={'100%'}
         setError={setError}
-        onChange={setNewEmail}
+        onChange={(value) => {
+          setNewEmail(value);
+          if (inputErrors.email && isValidEmail(value)) {
+            setError('email', false);
+          }
+        }}
         placeholder="New email..."
         error={inputErrors.email}
       />
+
       <Button
-        disabled={disableSubmit}
         size="$5"
         theme="active"
+        onPress={handleSubmit}
+        disabled={disableSubmit}
         opacity={disableSubmit ? 0.5 : 1}
       >
         Save changes
