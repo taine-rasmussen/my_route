@@ -96,8 +96,8 @@ const EditProfile = () => {
         setError={setError}
         onChange={(value) => {
           setNewEmail(value);
-          if (inputErrors.email && isValidEmail(value)) {
-            setError('email', false);
+          if (inputErrors.email) {
+            setError('email', isValidEmail(value));
           }
         }}
         placeholder="New email..."

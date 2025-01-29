@@ -20,6 +20,11 @@ const FormInput = (props: IFormInput) => {
   }, [props.error]);
 
   const handleBlur = () => {
+    if (props.inputType === 'email' && props.isNotRequired && props.value) {
+      const isValid = isValidEmail(props.value);
+      return props.setError('email', !isValid);
+    }
+
     if (props.inputType === 'email' && !props.isNotRequired) {
       const isValid = isValidEmail(props.value);
       return props.setError('email', !isValid);
