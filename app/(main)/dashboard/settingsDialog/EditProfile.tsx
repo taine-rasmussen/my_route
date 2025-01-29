@@ -26,14 +26,29 @@ const EditProfile = () => {
     }));
   };
 
+  const isValidInput = (value: string) => value.trim().length > 0;
+
   const hasAnyInput =
-    newLocation.length > 0 || newHomeGym.length > 0 || newEmail.length > 0;
+    isValidInput(newLocation) ||
+    isValidInput(newHomeGym) ||
+    isValidInput(newEmail);
 
   const hasErrors = Object.values(inputErrors).some(Boolean);
 
   const disableSubmit = useMemo(() => {
     return !hasAnyInput || hasErrors;
   }, [hasAnyInput, hasErrors]);
+
+  const getBody = () => {
+    const body: Record<string, string> = {};
+
+    if (isValidInput(newLocation)) body.location = newLocation.trim();
+    if (isValidInput(newHomeGym)) body.homeGym = newHomeGym.trim();
+    if (isValidInput(newEmail) && isValidEmail(newEmail))
+      body.email = newEmail.trim();
+
+    return body;
+  };
 
   const handleSubmit = () => {
     const isEmailValid = isValidEmail(newEmail);
@@ -42,7 +57,9 @@ const EditProfile = () => {
       return setError('email', true);
     }
 
-    // If email included but invalid early return and update error Input
+    const body = getBody();
+    console.log(body, 'BODY');
+
     // getBody() - only feilds that have a length
     // Write back end update function
     // submit and notify user of save
