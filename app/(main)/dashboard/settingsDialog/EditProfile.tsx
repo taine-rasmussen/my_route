@@ -49,7 +49,7 @@ const EditProfile = (props: IEditProfile) => {
     const body: Record<string, string> = {};
 
     if (isValidInput(newLocation)) body.location = newLocation.trim();
-    if (isValidInput(newHomeGym)) body.homeGym = newHomeGym.trim();
+    if (isValidInput(newHomeGym)) body.home_gym = newHomeGym.trim();
     if (isValidInput(newEmail) && isValidEmail(newEmail))
       body.email = newEmail.trim();
 
