@@ -58,7 +58,6 @@ const EditProfile = (props: IEditProfile) => {
 
   const handleSubmit = async () => {
     const body = getBody();
-    console.log(body, 'BODY');
 
     const payload = {
       user_id: user?.id,

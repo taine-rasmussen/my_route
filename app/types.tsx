@@ -16,7 +16,7 @@ export type InputType =
 
 export type ThemePreference = 'system' | 'dark' | 'light';
 
-export type GradeStyle = 'V Grade' | 'French';
+export type GradeStyle = 'V Scale' | 'Font Scale';
 
 export interface IUser {
   location: string;

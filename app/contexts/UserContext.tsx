@@ -2,9 +2,10 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getFromSecureStore } from '../utils';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './AuthContext';
-import { ThemePreference } from '../types';
+import { ThemePreference, IUser } from '../types';
+import usePostRequest from '@/hooks/usePostRequest';
 
-interface User {
+interface TokenUser {
   email: string;
   exp: number;
   id: number;
@@ -12,8 +13,9 @@ interface User {
 }
 
 interface UserContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  tokenUser: TokenUser | null;
+  fullUser: IUser | null;
+  setFullUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   themePreference: string;
   toggleTheme: (preference: ThemePreference) => void;
   loading: boolean;
@@ -33,7 +35,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { isLoggedIn } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
+  const [tokenUser, setTokenUser] = useState<TokenUser | null>(null);
+  const [fullUser, setFullUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [themePreference, setThemePreference] =
     useState<ThemePreference>('system');
@@ -47,10 +50,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       const accessToken = await getFromSecureStore('access_token');
       if (accessToken) {
-        const decodedToken = jwtDecode(accessToken) as User;
+        const decodedToken = jwtDecode(accessToken) as TokenUser;
         const currentTime = Math.floor(Date.now() / 1000);
         if (decodedToken.exp > currentTime) {
-          setUser(decodedToken);
+          setTokenUser(decodedToken);
+          const { data, loading } = usePostRequest(
+            `get_user/?id=${tokenUser?.id}`,
+          );
+          setFullUser(fullUserData);
         } else {
           console.log('Access token expired');
         }
@@ -66,13 +73,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     if (isLoggedIn) {
       loadUserData();
     } else {
-      setUser(null);
+      setTokenUser(null);
+      setFullUser(null);
     }
   }, [isLoggedIn]);
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, themePreference, toggleTheme, loading }}
+      value={{
+        tokenUser,
+        fullUser,
+        setFullUser,
+        themePreference,
+        toggleTheme,
+        loading,
+      }}
     >
       {children}
     </UserContext.Provider>

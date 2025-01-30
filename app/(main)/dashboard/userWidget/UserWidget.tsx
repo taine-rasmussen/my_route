@@ -9,55 +9,25 @@ import {
 } from 'tamagui';
 import { MapPin, Settings, Home } from '@tamagui/lucide-icons';
 import { useUser } from '@/app/contexts/UserContext';
-import { useEffect, useState } from 'react';
-import { IUser } from '@/app/types';
+import { useState } from 'react';
 import SettingsDialog from '../settingsDialog/SettingsDialog';
 import { useAuth } from '@/app/contexts/AuthContext';
 
 const UserWidget = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
-  const [userObj, setUserObj] = useState<IUser>({} as IUser);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!user?.id) return;
-    const getUserData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.EXPO_PUBLIC_BASE_URL}get_user/?id=${user?.id}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-        if (!response.ok) {
-          throw new Error('Failed to create user');
-        }
-
-        const data = await response.json();
-        setUserObj(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-      }
-    };
-
-    getUserData();
-  }, [user]);
 
   const handleDialogToggle = () => {
     setOpenDialog((prevState) => !prevState);
   };
 
-  const username = user ? `${userObj.first_name} ${userObj.last_name}` : 'nah';
+  const username = user ? `${user.first_name} ${user.last_name}` : 'nah';
 
   return (
     <>
       <SettingsDialog
-        user={userObj}
+        user={user}
         signOut={signOut}
         openDialog={openDialog}
         toggleDialog={handleDialogToggle}
@@ -77,12 +47,12 @@ const UserWidget = () => {
             <XStack gap={8}>
               <XStack gap={4}>
                 <MapPin size="$1" />
-                <SizableText size="$4">{userObj.location}</SizableText>
+                <SizableText size="$4">{user.location}</SizableText>
               </XStack>
               <Separator vertical />
               <XStack gap={4}>
                 <Home size="$1" />
-                <SizableText size="$4">{userObj.home_gym}</SizableText>
+                <SizableText size="$4">{user.home_gym}</SizableText>
               </XStack>
             </XStack>
           </YStack>
