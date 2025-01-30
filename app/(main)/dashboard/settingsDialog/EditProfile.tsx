@@ -11,7 +11,11 @@ const initState = {
   email: false,
 };
 
-const EditProfile = () => {
+interface IEditProfile {
+  setToggleProfileEdit: (bol: boolean) => void;
+}
+
+const EditProfile = (props: IEditProfile) => {
   const [newLocation, setNewLocation] = useState<string>('');
   const [newHomeGym, setNewHomeGym] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
@@ -83,12 +87,10 @@ const EditProfile = () => {
       setNewHomeGym('');
       setNewLocation('');
       setInputErrors(initState);
+      props.setToggleProfileEdit(false);
     } catch (error) {
       console.error('Failed to update user:', error);
     }
-
-    // submit and notify user of save
-    // ensure that all contexts are update to include changes
   };
 
   return (
