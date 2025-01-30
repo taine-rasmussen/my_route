@@ -9,16 +9,8 @@ const Dashboard = () => {
   const { loading: authLoading } = useAuth();
   const { user, loading: userLoading } = useUser();
 
-  // Check loading state
-  const isLoading = authLoading || userLoading || user == null;
-
-  // Log values to debug the issue
-  console.log('Dashboard State:', {
-    authLoading,
-    userLoading,
-    user,
-    isLoading,
-  });
+  const isLoading =
+    authLoading || userLoading || user == null || user == undefined;
 
   return (
     <SafeAreaWrapper>
