@@ -1,3 +1,4 @@
+import { GradeStyle } from '@/app/types';
 import {
   ChevronDown,
   ChevronUp,
@@ -18,11 +19,9 @@ import {
 
 const GradingStyleListItem = () => {
   const gradeStyles = [{ style: 'V Scale' }, { style: 'Font Scale' }];
-  const [selectedStyle, setSelectedStyle] = useState<string>(
-    gradeStyles[0].style,
-  );
+  const [selectedStyle, setSelectedStyle] = useState<GradeStyle>('V Scale');
 
-  const changeSelectedStyle = (value: string) => {
+  const changeSelectedStyle = (value: GradeStyle) => {
     setSelectedStyle(value);
   };
 
