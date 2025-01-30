@@ -16,7 +16,7 @@ const EditProfile = () => {
   const [newHomeGym, setNewHomeGym] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [inputErrors, setInputErrors] = useState(initState);
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
     field,
@@ -78,6 +78,7 @@ const EditProfile = () => {
       }
 
       const data = await response.json();
+      setUser(data);
       setNewEmail('');
       setNewHomeGym('');
       setNewLocation('');
