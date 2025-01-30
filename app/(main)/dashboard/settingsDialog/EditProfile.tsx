@@ -63,7 +63,7 @@ const EditProfile = () => {
 
     try {
       const response = await fetch(
-        `${process.env.EXPO_PUBLIC_BASE_URL}user_update/`,
+        `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
         {
           method: 'POST',
           headers: {
@@ -78,12 +78,14 @@ const EditProfile = () => {
       }
 
       const data = await response.json();
-      console.log(data, 'RESPONSE');
+      setNewEmail('');
+      setNewHomeGym('');
+      setNewLocation('');
+      setInputErrors(initState);
     } catch (error) {
       console.error('Failed to update user:', error);
     }
 
-    // Write back end update function
     // submit and notify user of save
     // ensure that all contexts are update to include changes
   };
