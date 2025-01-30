@@ -12,6 +12,7 @@ import { useUser } from '@/app/contexts/UserContext';
 import { useState } from 'react';
 import SettingsDialog from '../settingsDialog/SettingsDialog';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { IUser } from '@/app/types';
 
 const UserWidget = () => {
   const { user } = useUser();
@@ -27,7 +28,7 @@ const UserWidget = () => {
   return (
     <>
       <SettingsDialog
-        user={user}
+        user={user ?? ({} as IUser)}
         signOut={signOut}
         openDialog={openDialog}
         toggleDialog={handleDialogToggle}
@@ -47,12 +48,12 @@ const UserWidget = () => {
             <XStack gap={8}>
               <XStack gap={4}>
                 <MapPin size="$1" />
-                <SizableText size="$4">{user.location}</SizableText>
+                <SizableText size="$4">{user?.location}</SizableText>
               </XStack>
               <Separator vertical />
               <XStack gap={4}>
                 <Home size="$1" />
-                <SizableText size="$4">{user.home_gym}</SizableText>
+                <SizableText size="$4">{user?.home_gym}</SizableText>
               </XStack>
             </XStack>
           </YStack>

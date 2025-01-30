@@ -3,7 +3,6 @@ import { getFromSecureStore } from '../utils';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './AuthContext';
 import { ThemePreference, IUser } from '../types';
-import usePostRequest from '@/hooks/usePostRequest';
 
 interface TokenUser {
   email: string;
@@ -14,8 +13,8 @@ interface TokenUser {
 
 interface UserContextType {
   tokenUser: TokenUser | null;
-  fullUser: IUser | null;
-  setFullUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  user: IUser | null;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   themePreference: string;
   toggleTheme: (preference: ThemePreference) => void;
   loading: boolean;
@@ -36,13 +35,37 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { isLoggedIn } = useAuth();
   const [tokenUser, setTokenUser] = useState<TokenUser | null>(null);
-  const [fullUser, setFullUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [themePreference, setThemePreference] =
     useState<ThemePreference>('system');
 
   const toggleTheme = (preference: ThemePreference) => {
     setThemePreference(preference);
+  };
+
+  const getUserData = async () => {
+    if (!tokenUser?.id) return;
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}get_user/?id=${tokenUser?.id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error('Failed to get user data');
+      }
+
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+    }
   };
 
   const loadUserData = async () => {
@@ -54,10 +77,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         const currentTime = Math.floor(Date.now() / 1000);
         if (decodedToken.exp > currentTime) {
           setTokenUser(decodedToken);
-          const { data, loading } = usePostRequest(
-            `get_user/?id=${tokenUser?.id}`,
-          );
-          setFullUser(fullUserData);
         } else {
           console.log('Access token expired');
         }
@@ -74,16 +93,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       loadUserData();
     } else {
       setTokenUser(null);
-      setFullUser(null);
+      setUser(null);
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (tokenUser?.id) {
+      getUserData();
+    }
+  }, [tokenUser]);
 
   return (
     <UserContext.Provider
       value={{
         tokenUser,
-        fullUser,
-        setFullUser,
+        user,
+        setUser,
         themePreference,
         toggleTheme,
         loading,

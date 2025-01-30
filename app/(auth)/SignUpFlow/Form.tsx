@@ -29,7 +29,7 @@ const Form = () => {
   const [password, setPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [inputErrors, setInputErrors] = useState(initState);
-  const [gradeStyle, setGradeStyle] = useState<GradeStyle>('V Grade');
+  const [gradeStyle, setGradeStyle] = useState<GradeStyle>('V Scale');
   const [changeFormPage, setChangeFormPage] = useState<boolean>(false);
   const inputWidth = useMemo(() => screenWidth * 0.9 + 24, [screenWidth]);
 
