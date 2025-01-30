@@ -3,7 +3,7 @@ import { ChevronDown } from '@tamagui/lucide-icons';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import { IUser } from '@/app/types';
 import UserHeader from './UserHeader';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SettingsMenu from './SettingsMenu';
 import EditProfile from './EditProfile';
 
@@ -16,6 +16,12 @@ interface ISettingsDialog {
 
 const SettingsDialog = (props: ISettingsDialog) => {
   const [toggleProfileEdit, setToggleProfileEdit] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!props.openDialog) {
+      return setToggleProfileEdit(false);
+    }
+  }, [props.openDialog]);
 
   return (
     <Sheet
@@ -49,7 +55,7 @@ const SettingsDialog = (props: ISettingsDialog) => {
               toggleProfileEdit={toggleProfileEdit}
             />
             {toggleProfileEdit ? (
-              <EditProfile />
+              <EditProfile setToggleProfileEdit={setToggleProfileEdit} />
             ) : (
               <SettingsMenu signOut={props.signOut} />
             )}

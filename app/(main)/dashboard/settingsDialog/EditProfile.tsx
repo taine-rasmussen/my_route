@@ -11,12 +11,16 @@ const initState = {
   email: false,
 };
 
-const EditProfile = () => {
+interface IEditProfile {
+  setToggleProfileEdit: (bol: boolean) => void;
+}
+
+const EditProfile = (props: IEditProfile) => {
   const [newLocation, setNewLocation] = useState<string>('');
   const [newHomeGym, setNewHomeGym] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [inputErrors, setInputErrors] = useState(initState);
-  const { user } = useUser();
+  const { user, setUser } = useUser();
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
     field,
@@ -53,12 +57,6 @@ const EditProfile = () => {
   };
 
   const handleSubmit = async () => {
-    const isEmailValid = isValidEmail(newEmail);
-
-    if (!isEmailValid) {
-      return setError('email', true);
-    }
-
     const body = getBody();
     console.log(body, 'BODY');
 
@@ -69,7 +67,7 @@ const EditProfile = () => {
 
     try {
       const response = await fetch(
-        `${process.env.EXPO_PUBLIC_BASE_URL}user_update/`,
+        `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
         {
           method: 'POST',
           headers: {
@@ -84,14 +82,15 @@ const EditProfile = () => {
       }
 
       const data = await response.json();
-      console.log(data, 'RESPONSE');
+      setUser(data);
+      setNewEmail('');
+      setNewHomeGym('');
+      setNewLocation('');
+      setInputErrors(initState);
+      props.setToggleProfileEdit(false);
     } catch (error) {
       console.error('Failed to update user:', error);
     }
-
-    // Write back end update function
-    // submit and notify user of save
-    // ensure that all contexts are update to include changes
   };
 
   return (
