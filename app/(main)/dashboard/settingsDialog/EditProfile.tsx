@@ -3,6 +3,7 @@ import { YStack, Button } from 'tamagui';
 import { useMemo, useState } from 'react';
 import { InputErrorKeys } from '@/app/types';
 import { isValidEmail } from '@/app/utils';
+import { useUser } from '@/app/contexts/UserContext';
 
 const initState = {
   location: false,
@@ -15,6 +16,7 @@ const EditProfile = () => {
   const [newHomeGym, setNewHomeGym] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const [inputErrors, setInputErrors] = useState(initState);
+  const { user } = useUser();
 
   const setError: (field: InputErrorKeys, value: boolean) => void = (
     field,
@@ -50,7 +52,7 @@ const EditProfile = () => {
     return body;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const isEmailValid = isValidEmail(newEmail);
 
     if (!isEmailValid) {
@@ -60,7 +62,33 @@ const EditProfile = () => {
     const body = getBody();
     console.log(body, 'BODY');
 
-    // getBody() - only feilds that have a length
+    const payload = {
+      user_id: user?.id,
+      updates: body,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}user_update/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to update user');
+      }
+
+      const data = await response.json();
+      console.log(data, 'RESPONSE');
+    } catch (error) {
+      console.error('Failed to update user:', error);
+    }
+
     // Write back end update function
     // submit and notify user of save
     // ensure that all contexts are update to include changes
