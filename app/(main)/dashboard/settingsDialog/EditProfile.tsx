@@ -53,12 +53,6 @@ const EditProfile = () => {
   };
 
   const handleSubmit = async () => {
-    const isEmailValid = isValidEmail(newEmail);
-
-    if (!isEmailValid) {
-      return setError('email', true);
-    }
-
     const body = getBody();
     console.log(body, 'BODY');
 
