@@ -25,9 +25,7 @@ const GradingStyleListItem = () => {
     setSelectedStyle(value);
   };
 
-  // Grade stored in context isntead of state here.
-  // Think through process of how grades are stored on DB when user switches grade do we need to convert them?
-  // Give user warning about this
+  const handleSubmit = async () => {};
 
   return (
     <ListItem>
