@@ -1,4 +1,5 @@
 import { GradeStyle } from '@/app/types';
+import usePostRequest from '@/hooks/usePostRequest';
 import {
   ChevronDown,
   ChevronUp,
@@ -25,7 +26,9 @@ const GradingStyleListItem = () => {
     setSelectedStyle(value);
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    const { data, loading } = usePostRequest('update_user');
+  };
 
   return (
     <ListItem>
