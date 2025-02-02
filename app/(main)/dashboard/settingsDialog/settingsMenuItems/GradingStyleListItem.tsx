@@ -21,20 +21,16 @@ import {
 const GradingStyleListItem = () => {
   const { user } = useUser();
   const gradeStyles = [{ style: 'V Scale' }, { style: 'Font Scale' }];
-  const [selectedStyle, setSelectedStyle] = useState<GradeStyle>('V Scale');
 
-  const changeSelectedStyle = (value: GradeStyle) => {
-    setSelectedStyle(value);
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (value: GradeStyle) => {
     const payload = {
       user_id: user?.id,
       updates: {
-        grade_style: selectedStyle,
+        grade_style: value,
       },
     };
     try {
+      console.log('API FIRED');
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
         {
@@ -57,6 +53,10 @@ const GradingStyleListItem = () => {
     }
   };
 
+  const changeSelectedStyle = (value: GradeStyle) => {
+    handleSubmit(value);
+  };
+
   return (
     <ListItem>
       <XStack
@@ -70,7 +70,7 @@ const GradingStyleListItem = () => {
           <SizableText size="$6">Grade</SizableText>
         </XStack>
         <Select
-          value={selectedStyle}
+          value={user?.grade_style}
           onValueChange={changeSelectedStyle}
           disablePreventBodyScroll
         >
@@ -122,12 +122,7 @@ const GradingStyleListItem = () => {
                 </Select.Label>
                 <Separator />
                 {gradeStyles.map((grade, i) => (
-                  <Select.Item
-                    index={i}
-                    key={grade.style}
-                    value={grade.style}
-                    onPress={handleSubmit}
-                  >
+                  <Select.Item index={i} key={grade.style} value={grade.style}>
                     <Select.ItemText>{grade.style}</Select.ItemText>
                     <Select.ItemIndicator marginLeft="auto">
                       <Check size={16} />
