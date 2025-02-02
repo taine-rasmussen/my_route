@@ -1,5 +1,5 @@
+import { useUser } from '@/app/contexts/UserContext';
 import { GradeStyle } from '@/app/types';
-import usePostRequest from '@/hooks/usePostRequest';
 import {
   ChevronDown,
   ChevronUp,
@@ -19,15 +19,42 @@ import {
 } from 'tamagui';
 
 const GradingStyleListItem = () => {
+  const { user } = useUser();
   const gradeStyles = [{ style: 'V Scale' }, { style: 'Font Scale' }];
-  const [selectedStyle, setSelectedStyle] = useState<GradeStyle>('V Scale');
 
-  const changeSelectedStyle = (value: GradeStyle) => {
-    setSelectedStyle(value);
+  const handleSubmit = async (value: GradeStyle) => {
+    const payload = {
+      user_id: user?.id,
+      updates: {
+        grade_style: value,
+      },
+    };
+    try {
+      console.log('API FIRED');
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to login');
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Failed to update grade', error);
+    }
   };
 
-  const handleSubmit = async () => {
-    const { data, loading } = usePostRequest('update_user');
+  const changeSelectedStyle = (value: GradeStyle) => {
+    handleSubmit(value);
   };
 
   return (
@@ -43,7 +70,7 @@ const GradingStyleListItem = () => {
           <SizableText size="$6">Grade</SizableText>
         </XStack>
         <Select
-          value={selectedStyle}
+          value={user?.grade_style}
           onValueChange={changeSelectedStyle}
           disablePreventBodyScroll
         >
