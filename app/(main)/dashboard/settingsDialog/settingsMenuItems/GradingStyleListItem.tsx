@@ -1,5 +1,5 @@
+import { useUser } from '@/app/contexts/UserContext';
 import { GradeStyle } from '@/app/types';
-import usePostRequest from '@/hooks/usePostRequest';
 import {
   ChevronDown,
   ChevronUp,
@@ -19,6 +19,7 @@ import {
 } from 'tamagui';
 
 const GradingStyleListItem = () => {
+  const { user } = useUser();
   const gradeStyles = [{ style: 'V Scale' }, { style: 'Font Scale' }];
   const [selectedStyle, setSelectedStyle] = useState<GradeStyle>('V Scale');
 
@@ -27,7 +28,33 @@ const GradingStyleListItem = () => {
   };
 
   const handleSubmit = async () => {
-    const { data, loading } = usePostRequest('update_user');
+    const payload = {
+      user_id: user?.id,
+      updates: {
+        grade_style: selectedStyle,
+      },
+    };
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to login');
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Failed to update grade', error);
+    }
   };
 
   return (
@@ -95,7 +122,12 @@ const GradingStyleListItem = () => {
                 </Select.Label>
                 <Separator />
                 {gradeStyles.map((grade, i) => (
-                  <Select.Item index={i} key={grade.style} value={grade.style}>
+                  <Select.Item
+                    index={i}
+                    key={grade.style}
+                    value={grade.style}
+                    onPress={handleSubmit}
+                  >
                     <Select.ItemText>{grade.style}</Select.ItemText>
                     <Select.ItemIndicator marginLeft="auto">
                       <Check size={16} />

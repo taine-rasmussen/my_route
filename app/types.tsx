@@ -26,4 +26,5 @@ export interface IUser {
   id: number;
   created_at: Date;
   home_gym: string;
+  grade_style: GradeStyle;
 }
