@@ -103,6 +103,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [tokenUser]);
 
+  console.log(user);
+
   return (
     <UserContext.Provider
       value={{
