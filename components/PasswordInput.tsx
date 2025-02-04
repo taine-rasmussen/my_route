@@ -21,12 +21,8 @@ const PasswordInput = (props: IPasswordInput) => {
     setIsSecureTextEntry((prevState) => !prevState);
 
   const handleBlur = () => {
-    const errorKey = props.errorKey ? props.errorKey : 'password';
-    if (props.value.length < 7) {
-      return props.setError(errorKey, true);
-    } else {
-      return props.setError(errorKey, false);
-    }
+    const errorKey = props.errorKey ?? 'password';
+    props.setError(errorKey, props.value.length < 7);
   };
 
   console.log(props.value);
