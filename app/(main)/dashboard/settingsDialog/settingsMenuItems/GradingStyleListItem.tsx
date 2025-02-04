@@ -14,53 +14,44 @@ import {
   Select,
   Adapt,
   Sheet,
-  YStack,
   Separator,
-  AlertDialog,
   Button,
 } from 'tamagui';
 
 const GradingStyleListItem = () => {
-  const { user } = useUser();
-  const gradeStyles = [{ style: 'V Scale' }, { style: 'Font Scale' }];
-  const [selectedValue, setSelectedValue] = useState(user?.grade_style);
+  const { user, setUser } = useUser();
+  const gradeStyles: GradeStyle[] = ['V Scale', 'Font Scale'];
   const [tempValue, setTempValue] = useState<GradeStyle | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (value: GradeStyle) => {
-    const payload = {
-      user_id: user?.id,
-      updates: { grade_style: value },
-    };
+  const hasSelectedNewStyle = user?.grade_style !== tempValue && tempValue;
+
+  const handleSubmit = async () => {
+    if (!tempValue || loading) return;
+
+    setLoading(true);
     try {
-      console.log('API FIRED');
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            user_id: user?.id,
+            updates: { grade_style: tempValue },
+          }),
         },
       );
+
       if (!response.ok) throw new Error('Failed to update grade');
-      setSelectedValue(value);
+
+      const data = await response.json();
+      setUser(data);
     } catch (error) {
       console.error('Failed to update grade', error);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleValueChange = (value: GradeStyle) => {
-    setTempValue(value);
-    setDialogOpen(true);
-  };
-
-  const handleCancel = () => {
-    setDialogOpen(false);
-  };
-
-  const handleConfirm = () => {
-    if (tempValue) handleSubmit(tempValue);
-    setDialogOpen(false);
   };
 
   return (
@@ -73,8 +64,8 @@ const GradingStyleListItem = () => {
           </XStack>
 
           <Select
-            value={selectedValue}
-            onValueChange={handleValueChange}
+            value={tempValue ?? user?.grade_style}
+            onValueChange={(value) => setTempValue(value as GradeStyle)}
             disablePreventBodyScroll
           >
             <Select.Trigger width="60%" iconAfter={ChevronDown}>
@@ -103,13 +94,9 @@ const GradingStyleListItem = () => {
                     <SizableText size="$8">Grades</SizableText>
                   </Select.Label>
                   <Separator />
-                  {gradeStyles.map((grade, i) => (
-                    <Select.Item
-                      key={grade.style}
-                      index={i}
-                      value={grade.style}
-                    >
-                      <Select.ItemText>{grade.style}</Select.ItemText>
+                  {gradeStyles.map((style, i) => (
+                    <Select.Item key={style} index={i} value={style}>
+                      <Select.ItemText>{style}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
@@ -125,46 +112,22 @@ const GradingStyleListItem = () => {
           </Select>
         </XStack>
       </ListItem>
-      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen} native>
-        <AlertDialog.Overlay key="overlay" />
-        <AlertDialog.Content
-          bordered
-          elevate
-          key="content"
-          animation="quick"
-          zIndex={3000}
-          position="absolute"
-        >
-          <YStack space>
-            <AlertDialog.Title>Change Grade Style</AlertDialog.Title>
-            <AlertDialog.Description>
-              Changing grade style will affect all previous tracked climbs and
-              projects. Are you sure?
-            </AlertDialog.Description>
-            <XStack gap="$3" justifyContent="flex-end">
-              {console.log(
-                'Cancel Button:',
-                <Button onPress={handleCancel}>Cancel</Button>,
-              )}
-              <Button onPress={handleCancel}>Cancel</Button>
-              {console.log(
-                'Continue Button:',
-                <Button theme="active" onPress={handleConfirm}>
-                  Continue
-                </Button>,
-              )}
-              <Button theme="active" onPress={handleConfirm}>
-                Continue
-              </Button>
-            </XStack>
-          </YStack>
-        </AlertDialog.Content>
-      </AlertDialog>
+
+      {hasSelectedNewStyle && (
+        <ListItem>
+          <XStack gap={8} alignItems="center" width={'70%'}>
+            <SizableText size="$4" color={'#F47174'}>
+              Changing grade will affect the grades of all previously logged
+              climbs and projects.
+            </SizableText>
+            <Button theme="active" onPress={handleSubmit} disabled={loading}>
+              {loading ? 'Updating...' : 'Confirm'}
+            </Button>
+          </XStack>
+        </ListItem>
+      )}
     </>
   );
 };
-
-// render the alertdialog at the root of the menu component and prop drill the open toggle
-// think how we can pass it a function to use the handleSubmit on continue
 
 export default GradingStyleListItem;
