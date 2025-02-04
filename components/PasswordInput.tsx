@@ -8,6 +8,7 @@ interface IPasswordInput {
   value: string;
   width?: number | string;
   error: boolean;
+  errorKey?: InputErrorKeys;
   setError: (field: InputErrorKeys, value: boolean) => void;
   placeholder?: string;
 }
@@ -20,13 +21,15 @@ const PasswordInput = (props: IPasswordInput) => {
     setIsSecureTextEntry((prevState) => !prevState);
 
   const handleBlur = () => {
+    const errorKey = props.errorKey ? props.errorKey : 'password';
     if (props.value.length < 7) {
-      return props.setError('password', true);
+      return props.setError(errorKey, true);
     } else {
-      return props.setError('password', false);
+      return props.setError(errorKey, false);
     }
   };
 
+  console.log(props.value);
   return (
     <YStack width={props.width || 'auto'} space={4}>
       <XStack
@@ -41,9 +44,10 @@ const PasswordInput = (props: IPasswordInput) => {
           borderWidth={3}
           onBlur={handleBlur}
           value={props.value}
-          placeholder={props.placeholder ? props.placeholder : 'Password...'}
           onChangeText={props.onChange}
           secureTextEntry={isSecureTextEntry}
+          borderColor={props.error ? '#F47174' : '$borderColor'}
+          placeholder={props.placeholder ? props.placeholder : 'Password...'}
         />
         <YStack
           right={10}
@@ -61,8 +65,8 @@ const PasswordInput = (props: IPasswordInput) => {
       <YStack height={24}>
         {props.error && (
           <XStack paddingInlineStart={8} alignItems="center">
-            <AlertCircle size={'$1'} color="red" />
-            <Text paddingLeft={8} color="red">
+            <AlertCircle size={'$1'} color="#F47174" />
+            <Text paddingLeft={8} color="#F47174">
               {errorMessage}
             </Text>
           </XStack>

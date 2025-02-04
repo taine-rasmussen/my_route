@@ -4,7 +4,10 @@ export type InputErrorKeys =
   | 'email'
   | 'password'
   | 'location'
-  | 'homeGym';
+  | 'homeGym'
+  | 'currentPassword'
+  | 'newPassword'
+  | 'confirmNewPassword';
 
 export type InputType =
   | 'firstName'

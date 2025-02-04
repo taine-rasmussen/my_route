@@ -35,7 +35,13 @@ const ChangePwdListListItem = () => {
     }));
   };
 
-  console.log(isOpen);
+  const handleClose = () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmNewPassword('');
+    setInputErrors(initState);
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -64,6 +70,7 @@ const ChangePwdListListItem = () => {
                 <PasswordInput
                   setError={setError}
                   value={currentPassword}
+                  errorKey="currentPassword"
                   onChange={setCurrentPassword}
                   placeholder="Current password..."
                   error={inputErrors.currentPassword}
@@ -72,6 +79,7 @@ const ChangePwdListListItem = () => {
                   <PasswordInput
                     value={newPassword}
                     setError={setError}
+                    errorKey="newPassword"
                     onChange={setNewPassword}
                     placeholder="New Password..."
                     error={inputErrors.newPassword}
@@ -79,6 +87,7 @@ const ChangePwdListListItem = () => {
                   <PasswordInput
                     setError={setError}
                     value={confirmNewPassword}
+                    errorKey="confirmNewPassword"
                     onChange={setConfirmNewPassword}
                     placeholder="Confirm New Password..."
                     error={inputErrors.confirmNewPassword}
@@ -87,7 +96,7 @@ const ChangePwdListListItem = () => {
               </YStack>
               <XStack gap={16} width={'95%'}>
                 <Button width={'50%'}>Save</Button>
-                <Button width={'50%'} onPress={() => setIsOpen(false)}>
+                <Button width={'50%'} onPress={handleClose}>
                   Close
                 </Button>
               </XStack>
