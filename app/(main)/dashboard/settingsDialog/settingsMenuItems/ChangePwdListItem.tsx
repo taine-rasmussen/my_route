@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { ListItem, SizableText, XStack, Button, Sheet, YStack } from 'tamagui';
+import {
+  ListItem,
+  SizableText,
+  XStack,
+  Button,
+  Sheet,
+  YStack,
+  Separator,
+} from 'tamagui';
 import { Lock } from '@tamagui/lucide-icons';
 import PasswordInput from '@/components/PasswordInput';
 import { InputErrorKeys } from '@/app/types';
@@ -51,7 +59,8 @@ const ChangePwdListListItem = () => {
           <Sheet.ScrollView>
             <YStack padding={16} gap={12}>
               <SizableText size="$6">Reset Password</SizableText>
-              <YStack>
+              <Separator />
+              <YStack gap={16}>
                 <PasswordInput
                   setError={setError}
                   value={currentPassword}
@@ -59,23 +68,29 @@ const ChangePwdListListItem = () => {
                   placeholder="Current password..."
                   error={inputErrors.currentPassword}
                 />
-                <PasswordInput
-                  value={newPassword}
-                  setError={setError}
-                  onChange={setNewPassword}
-                  placeholder="New Password..."
-                  error={inputErrors.newPassword}
-                />
-                <PasswordInput
-                  setError={setError}
-                  value={confirmNewPassword}
-                  onChange={setConfirmNewPassword}
-                  placeholder="Confirm New Password..."
-                  error={inputErrors.confirmNewPassword}
-                />
+                <YStack>
+                  <PasswordInput
+                    value={newPassword}
+                    setError={setError}
+                    onChange={setNewPassword}
+                    placeholder="New Password..."
+                    error={inputErrors.newPassword}
+                  />
+                  <PasswordInput
+                    setError={setError}
+                    value={confirmNewPassword}
+                    onChange={setConfirmNewPassword}
+                    placeholder="Confirm New Password..."
+                    error={inputErrors.confirmNewPassword}
+                  />
+                </YStack>
               </YStack>
-              <Button>Save</Button>
-              <Button onPress={() => setIsOpen(false)}>Close</Button>
+              <XStack gap={16} width={'95%'}>
+                <Button width={'50%'}>Save</Button>
+                <Button width={'50%'} onPress={() => setIsOpen(false)}>
+                  Close
+                </Button>
+              </XStack>
             </YStack>
           </Sheet.ScrollView>
         </Sheet.Frame>
