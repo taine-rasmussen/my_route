@@ -57,7 +57,10 @@ const SettingsDialog = (props: ISettingsDialog) => {
             {toggleProfileEdit ? (
               <EditProfile setToggleProfileEdit={setToggleProfileEdit} />
             ) : (
-              <SettingsMenu signOut={props.signOut} />
+              <SettingsMenu
+                key={props.openDialog ? 'open' : 'closed'}
+                signOut={props.signOut}
+              />
             )}
           </YStack>
         </SafeAreaWrapper>
