@@ -16,6 +16,7 @@ import {
   Sheet,
   Separator,
   Button,
+  YStack,
 } from 'tamagui';
 
 const GradingStyleListItem = () => {
@@ -52,6 +53,11 @@ const GradingStyleListItem = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    if (!user?.grade_style) return;
+    setTempValue(user?.grade_style);
   };
 
   return (
@@ -120,9 +126,14 @@ const GradingStyleListItem = () => {
               Changing grade will affect the grades of all previously logged
               climbs and projects.
             </SizableText>
-            <Button theme="active" onPress={handleSubmit} disabled={loading}>
-              {loading ? 'Updating...' : 'Confirm'}
-            </Button>
+            <YStack gap={8}>
+              <Button theme="active" onPress={handleSubmit} disabled={loading}>
+                {loading ? 'Updating...' : 'Confirm'}
+              </Button>
+              <Button theme="active" onPress={handleCancel}>
+                Cancel
+              </Button>
+            </YStack>
           </XStack>
         </ListItem>
       )}
