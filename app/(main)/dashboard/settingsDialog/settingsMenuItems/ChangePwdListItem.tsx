@@ -14,7 +14,7 @@ const ChangePwdListListItem = () => {
           <Lock size="$1" />
           <SizableText size="$6">Password</SizableText>
         </XStack>
-        <Button>Edit</Button>
+        <Button>Change</Button>
       </XStack>
     </ListItem>
   );
