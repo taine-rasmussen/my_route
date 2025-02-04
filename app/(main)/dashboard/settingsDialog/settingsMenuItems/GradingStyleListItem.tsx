@@ -19,38 +19,39 @@ import {
 } from 'tamagui';
 
 const GradingStyleListItem = () => {
-  const { user } = useUser();
-  const gradeStyles = [{ style: 'V Scale' }, { style: 'Font Scale' }];
-  const [selectedValue, setSelectedValue] = useState(user?.grade_style);
+  const { user, setUser } = useUser();
+  const gradeStyles: GradeStyle[] = ['V Scale', 'Font Scale'];
   const [tempValue, setTempValue] = useState<GradeStyle | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const hasSelectedNewStyle = user?.grade_style !== tempValue && tempValue;
 
   const handleSubmit = async () => {
-    if (!tempValue) return;
-    const payload = {
-      user_id: user?.id,
-      updates: { grade_style: tempValue },
-    };
+    if (!tempValue || loading) return;
+
+    setLoading(true);
     try {
-      console.log('API FIRED');
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}update_user/`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            user_id: user?.id,
+            updates: { grade_style: tempValue },
+          }),
         },
       );
+
       if (!response.ok) throw new Error('Failed to update grade');
-      setSelectedValue(tempValue);
+
+      const data = await response.json();
+      setUser(data);
     } catch (error) {
       console.error('Failed to update grade', error);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleValueChange = (value: GradeStyle) => {
-    setTempValue(value);
   };
 
   return (
@@ -63,8 +64,8 @@ const GradingStyleListItem = () => {
           </XStack>
 
           <Select
-            value={selectedValue}
-            onValueChange={handleValueChange}
+            value={tempValue ?? user?.grade_style}
+            onValueChange={(value) => setTempValue(value as GradeStyle)}
             disablePreventBodyScroll
           >
             <Select.Trigger width="60%" iconAfter={ChevronDown}>
@@ -93,13 +94,9 @@ const GradingStyleListItem = () => {
                     <SizableText size="$8">Grades</SizableText>
                   </Select.Label>
                   <Separator />
-                  {gradeStyles.map((grade, i) => (
-                    <Select.Item
-                      key={grade.style}
-                      index={i}
-                      value={grade.style}
-                    >
-                      <Select.ItemText>{grade.style}</Select.ItemText>
+                  {gradeStyles.map((style, i) => (
+                    <Select.Item key={style} index={i} value={style}>
+                      <Select.ItemText>{style}</Select.ItemText>
                       <Select.ItemIndicator marginLeft="auto">
                         <Check size={16} />
                       </Select.ItemIndicator>
@@ -123,8 +120,8 @@ const GradingStyleListItem = () => {
               Changing grade will affect the grades of all previously logged
               climbs and projects.
             </SizableText>
-            <Button theme="active" onPress={handleSubmit}>
-              Confirm
+            <Button theme="active" onPress={handleSubmit} disabled={loading}>
+              {loading ? 'Updating...' : 'Confirm'}
             </Button>
           </XStack>
         </ListItem>
