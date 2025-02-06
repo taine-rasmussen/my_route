@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   ListItem,
   SizableText,
@@ -68,6 +68,7 @@ const ChangePwdListListItem = () => {
               <Separator />
               <YStack gap={16}>
                 <PasswordInput
+                  isOpen={isOpen}
                   setError={setError}
                   value={currentPassword}
                   errorKey="currentPassword"
@@ -77,6 +78,7 @@ const ChangePwdListListItem = () => {
                 />
                 <YStack>
                   <PasswordInput
+                    isOpen={isOpen}
                     value={newPassword}
                     setError={setError}
                     errorKey="newPassword"
@@ -85,6 +87,7 @@ const ChangePwdListListItem = () => {
                     error={inputErrors.newPassword}
                   />
                   <PasswordInput
+                    isOpen={isOpen}
                     setError={setError}
                     value={confirmNewPassword}
                     errorKey="confirmNewPassword"

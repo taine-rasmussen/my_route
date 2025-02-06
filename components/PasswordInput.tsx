@@ -4,16 +4,26 @@ import React, { useState } from 'react';
 import { InputErrorKeys } from '@/app/types';
 
 interface IPasswordInput {
-  onChange: (value: string) => void;
   value: string;
-  width?: number | string;
   error: boolean;
-  errorKey?: InputErrorKeys;
-  setError: (field: InputErrorKeys, value: boolean) => void;
   placeholder?: string;
+  width?: number | string;
+  errorKey?: InputErrorKeys;
+  onChange: (value: string) => void;
+  setError: (field: InputErrorKeys, value: boolean) => void;
+  isOpen?: boolean;
 }
 
-const PasswordInput = (props: IPasswordInput) => {
+const PasswordInput: React.FC<IPasswordInput> = ({
+  value,
+  error,
+  placeholder,
+  width,
+  errorKey,
+  onChange,
+  setError,
+  isOpen,
+}) => {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState<boolean>(true);
   const errorMessage = 'Password must be at least 7 characters long';
 
@@ -21,13 +31,14 @@ const PasswordInput = (props: IPasswordInput) => {
     setIsSecureTextEntry((prevState) => !prevState);
 
   const handleBlur = () => {
-    const errorKey = props.errorKey ?? 'password';
-    props.setError(errorKey, props.value.length < 7);
+    if (isOpen) {
+      const key = errorKey ?? 'password';
+      setError(key, value.length < 7);
+    }
   };
 
-  console.log(props.value);
   return (
-    <YStack width={props.width || 'auto'} space={4}>
+    <YStack width={width || 'auto'} space={4}>
       <XStack
         borderRadius="$4"
         alignItems="center"
@@ -39,11 +50,11 @@ const PasswordInput = (props: IPasswordInput) => {
           size={'$5'}
           borderWidth={3}
           onBlur={handleBlur}
-          value={props.value}
-          onChangeText={props.onChange}
+          value={value}
+          onChangeText={onChange}
           secureTextEntry={isSecureTextEntry}
-          borderColor={props.error ? '#F47174' : '$borderColor'}
-          placeholder={props.placeholder ? props.placeholder : 'Password...'}
+          borderColor={error ? '#F47174' : '$borderColor'}
+          placeholder={placeholder ?? 'Password...'}
         />
         <YStack
           right={10}
@@ -59,7 +70,7 @@ const PasswordInput = (props: IPasswordInput) => {
         </YStack>
       </XStack>
       <YStack height={24}>
-        {props.error && (
+        {error && (
           <XStack paddingInlineStart={8} alignItems="center">
             <AlertCircle size={'$1'} color="#F47174" />
             <Text paddingLeft={8} color="#F47174">
