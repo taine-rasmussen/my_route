@@ -43,6 +43,13 @@ const ChangePwdListListItem = () => {
     setIsOpen(false);
   };
 
+  const disableSaveBtn =
+    !currentPassword ||
+    !newPassword ||
+    !confirmNewPassword ||
+    Object.values(inputErrors).includes(true) ||
+    newPassword !== confirmNewPassword;
+
   return (
     <>
       <ListItem>
@@ -98,7 +105,13 @@ const ChangePwdListListItem = () => {
                 </YStack>
               </YStack>
               <XStack gap={16} width={'95%'}>
-                <Button width={'50%'}>Save</Button>
+                <Button
+                  width={'50%'}
+                  disabled={disableSaveBtn}
+                  opacity={disableSaveBtn ? 0.5 : 1}
+                >
+                  Save
+                </Button>
                 <Button width={'50%'} onPress={handleClose}>
                   Close
                 </Button>
