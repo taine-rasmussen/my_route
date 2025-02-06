@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   ListItem,
   SizableText,
@@ -49,6 +49,9 @@ const ChangePwdListListItem = () => {
     !confirmNewPassword ||
     Object.values(inputErrors).includes(true) ||
     newPassword !== confirmNewPassword;
+
+  const showPasswordMatchError =
+    newPassword && confirmNewPassword && newPassword !== confirmNewPassword;
 
   return (
     <>
@@ -104,6 +107,13 @@ const ChangePwdListListItem = () => {
                   />
                 </YStack>
               </YStack>
+
+              {showPasswordMatchError && (
+                <SizableText size="$4" color="red">
+                  New password and confirm new password must match.
+                </SizableText>
+              )}
+
               <XStack gap={16} width={'95%'}>
                 <Button
                   width={'50%'}
