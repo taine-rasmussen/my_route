@@ -53,8 +53,8 @@ const FormInput = (props: IFormInput) => {
       <YStack height={24}>
         {props.error && (
           <XStack paddingInlineStart={8} alignItems="center">
-            <AlertCircle size={'$1'} color="red" />
-            <Text paddingLeft={8} color="red">
+            <AlertCircle size={'$1'} color="#F47174" />
+            <Text paddingLeft={8} color="#F47174">
               {errorMessage}
             </Text>
           </XStack>

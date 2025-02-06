@@ -1,33 +1,44 @@
-import { Input, XStack, YStack, Text } from "tamagui";
-import { AlertCircle, Eye, EyeOff } from "@tamagui/lucide-icons";
-import React, { useState } from "react";
-import { InputErrorKeys } from "@/app/types";
+import { Input, XStack, YStack, Text } from 'tamagui';
+import { AlertCircle, Eye, EyeOff } from '@tamagui/lucide-icons';
+import React, { useState } from 'react';
+import { InputErrorKeys } from '@/app/types';
 
 interface IPasswordInput {
-  onChange: (value: string) => void;
   value: string;
-  width?: number | string;
   error: boolean;
+  placeholder?: string;
+  width?: number | string;
+  errorKey?: InputErrorKeys;
+  onChange: (value: string) => void;
   setError: (field: InputErrorKeys, value: boolean) => void;
+  isOpen?: boolean;
 }
 
-const PasswordInput = (props: IPasswordInput) => {
+const PasswordInput: React.FC<IPasswordInput> = ({
+  value,
+  error,
+  placeholder,
+  width,
+  errorKey,
+  onChange,
+  setError,
+  isOpen,
+}) => {
   const [isSecureTextEntry, setIsSecureTextEntry] = useState<boolean>(true);
-  const errorMessage = "Password must be at least 7 characters long";
+  const errorMessage = 'Password must be at least 7 characters long';
 
   const toggleSecureTextEntry = () =>
     setIsSecureTextEntry((prevState) => !prevState);
 
   const handleBlur = () => {
-    if (props.value.length < 7) {
-      return props.setError("password", true);
-    } else {
-      return props.setError("password", false);
+    if (isOpen) {
+      const key = errorKey ?? 'password';
+      setError(key, value.length < 7);
     }
   };
 
   return (
-    <YStack width={props.width || "auto"} space={4}>
+    <YStack width={width || 'auto'} space={4}>
       <XStack
         borderRadius="$4"
         alignItems="center"
@@ -36,13 +47,14 @@ const PasswordInput = (props: IPasswordInput) => {
       >
         <Input
           flex={1}
-          size={"$5"}
+          size={'$5'}
           borderWidth={3}
           onBlur={handleBlur}
-          value={props.value}
-          placeholder="Password..."
-          onChangeText={props.onChange}
+          value={value}
+          onChangeText={onChange}
           secureTextEntry={isSecureTextEntry}
+          borderColor={error ? '#F47174' : '$borderColor'}
+          placeholder={placeholder ?? 'Password...'}
         />
         <YStack
           right={10}
@@ -58,10 +70,10 @@ const PasswordInput = (props: IPasswordInput) => {
         </YStack>
       </XStack>
       <YStack height={24}>
-        {props.error && (
+        {error && (
           <XStack paddingInlineStart={8} alignItems="center">
-            <AlertCircle size={"$1"} color="red" />
-            <Text paddingLeft={8} color="red">
+            <AlertCircle size={'$1'} color="#F47174" />
+            <Text paddingLeft={8} color="#F47174">
               {errorMessage}
             </Text>
           </XStack>
