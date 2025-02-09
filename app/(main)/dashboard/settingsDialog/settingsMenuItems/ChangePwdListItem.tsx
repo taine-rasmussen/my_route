@@ -11,6 +11,7 @@ import {
 import { Lock } from '@tamagui/lucide-icons';
 import PasswordInput from '@/components/PasswordInput';
 import { InputErrorKeys } from '@/app/types';
+import { getFromSecureStore } from '@/app/utils';
 
 const initState = {
   currentPassword: false,
@@ -52,6 +53,39 @@ const ChangePwdListListItem = () => {
 
   const showPasswordMatchError =
     newPassword && confirmNewPassword && newPassword !== confirmNewPassword;
+
+  const handleSubmit = async () => {
+    setInputErrors(initState);
+
+    if (disableSaveBtn) return;
+
+    try {
+      const accessToken = await getFromSecureStore('accessToken');
+
+      const response = await fetch('change_password/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'Something went wrong');
+      }
+
+      alert('Password updated successfully');
+      handleClose();
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <>
@@ -119,6 +153,7 @@ const ChangePwdListListItem = () => {
                   width={'50%'}
                   disabled={disableSaveBtn}
                   opacity={disableSaveBtn ? 0.5 : 1}
+                  onPress={handleSubmit}
                 >
                   Save
                 </Button>
