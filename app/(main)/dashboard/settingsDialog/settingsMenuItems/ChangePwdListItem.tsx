@@ -62,17 +62,20 @@ const ChangePwdListListItem = () => {
     try {
       const accessToken = await getFromSecureStore('accessToken');
 
-      const response = await fetch('change_password/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}change_password/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            current_password: currentPassword,
+            new_password: newPassword,
+          }),
         },
-        body: JSON.stringify({
-          current_password: currentPassword,
-          new_password: newPassword,
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -83,7 +86,11 @@ const ChangePwdListListItem = () => {
       alert('Password updated successfully');
       handleClose();
     } catch (error) {
-      alert(error.message);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unexpected error occurred');
+      }
     }
   };
 
