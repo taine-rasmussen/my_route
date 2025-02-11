@@ -86,11 +86,17 @@ const ChangePwdListListItem = () => {
       alert('Password updated successfully');
       handleClose();
     } catch (error) {
+      console.error('Error:', error); // Log full error for debugging
+
+      let errorMessage = 'An unexpected error occurred'; // Default message
+
       if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert('An unexpected error occurred');
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        errorMessage = JSON.stringify(error); // Convert object to readable string
       }
+
+      alert(errorMessage);
     }
   };
 
