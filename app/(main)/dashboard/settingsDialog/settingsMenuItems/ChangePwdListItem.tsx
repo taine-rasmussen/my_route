@@ -60,7 +60,16 @@ const ChangePwdListListItem = () => {
     if (disableSaveBtn) return;
 
     try {
-      const accessToken = await getFromSecureStore('accessToken');
+      const accessToken = await getFromSecureStore('access_token');
+      console.log(
+        'Request Payload:',
+        JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+        'ACCESS TOKEN',
+        accessToken,
+      );
 
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}change_password/`,
@@ -71,8 +80,8 @@ const ChangePwdListListItem = () => {
             Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
-            current_password: currentPassword,
-            new_password: newPassword,
+            current_password: 'Welcome2025!!',
+            new_password: 'Welcome2025!!!',
           }),
         },
       );
@@ -80,15 +89,16 @@ const ChangePwdListListItem = () => {
       const data = await response.json();
 
       if (!response.ok) {
+        console.error('Error Response:', data);
         throw new Error(data.detail || 'Something went wrong');
       }
 
       alert('Password updated successfully');
       handleClose();
     } catch (error) {
-      console.error('Error:', error); // Log full error for debugging
+      console.error('Error:', error);
 
-      let errorMessage = 'An unexpected error occurred'; // Default message
+      let errorMessage = 'An unexpected error occurred';
 
       if (error instanceof Error) {
         errorMessage = error.message;

@@ -98,7 +98,6 @@ const Form = () => {
       setPassword('');
       setLocation('');
       setHomeGym('');
-      console.log('User created successfully:', data);
     } catch (error) {
       console.error(error);
     }
