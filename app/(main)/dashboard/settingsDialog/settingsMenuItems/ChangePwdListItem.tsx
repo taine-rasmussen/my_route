@@ -61,15 +61,6 @@ const ChangePwdListListItem = () => {
 
     try {
       const accessToken = await getFromSecureStore('access_token');
-      console.log(
-        'Request Payload:',
-        JSON.stringify({
-          current_password: currentPassword,
-          new_password: newPassword,
-        }),
-        'ACCESS TOKEN',
-        accessToken,
-      );
 
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}change_password/`,
@@ -80,8 +71,8 @@ const ChangePwdListListItem = () => {
             Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
-            current_password: 'Welcome2025!!',
-            new_password: 'Welcome2025!!!',
+            current_password: currentPassword,
+            new_password: newPassword,
           }),
         },
       );
@@ -103,7 +94,7 @@ const ChangePwdListListItem = () => {
       if (error instanceof Error) {
         errorMessage = error.message;
       } else if (typeof error === 'object' && error !== null) {
-        errorMessage = JSON.stringify(error); // Convert object to readable string
+        errorMessage = JSON.stringify(error);
       }
 
       alert(errorMessage);
