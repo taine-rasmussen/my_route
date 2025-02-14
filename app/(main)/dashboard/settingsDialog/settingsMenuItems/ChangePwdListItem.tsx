@@ -80,7 +80,6 @@ const ChangePwdListListItem = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        console.error('Error Response:', data);
         throw new Error(data.detail || 'Something went wrong');
       }
 
