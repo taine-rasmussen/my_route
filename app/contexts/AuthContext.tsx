@@ -66,7 +66,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     try {
       const accessToken = await getFromSecureStore('access_token');
-      console.log(accessToken);
       const refreshToken = await getFromSecureStore('refresh_token');
 
       if (accessToken) {
