@@ -63,6 +63,7 @@ const SettingsDialog = (props: ISettingsDialog) => {
               />
             ) : (
               <SettingsMenu
+                setToggleProfileEdit={setToggleProfileEdit}
                 isPwdChangeOpen={isPwdChangeOpen}
                 setIsPwdChangeOpen={setIsPwdChangeOpen}
                 key={props.openDialog ? 'open' : 'closed'}

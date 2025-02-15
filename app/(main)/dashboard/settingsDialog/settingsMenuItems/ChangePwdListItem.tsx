@@ -22,6 +22,7 @@ const initState = {
 interface IChangePwdListListItem {
   setIsPwdChangeOpen: (bol: boolean) => void;
   isPwdChangeOpen: boolean;
+  setToggleProfileEdit: (bol: boolean) => void;
 }
 
 const ChangePwdListListItem = (props: IChangePwdListListItem) => {
@@ -104,13 +105,6 @@ const ChangePwdListListItem = (props: IChangePwdListListItem) => {
     }
   };
 
-  useEffect(() => {
-    console.log(
-      'isPwdChangeOpen in ChangePwdListListItem:',
-      props.isPwdChangeOpen,
-    );
-  }, [props.isPwdChangeOpen]);
-
   return (
     <>
       <ListItem>
@@ -128,73 +122,78 @@ const ChangePwdListListItem = (props: IChangePwdListListItem) => {
         </XStack>
       </ListItem>
 
-      <Sheet
-        modal
-        open={props.isPwdChangeOpen}
-        onOpenChange={props.setIsPwdChangeOpen}
-        key={props.isPwdChangeOpen ? 'open' : 'closed'}
-      >
-        <Sheet.Frame>
-          <Sheet.ScrollView>
-            <YStack padding={16} gap={12}>
-              <SizableText size="$6">Reset Password</SizableText>
-              <Separator />
-              <YStack gap={16}>
-                <PasswordInput
-                  isOpen={props.isPwdChangeOpen}
-                  setError={setError}
-                  value={currentPassword}
-                  errorKey="currentPassword"
-                  onChange={setCurrentPassword}
-                  placeholder="Current password..."
-                  error={inputErrors.currentPassword}
-                />
-                <YStack>
-                  <PasswordInput
-                    isOpen={props.isPwdChangeOpen}
-                    value={newPassword}
-                    setError={setError}
-                    errorKey="newPassword"
-                    onChange={setNewPassword}
-                    placeholder="New Password..."
-                    error={inputErrors.newPassword}
-                  />
+      {props.isPwdChangeOpen && (
+        <Sheet
+          native
+          modal={true}
+          dismissOnSnapToBottom
+          open={props.isPwdChangeOpen}
+          onOpenChange={props.setIsPwdChangeOpen}
+          key={props.isPwdChangeOpen ? 'open' : 'closed'}
+          forceRemoveScrollEnabled={props.isPwdChangeOpen}
+        >
+          <Sheet.Frame>
+            <Sheet.ScrollView>
+              <YStack padding={16} gap={12}>
+                <SizableText size="$6">Reset Password</SizableText>
+                <Separator />
+                <YStack gap={16}>
                   <PasswordInput
                     isOpen={props.isPwdChangeOpen}
                     setError={setError}
-                    value={confirmNewPassword}
-                    errorKey="confirmNewPassword"
-                    onChange={setConfirmNewPassword}
-                    placeholder="Confirm New Password..."
-                    error={inputErrors.confirmNewPassword}
+                    value={currentPassword}
+                    errorKey="currentPassword"
+                    onChange={setCurrentPassword}
+                    placeholder="Current password..."
+                    error={inputErrors.currentPassword}
                   />
+                  <YStack>
+                    <PasswordInput
+                      isOpen={props.isPwdChangeOpen}
+                      value={newPassword}
+                      setError={setError}
+                      errorKey="newPassword"
+                      onChange={setNewPassword}
+                      placeholder="New Password..."
+                      error={inputErrors.newPassword}
+                    />
+                    <PasswordInput
+                      isOpen={props.isPwdChangeOpen}
+                      setError={setError}
+                      value={confirmNewPassword}
+                      errorKey="confirmNewPassword"
+                      onChange={setConfirmNewPassword}
+                      placeholder="Confirm New Password..."
+                      error={inputErrors.confirmNewPassword}
+                    />
+                  </YStack>
                 </YStack>
+
+                {showPasswordMatchError && (
+                  <SizableText size="$4" color="red">
+                    New password and confirm new password must match.
+                  </SizableText>
+                )}
+
+                <XStack gap={16} width={'95%'}>
+                  <Button
+                    width={'50%'}
+                    disabled={disableSaveBtn}
+                    opacity={disableSaveBtn ? 0.5 : 1}
+                    onPress={handleSubmit}
+                  >
+                    Save
+                  </Button>
+                  <Button width={'50%'} onPress={handleClose}>
+                    Close
+                  </Button>
+                </XStack>
               </YStack>
-
-              {showPasswordMatchError && (
-                <SizableText size="$4" color="red">
-                  New password and confirm new password must match.
-                </SizableText>
-              )}
-
-              <XStack gap={16} width={'95%'}>
-                <Button
-                  width={'50%'}
-                  disabled={disableSaveBtn}
-                  opacity={disableSaveBtn ? 0.5 : 1}
-                  onPress={handleSubmit}
-                >
-                  Save
-                </Button>
-                <Button width={'50%'} onPress={handleClose}>
-                  Close
-                </Button>
-              </XStack>
-            </YStack>
-          </Sheet.ScrollView>
-        </Sheet.Frame>
-        <Sheet.Overlay />
-      </Sheet>
+            </Sheet.ScrollView>
+          </Sheet.Frame>
+          <Sheet.Overlay />
+        </Sheet>
+      )}
     </>
   );
 };
