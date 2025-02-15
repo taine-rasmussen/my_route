@@ -8,6 +8,7 @@ import ChangePwdListListItem from './settingsMenuItems/ChangePwdListItem';
 interface ISettingsMenu {
   signOut: () => Promise<void>;
   setIsPwdChangeOpen: (bol: boolean) => void;
+  setToggleProfileEdit: (bol: boolean) => void;
   isPwdChangeOpen: boolean;
 }
 
@@ -33,6 +34,7 @@ const SettingsMenu = (props: ISettingsMenu) => {
             </YGroup.Item>
             <YGroup.Item>
               <ChangePwdListListItem
+                setToggleProfileEdit={props.setToggleProfileEdit}
                 isPwdChangeOpen={props.isPwdChangeOpen}
                 setIsPwdChangeOpen={props.setIsPwdChangeOpen}
               />
