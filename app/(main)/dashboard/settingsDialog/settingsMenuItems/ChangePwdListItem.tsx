@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ListItem,
   SizableText,
@@ -19,8 +19,12 @@ const initState = {
   confirmNewPassword: false,
 };
 
-const ChangePwdListListItem = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+interface IChangePwdListListItem {
+  setIsPwdChangeOpen: (bol: boolean) => void;
+  isPwdChangeOpen: boolean;
+}
+
+const ChangePwdListListItem = (props: IChangePwdListListItem) => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
@@ -41,7 +45,7 @@ const ChangePwdListListItem = () => {
     setNewPassword('');
     setConfirmNewPassword('');
     setInputErrors(initState);
-    setIsOpen(false);
+    props.setIsPwdChangeOpen(false);
   };
 
   const disableSaveBtn =
@@ -100,6 +104,13 @@ const ChangePwdListListItem = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(
+      'isPwdChangeOpen in ChangePwdListListItem:',
+      props.isPwdChangeOpen,
+    );
+  }, [props.isPwdChangeOpen]);
+
   return (
     <>
       <ListItem>
@@ -113,11 +124,16 @@ const ChangePwdListListItem = () => {
             <Lock size="$1" />
             <SizableText size="$6">Password</SizableText>
           </XStack>
-          <Button onPress={() => setIsOpen(true)}>Change</Button>
+          <Button onPress={() => props.setIsPwdChangeOpen(true)}>Change</Button>
         </XStack>
       </ListItem>
 
-      <Sheet modal open={isOpen} onOpenChange={setIsOpen} dismissOnSnapToBottom>
+      <Sheet
+        modal
+        open={props.isPwdChangeOpen}
+        onOpenChange={props.setIsPwdChangeOpen}
+        key={props.isPwdChangeOpen ? 'open' : 'closed'}
+      >
         <Sheet.Frame>
           <Sheet.ScrollView>
             <YStack padding={16} gap={12}>
@@ -125,7 +141,7 @@ const ChangePwdListListItem = () => {
               <Separator />
               <YStack gap={16}>
                 <PasswordInput
-                  isOpen={isOpen}
+                  isOpen={props.isPwdChangeOpen}
                   setError={setError}
                   value={currentPassword}
                   errorKey="currentPassword"
@@ -135,7 +151,7 @@ const ChangePwdListListItem = () => {
                 />
                 <YStack>
                   <PasswordInput
-                    isOpen={isOpen}
+                    isOpen={props.isPwdChangeOpen}
                     value={newPassword}
                     setError={setError}
                     errorKey="newPassword"
@@ -144,7 +160,7 @@ const ChangePwdListListItem = () => {
                     error={inputErrors.newPassword}
                   />
                   <PasswordInput
-                    isOpen={isOpen}
+                    isOpen={props.isPwdChangeOpen}
                     setError={setError}
                     value={confirmNewPassword}
                     errorKey="confirmNewPassword"

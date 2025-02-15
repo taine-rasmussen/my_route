@@ -16,10 +16,12 @@ interface ISettingsDialog {
 
 const SettingsDialog = (props: ISettingsDialog) => {
   const [toggleProfileEdit, setToggleProfileEdit] = useState<boolean>(false);
+  const [isPwdChangeOpen, setIsPwdChangeOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!props.openDialog) {
-      return setToggleProfileEdit(false);
+      setToggleProfileEdit(false);
+      setIsPwdChangeOpen(false);
     }
   }, [props.openDialog]);
 
@@ -55,9 +57,14 @@ const SettingsDialog = (props: ISettingsDialog) => {
               toggleProfileEdit={toggleProfileEdit}
             />
             {toggleProfileEdit ? (
-              <EditProfile setToggleProfileEdit={setToggleProfileEdit} />
+              <EditProfile
+                setToggleProfileEdit={setToggleProfileEdit}
+                key={props.openDialog ? 'EditOpen' : 'EditClosed'}
+              />
             ) : (
               <SettingsMenu
+                isPwdChangeOpen={isPwdChangeOpen}
+                setIsPwdChangeOpen={setIsPwdChangeOpen}
                 key={props.openDialog ? 'open' : 'closed'}
                 signOut={props.signOut}
               />
