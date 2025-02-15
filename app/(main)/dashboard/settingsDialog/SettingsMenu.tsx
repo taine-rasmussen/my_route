@@ -7,6 +7,8 @@ import ChangePwdListListItem from './settingsMenuItems/ChangePwdListItem';
 
 interface ISettingsMenu {
   signOut: () => Promise<void>;
+  setIsPwdChangeOpen: (bol: boolean) => void;
+  isPwdChangeOpen: boolean;
 }
 
 const SettingsMenu = (props: ISettingsMenu) => {
@@ -30,7 +32,10 @@ const SettingsMenu = (props: ISettingsMenu) => {
               <GradingStyleListItem />
             </YGroup.Item>
             <YGroup.Item>
-              <ChangePwdListListItem />
+              <ChangePwdListListItem
+                isPwdChangeOpen={props.isPwdChangeOpen}
+                setIsPwdChangeOpen={props.setIsPwdChangeOpen}
+              />
             </YGroup.Item>
           </YGroup>
         </Card>
