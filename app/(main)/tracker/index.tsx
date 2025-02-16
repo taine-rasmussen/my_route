@@ -1,11 +1,11 @@
-import React from "react";
-import { Text } from "tamagui";
-import SafeAreaWrapper from "@/components/SafeAreaWrapper";
+import React from 'react';
+import { SizableText, Text } from 'tamagui';
+import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 
 const Tracker = () => {
   return (
     <SafeAreaWrapper>
-      <Text>Tracker</Text>;
+      <SizableText>TRACKER</SizableText>
     </SafeAreaWrapper>
   );
 };
