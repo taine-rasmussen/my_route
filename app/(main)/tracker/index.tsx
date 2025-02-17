@@ -1,11 +1,13 @@
 import React from 'react';
-import { SizableText, Text } from 'tamagui';
+import { SizableText, Card } from 'tamagui';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 
 const Tracker = () => {
   return (
     <SafeAreaWrapper>
-      <SizableText>TRACKER</SizableText>
+      <Card padding={4} elevate size="$5" bordered>
+        <SizableText>TRACKER</SizableText>
+      </Card>
     </SafeAreaWrapper>
   );
 };
