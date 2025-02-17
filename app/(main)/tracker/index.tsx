@@ -1,11 +1,17 @@
 import React from 'react';
-import { SizableText, Text } from 'tamagui';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
+import TrackedClimb from './TrackedClimb';
+import { YStack } from 'tamagui';
 
 const Tracker = () => {
   return (
     <SafeAreaWrapper>
-      <SizableText>TRACKER</SizableText>
+      <YStack gap={16}>
+        <TrackedClimb />
+        <TrackedClimb />
+        <TrackedClimb />
+        <TrackedClimb />
+      </YStack>
     </SafeAreaWrapper>
   );
 };
