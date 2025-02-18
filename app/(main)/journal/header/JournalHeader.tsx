@@ -1,5 +1,6 @@
 import { SizableText, XStack, Card } from 'tamagui';
-import { CirclePlus, Settings2 } from '@tamagui/lucide-icons';
+import { Settings2 } from '@tamagui/lucide-icons';
+import AddClimbPopover from './AddClimbPopover';
 
 const JournalHeader = () => {
   return (
@@ -13,7 +14,7 @@ const JournalHeader = () => {
         <SizableText size={'$9'}>Journal</SizableText>
         <XStack gap={8}>
           <Settings2 size="$3" />
-          <CirclePlus size="$3" />
+          <AddClimbPopover />
         </XStack>
       </XStack>
     </Card>

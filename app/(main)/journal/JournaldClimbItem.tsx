@@ -9,7 +9,7 @@ const JournaldClimbItem = () => {
         <SizableText>grade</SizableText>
         <SizableText>color band</SizableText>
       </XStack>
-      {/* strip of colour at end of card? like jira - allow custom colors per grade for user to set */}
+      {/* strip of color at end of card? like jira - allow custom colors per grade for user to set */}
     </Card>
   );
 };

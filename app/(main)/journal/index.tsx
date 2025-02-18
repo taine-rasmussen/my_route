@@ -2,7 +2,7 @@ import React from 'react';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import JournaldClimbItem from './JournaldClimbItem';
 import { YStack } from 'tamagui';
-import JournalHeader from './JournalHeader';
+import JournalHeader from './header/JournalHeader';
 
 const Tracker = () => {
   return (
