@@ -1,5 +1,5 @@
 import { SizableText, XStack, Card } from 'tamagui';
-import { CirclePlus } from '@tamagui/lucide-icons';
+import { CirclePlus, Settings2 } from '@tamagui/lucide-icons';
 
 const JournalHeader = () => {
   return (
@@ -11,7 +11,10 @@ const JournalHeader = () => {
         padding={8}
       >
         <SizableText size={'$9'}>Journal</SizableText>
-        <CirclePlus size="$3" />
+        <XStack gap={8}>
+          <Settings2 size="$3" />
+          <CirclePlus size="$3" />
+        </XStack>
       </XStack>
     </Card>
   );
