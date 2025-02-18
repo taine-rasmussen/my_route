@@ -13,7 +13,7 @@ const AddClimbPopover = () => {
   return (
     <Popover size="$5" allowFlip stayInFrame offset={10} placement="bottom">
       <Popover.Trigger asChild>
-        <Button icon={CirclePlus} />
+        <Button icon={CirclePlus} scaleIcon={2} circular padding={8} />
       </Popover.Trigger>
 
       <Popover.Content
