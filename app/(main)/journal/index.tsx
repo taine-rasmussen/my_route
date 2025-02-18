@@ -1,16 +1,16 @@
 import React from 'react';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
-import TrackedClimb from './TrackedClimb';
+import JournaldClimbItem from './JournaldClimbItem';
 import { YStack } from 'tamagui';
 
 const Tracker = () => {
   return (
     <SafeAreaWrapper>
       <YStack gap={16}>
-        <TrackedClimb />
-        <TrackedClimb />
-        <TrackedClimb />
-        <TrackedClimb />
+        <JournaldClimbItem />
+        <JournaldClimbItem />
+        <JournaldClimbItem />
+        <JournaldClimbItem />
       </YStack>
     </SafeAreaWrapper>
   );

@@ -1,6 +1,6 @@
 import { SizableText, Card } from 'tamagui';
 
-const TrackedClimb = () => {
+const JournaldClimbItem = () => {
   return (
     <Card padding={4} elevate size="$5" bordered padded>
       <SizableText>CLIMB</SizableText>
@@ -8,4 +8,4 @@ const TrackedClimb = () => {
   );
 };
 
-export default TrackedClimb;
+export default JournaldClimbItem;
