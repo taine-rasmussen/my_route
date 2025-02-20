@@ -1,4 +1,4 @@
-import { CirclePlus } from '@tamagui/lucide-icons';
+import { CirclePlus, ChevronDown, Check } from '@tamagui/lucide-icons';
 import {
   Popover,
   SizableText,
@@ -7,9 +7,11 @@ import {
   Label,
   Button,
   Input,
+  Select,
+  Adapt,
+  Sheet,
 } from 'tamagui';
 import { useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
 import { VGrade } from '@/app/types';
 
 const grades: VGrade[] = Array.from(
@@ -19,7 +21,7 @@ const grades: VGrade[] = Array.from(
 
 const AddClimbPopover = () => {
   const [attempts, setAttempts] = useState<number>(0);
-  const [grade, setGrade] = useState<VGrade>('V0'); // Ensure grade is never null
+  const [grade, setGrade] = useState<VGrade>('V0');
 
   return (
     <Popover size="$5" allowFlip stayInFrame offset={10} placement="bottom">
@@ -50,22 +52,37 @@ const AddClimbPopover = () => {
 
           <XStack gap="$3" alignItems="center">
             <Label size="$3">Grade</Label>
-            <YStack
-              flex={1}
-              borderWidth={1}
-              borderColor="$borderColor"
-              borderRadius="$2"
+            <Select
+              value={grade}
+              onValueChange={(value) => setGrade(value as VGrade)}
             >
-              <Picker
-                selectedValue={grade}
-                onValueChange={(value) => setGrade(value as VGrade)}
-                style={{ height: 40, width: '100%' }}
-              >
-                {grades.map((g) => (
-                  <Picker.Item key={g} label={g} value={g} />
-                ))}
-              </Picker>
-            </YStack>
+              <Select.Trigger width={120} iconAfter={ChevronDown}>
+                <Select.Value placeholder="Select a grade" />
+              </Select.Trigger>
+
+              <Adapt when="sm" platform="touch">
+                <Sheet native modal dismissOnSnapToBottom animation="medium">
+                  <Sheet.Frame>
+                    <Sheet.ScrollView>
+                      <Adapt.Contents />
+                    </Sheet.ScrollView>
+                  </Sheet.Frame>
+                </Sheet>
+              </Adapt>
+
+              <Select.Content zIndex={200000}>
+                <Select.Viewport>
+                  {grades.map((g, i) => (
+                    <Select.Item key={g} index={i} value={g}>
+                      <Select.ItemText>{g}</Select.ItemText>
+                      <Select.ItemIndicator marginLeft="auto">
+                        <Check size={16} />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select>
           </XStack>
 
           <XStack gap="$3">
