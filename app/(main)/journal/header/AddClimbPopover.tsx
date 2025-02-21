@@ -1,4 +1,4 @@
-import { CirclePlus, ChevronDown, Check } from '@tamagui/lucide-icons';
+import { CirclePlus } from '@tamagui/lucide-icons';
 import {
   Popover,
   SizableText,
@@ -7,21 +7,64 @@ import {
   Label,
   Button,
   Input,
-  Select,
-  Adapt,
-  Sheet,
 } from 'tamagui';
 import { useState } from 'react';
+import { Dropdown } from 'react-native-element-dropdown';
 import { VGrade } from '@/app/types';
+import { useColorScheme } from 'react-native';
+import { useUser } from '@/app/contexts/UserContext';
 
-const grades: VGrade[] = Array.from(
-  { length: 18 },
-  (_, i) => `V${i}` as VGrade,
-);
+const grades = Array.from({ length: 18 }, (_, i) => ({
+  label: `V${i}`,
+  value: `V${i}`,
+}));
+
+const getStyles = (isDarkMode: boolean) => {
+  return {
+    dropdown: {
+      height: 40,
+      borderWidth: 1,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+      flex: 1,
+    },
+    dropdownContainerStyle: {
+      backgroundColor: isDarkMode ? 'black' : 'white',
+    },
+    placeholderStyle: {
+      fontSize: 14,
+      color: isDarkMode ? 'white' : 'black',
+    },
+    selectedTextStyle: {
+      fontSize: 14,
+      color: isDarkMode ? 'white' : 'black',
+    },
+    itemTextStyle: {
+      fontSize: 14,
+      color: isDarkMode ? 'white' : 'black',
+    },
+  };
+};
 
 const AddClimbPopover = () => {
   const [attempts, setAttempts] = useState<number>(0);
-  const [grade, setGrade] = useState<VGrade>('V0');
+  const [grade, setGrade] = useState<VGrade | null>(null);
+  const [isFocus, setIsFocus] = useState(false);
+
+  const { themePreference } = useUser();
+  const systemColorScheme = useColorScheme();
+
+  const colorScheme =
+    themePreference === 'system' ? systemColorScheme : themePreference;
+
+  const isDarkMode = colorScheme === 'dark';
+
+  const handleChange = (item: { label: string; value: VGrade }) => {
+    setGrade(item.value);
+    setIsFocus(false);
+  };
+
+  const styles = getStyles(isDarkMode);
 
   return (
     <Popover size="$5" allowFlip stayInFrame offset={10} placement="bottom">
@@ -37,52 +80,31 @@ const AddClimbPopover = () => {
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
-        animation={[
-          'bouncy',
-          {
-            opacity: {
-              overshootClamping: true,
-            },
-          },
-        ]}
+        animation={['bouncy', { opacity: { overshootClamping: true } }]}
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
         <YStack gap="$3" width={'100%'}>
           <SizableText size={'$8'}>Log new climb</SizableText>
-
           <XStack gap="$3" alignItems="center">
-            <Label size="$3">Grade</Label>
-            <Select
+            <Dropdown
+              style={[
+                styles.dropdown,
+                isFocus && { borderColor: isDarkMode ? 'white' : 'black' },
+              ]}
+              containerStyle={styles.dropdownContainerStyle}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              itemTextStyle={styles.itemTextStyle}
+              data={grades}
+              labelField="label"
+              valueField="value"
+              placeholder="Select a grade"
               value={grade}
-              onValueChange={(value) => setGrade(value as VGrade)}
-            >
-              <Select.Trigger width={120} iconAfter={ChevronDown}>
-                <Select.Value placeholder="Select a grade" />
-              </Select.Trigger>
-
-              <Adapt when="sm" platform="touch">
-                <Sheet native modal dismissOnSnapToBottom animation="medium">
-                  <Sheet.Frame>
-                    <Sheet.ScrollView>
-                      <Adapt.Contents />
-                    </Sheet.ScrollView>
-                  </Sheet.Frame>
-                </Sheet>
-              </Adapt>
-
-              <Select.Content zIndex={200000}>
-                <Select.Viewport>
-                  {grades.map((g, i) => (
-                    <Select.Item key={g} index={i} value={g}>
-                      <Select.ItemText>{g}</Select.ItemText>
-                      <Select.ItemIndicator marginLeft="auto">
-                        <Check size={16} />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  ))}
-                </Select.Viewport>
-              </Select.Content>
-            </Select>
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={handleChange}
+              activeColor={isDarkMode ? 'black' : 'white'}
+            />
           </XStack>
 
           <XStack gap="$3">
