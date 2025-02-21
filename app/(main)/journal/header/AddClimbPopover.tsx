@@ -11,17 +11,60 @@ import {
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { VGrade } from '@/app/types';
-import { StyleSheet } from 'react-native';
+import { useColorScheme } from 'react-native';
+import { useUser } from '@/app/contexts/UserContext';
 
 const grades = Array.from({ length: 18 }, (_, i) => ({
   label: `V${i}`,
   value: `V${i}`,
 }));
 
+const getStyles = (isDarkMode: boolean) => {
+  return {
+    dropdown: {
+      height: 40,
+      borderWidth: 1,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+      flex: 1,
+    },
+    dropdownContainerStyle: {
+      backgroundColor: isDarkMode ? 'black' : 'white',
+    },
+    placeholderStyle: {
+      fontSize: 14,
+      color: isDarkMode ? 'white' : 'black',
+    },
+    selectedTextStyle: {
+      fontSize: 14,
+      color: isDarkMode ? 'white' : 'black',
+    },
+    itemTextStyle: {
+      fontSize: 14,
+      color: isDarkMode ? 'white' : 'black',
+    },
+  };
+};
+
 const AddClimbPopover = () => {
   const [attempts, setAttempts] = useState<number>(0);
-  const [grade, setGrade] = useState<VGrade>('V0');
+  const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
+
+  const { themePreference } = useUser();
+  const systemColorScheme = useColorScheme();
+
+  const colorScheme =
+    themePreference === 'system' ? systemColorScheme : themePreference;
+
+  const isDarkMode = colorScheme === 'dark';
+
+  const handleChange = (item: { label: string; value: VGrade }) => {
+    setGrade(item.value);
+    setIsFocus(false);
+  };
+
+  const styles = getStyles(isDarkMode);
 
   return (
     <Popover size="$5" allowFlip stayInFrame offset={10} placement="bottom">
@@ -42,13 +85,16 @@ const AddClimbPopover = () => {
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
         <YStack gap="$3" width={'100%'}>
           <SizableText size={'$8'}>Log new climb</SizableText>
-
           <XStack gap="$3" alignItems="center">
-            <Label size="$3">Grade</Label>
             <Dropdown
-              style={[styles.dropdown, isFocus && { borderColor: 'white' }]}
+              style={[
+                styles.dropdown,
+                isFocus && { borderColor: isDarkMode ? 'white' : 'black' },
+              ]}
+              containerStyle={styles.dropdownContainerStyle}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
+              itemTextStyle={styles.itemTextStyle}
               data={grades}
               labelField="label"
               valueField="value"
@@ -56,10 +102,8 @@ const AddClimbPopover = () => {
               value={grade}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
-              onChange={(item) => {
-                setGrade(item.value as VGrade);
-                setIsFocus(false);
-              }}
+              onChange={handleChange}
+              activeColor={isDarkMode ? 'black' : 'white'}
             />
           </XStack>
 
@@ -81,24 +125,5 @@ const AddClimbPopover = () => {
     </Popover>
   );
 };
-
-const styles = StyleSheet.create({
-  dropdown: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    flex: 1,
-  },
-  placeholderStyle: {
-    fontSize: 14,
-    color: 'gray',
-  },
-  selectedTextStyle: {
-    fontSize: 14,
-    color: 'black',
-  },
-});
 
 export default AddClimbPopover;
