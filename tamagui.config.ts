@@ -1,7 +1,12 @@
-import { config } from "@tamagui/config/v3";
-
 import { createTamagui } from "tamagui";
-export const tamaguiConfig = createTamagui(config);
+import { optimizedThemes } from './app/theme';
+import { defaultConfig } from "@tamagui/config/v4";
+
+export const tamaguiConfig = createTamagui({
+  ...defaultConfig,
+  themes: optimizedThemes, 
+});
+
 export default tamaguiConfig;
 export type Conf = typeof tamaguiConfig;
 

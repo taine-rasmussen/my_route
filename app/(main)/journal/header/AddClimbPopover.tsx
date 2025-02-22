@@ -46,6 +46,8 @@ const getStyles = (isDarkMode: boolean) => {
   };
 };
 
+// colours need to match the theme not be hard black or white
+
 const AddClimbPopover = () => {
   const [attempts, setAttempts] = useState<number>(0);
   const [grade, setGrade] = useState<VGrade | null>(null);
