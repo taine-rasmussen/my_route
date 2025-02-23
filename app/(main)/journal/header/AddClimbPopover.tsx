@@ -43,7 +43,11 @@ const getStyles = (isDarkMode: boolean) => {
   };
 };
 
-const AddClimbPopover = () => {
+interface IAddClimbPopover {
+  handleRefresh: () => void;
+}
+
+const AddClimbPopover = (props: IAddClimbPopover) => {
   const [attempts, setAttempts] = useState<number>(0);
   const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -100,6 +104,9 @@ const AddClimbPopover = () => {
       const result = await response.json();
       console.log('Climb added:', result);
       alert('Climb added successfully!');
+      setGrade(null);
+      setAttempts(0);
+      props.handleRefresh();
     } catch (error) {
       console.error('Error submitting climb:', error);
       alert('Error submitting climb');
