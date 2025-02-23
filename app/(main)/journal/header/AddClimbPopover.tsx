@@ -10,14 +10,11 @@ import {
 } from 'tamagui';
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { VGrade } from '@/app/types';
+import { GradeStyle, VGrade } from '@/app/types';
 import { useColorScheme } from 'react-native';
 import { useUser } from '@/app/contexts/UserContext';
-
-const grades = Array.from({ length: 18 }, (_, i) => ({
-  label: `V${i}`,
-  value: `V${i}`,
-}));
+import { getClimbingGrades } from '@/app/utils';
+import { getFromSecureStore } from '@/app/utils';
 
 const getStyles = (isDarkMode: boolean) => {
   return {
@@ -51,9 +48,11 @@ const AddClimbPopover = () => {
   const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const { themePreference } = useUser();
-  const systemColorScheme = useColorScheme();
+  const { themePreference, user } = useUser();
+  const userGrade = user?.grade_style ?? 'V Scale';
+  const dropDownItems = getClimbingGrades(userGrade as GradeStyle);
 
+  const systemColorScheme = useColorScheme();
   const colorScheme =
     themePreference === 'system' ? systemColorScheme : themePreference;
 
@@ -62,6 +61,49 @@ const AddClimbPopover = () => {
   const handleChange = (item: { label: string; value: VGrade }) => {
     setGrade(item.value);
     setIsFocus(false);
+  };
+
+  const handleSubmit = async () => {
+    if (!grade || attempts <= 0) {
+      alert('Please select a grade and enter attempts');
+      return;
+    }
+
+    const accessToken = await getFromSecureStore('access_token');
+    if (!accessToken) {
+      alert('Access token not found. Please log in again.');
+      return;
+    }
+
+    const climbData = {
+      grade,
+      attempts,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}add_climb/?user_id=${user?.id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(climbData),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to save climb data');
+      }
+
+      const result = await response.json();
+      console.log('Climb added:', result);
+      alert('Climb added successfully!');
+    } catch (error) {
+      console.error('Error submitting climb:', error);
+      alert('Error submitting climb');
+    }
   };
 
   const styles = getStyles(isDarkMode);
@@ -95,7 +137,7 @@ const AddClimbPopover = () => {
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               itemTextStyle={styles.itemTextStyle}
-              data={grades}
+              data={dropDownItems}
               labelField="label"
               valueField="value"
               placeholder="Select a grade"
@@ -118,7 +160,9 @@ const AddClimbPopover = () => {
           </XStack>
 
           <Popover.Close asChild>
-            <Button size="$3">Save</Button>
+            <Button size="$3" onPress={handleSubmit}>
+              Save
+            </Button>
           </Popover.Close>
         </YStack>
       </Popover.Content>
