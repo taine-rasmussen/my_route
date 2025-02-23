@@ -11,7 +11,6 @@ const Journal = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { user } = useUser();
 
-  // Fetch climbs data from the API
   const getClimbsData = useCallback(async () => {
     try {
       const accessToken = await getFromSecureStore('access_token');
