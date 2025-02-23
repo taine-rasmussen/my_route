@@ -2,8 +2,9 @@ import React from 'react';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import UserWidget from './userWidget/UserWidget';
 import { useAuth } from '@/app/contexts/AuthContext';
-import { Spinner, View } from 'tamagui';
+import { Spinner, View, YStack, XStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
+import JournalWidget from './journalWidget/JournalWidget';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
@@ -19,7 +20,13 @@ const Dashboard = () => {
           <Spinner size="large" color="$orange10" />
         </View>
       ) : (
-        <UserWidget />
+        <YStack gap={26}>
+          <UserWidget />
+          <XStack gap={16}>
+            <JournalWidget />
+            <JournalWidget />
+          </XStack>
+        </YStack>
       )}
     </SafeAreaWrapper>
   );
