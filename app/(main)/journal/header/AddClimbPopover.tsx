@@ -14,6 +14,7 @@ import { GradeStyle, VGrade } from '@/app/types';
 import { useColorScheme } from 'react-native';
 import { useUser } from '@/app/contexts/UserContext';
 import { getClimbingGrades } from '@/app/utils';
+import { getFromSecureStore } from '@/app/utils';
 
 const getStyles = (isDarkMode: boolean) => {
   return {
@@ -60,6 +61,49 @@ const AddClimbPopover = () => {
   const handleChange = (item: { label: string; value: VGrade }) => {
     setGrade(item.value);
     setIsFocus(false);
+  };
+
+  const handleSubmit = async () => {
+    if (!grade || attempts <= 0) {
+      alert('Please select a grade and enter attempts');
+      return;
+    }
+
+    const accessToken = await getFromSecureStore('access_token');
+    if (!accessToken) {
+      alert('Access token not found. Please log in again.');
+      return;
+    }
+
+    const climbData = {
+      grade,
+      attempts,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BASE_URL}add_climb/?user_id=${user?.id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(climbData),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to save climb data');
+      }
+
+      const result = await response.json();
+      console.log('Climb added:', result);
+      alert('Climb added successfully!');
+    } catch (error) {
+      console.error('Error submitting climb:', error);
+      alert('Error submitting climb');
+    }
   };
 
   const styles = getStyles(isDarkMode);
@@ -116,7 +160,9 @@ const AddClimbPopover = () => {
           </XStack>
 
           <Popover.Close asChild>
-            <Button size="$3">Save</Button>
+            <Button size="$3" onPress={handleSubmit}>
+              Save
+            </Button>
           </Popover.Close>
         </YStack>
       </Popover.Content>
