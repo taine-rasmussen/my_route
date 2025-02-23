@@ -53,8 +53,10 @@ const AddClimbPopover = () => {
   const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const { themePreference } = useUser();
+  const { themePreference, user } = useUser();
   const systemColorScheme = useColorScheme();
+
+  console.log(user);
 
   const colorScheme =
     themePreference === 'system' ? systemColorScheme : themePreference;
