@@ -2,7 +2,7 @@ import { SizableText, Card, XStack, YStack } from 'tamagui';
 
 interface IClimbData {
   attempts: number;
-  created_at: string; // Adjusted to string to handle the date correctly
+  created_at: string;
   grade: string;
   id: number;
 }
@@ -14,14 +14,11 @@ interface IJournaldClimbItem {
 const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
   const { attempts, created_at, grade, id } = climb;
 
-  // Parse the created_at string into a human-readable date format
   const formattedDate = new Date(created_at).toLocaleDateString();
 
-  // Define a function to map grades to colors
   const getGradeColor = (grade: string): string => {
     const gradeNumber = parseInt(grade.replace('V', ''));
 
-    // Group the grades into ranges
     if (gradeNumber <= 2) return 'blue'; // V0-V2
     if (gradeNumber <= 5) return 'green'; // V3-V5
     if (gradeNumber <= 8) return 'yellow'; // V6-V8
@@ -29,8 +26,6 @@ const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
     if (gradeNumber <= 14) return 'red'; // V12-V14
     return 'purple'; // V15-V17
   };
-
-  // Get the grade color based on the grade
   const gradeColor = getGradeColor(grade);
 
   return (
