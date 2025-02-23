@@ -85,7 +85,7 @@ const fontClimbingGrades = [
   '9b',
   '9b+',
   '9c',
-];
+].map((grade) => ({ value: grade, label: grade }));
 
 const vScaleGrades = [
   'V0',
@@ -106,7 +106,7 @@ const vScaleGrades = [
   'V15',
   'V16',
   'V17',
-];
+].map((grade) => ({ value: grade, label: grade }));
 
 export const getClimbingGrades = (gradeStyle: GradeStyle) => {
   switch (gradeStyle) {
@@ -114,5 +114,7 @@ export const getClimbingGrades = (gradeStyle: GradeStyle) => {
       return vScaleGrades;
     case 'Font Scale':
       return fontClimbingGrades;
+    default:
+      return vScaleGrades;
   }
 };

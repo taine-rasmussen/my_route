@@ -10,14 +10,10 @@ import {
 } from 'tamagui';
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { VGrade } from '@/app/types';
+import { GradeStyle, VGrade } from '@/app/types';
 import { useColorScheme } from 'react-native';
 import { useUser } from '@/app/contexts/UserContext';
-
-const grades = Array.from({ length: 18 }, (_, i) => ({
-  label: `V${i}`,
-  value: `V${i}`,
-}));
+import { getClimbingGrades } from '@/app/utils';
 
 const getStyles = (isDarkMode: boolean) => {
   return {
@@ -51,9 +47,11 @@ const AddClimbPopover = () => {
   const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const { themePreference } = useUser();
-  const systemColorScheme = useColorScheme();
+  const { themePreference, user } = useUser();
+  const userGrade = user?.grade_style ?? 'V Scale';
+  const dropDownItems = getClimbingGrades(userGrade as GradeStyle);
 
+  const systemColorScheme = useColorScheme();
   const colorScheme =
     themePreference === 'system' ? systemColorScheme : themePreference;
 
@@ -95,7 +93,7 @@ const AddClimbPopover = () => {
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               itemTextStyle={styles.itemTextStyle}
-              data={grades}
+              data={dropDownItems}
               labelField="label"
               valueField="value"
               placeholder="Select a grade"
