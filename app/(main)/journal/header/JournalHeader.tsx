@@ -1,12 +1,18 @@
 import { SizableText, XStack, Card } from 'tamagui';
 import { Settings2 } from '@tamagui/lucide-icons';
 import AddClimbPopover from './AddClimbPopover';
+import { Columns4, Columns2 } from '@tamagui/lucide-icons';
 
 interface IJournalHeader {
   handleRefresh: () => void;
+  climbCardView: boolean;
+  setClimbCardView: (bol: boolean) => void;
 }
 
 const JournalHeader = (props: IJournalHeader) => {
+  const handleViewChange = () => {
+    props.setClimbCardView(!props.climbCardView);
+  };
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -17,6 +23,21 @@ const JournalHeader = (props: IJournalHeader) => {
       >
         <SizableText size={'$9'}>Journal</SizableText>
         <XStack gap={8}>
+          {props.climbCardView ? (
+            <Columns4
+              size="$3"
+              color="$orange10"
+              onPress={handleViewChange}
+              style={{ transform: [{ rotate: '90deg' }] }}
+            />
+          ) : (
+            <Columns2
+              size="$3"
+              color="$orange10"
+              onPress={handleViewChange}
+              style={{ transform: [{ rotate: '90deg' }] }}
+            />
+          )}
           <Settings2 size="$3" />
           <AddClimbPopover handleRefresh={props.handleRefresh} />
         </XStack>
