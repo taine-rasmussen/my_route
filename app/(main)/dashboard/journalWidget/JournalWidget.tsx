@@ -63,13 +63,12 @@ const JournalWidget = () => {
     <Card padding={16} elevate size="$5" bordered width="45%" margin="auto">
       <XStack gap={12} alignItems="center">
         <YStack flex={1} gap={4}>
-          <SizableText fontWeight="bold">Climb #{id}</SizableText>
           <SizableText>Attempts: {attempts}</SizableText>
           <SizableText>Date: {formattedDate}</SizableText>
           <SizableText>Grade: {grade}</SizableText>
         </YStack>
         <Card
-          width={8}
+          width={16}
           height="100%"
           backgroundColor={gradeColor}
           borderRadius={4}

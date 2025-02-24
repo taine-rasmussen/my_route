@@ -1,14 +1,13 @@
+import { Card, XStack, YStack, SizableText, Separator } from 'tamagui';
+import { BarChart2, Goal } from '@tamagui/lucide-icons';
 import { IClimbData } from '@/app/types';
-import { SizableText, Card, XStack, YStack } from 'tamagui';
 
-interface IJournaldClimbItem {
+interface IClimbCardSmall {
   climb: IClimbData;
 }
 
-const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
-  const { attempts, created_at, grade, id } = climb;
-
-  const formattedDate = new Date(created_at).toLocaleDateString();
+const ClimbCardSmall = ({ climb }: IClimbCardSmall) => {
+  const { attempts, grade } = climb;
 
   const getGradeColor = (grade: string): string => {
     const gradeNumber = parseInt(grade.replace('V', ''));
@@ -26,10 +25,19 @@ const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
     <Card padding={16} elevate size="$5" bordered>
       <XStack gap={12} alignItems="center">
         <YStack flex={1} gap={4}>
-          <SizableText fontWeight="bold">Climb #{id}</SizableText>
-          <SizableText>Attempts: {attempts}</SizableText>
-          <SizableText>Date: {formattedDate}</SizableText>
-          <SizableText>Grade: {grade}</SizableText>
+          <XStack gap={8} padding={4} display="flex" alignItems="center">
+            <Goal size="$2" color="$orange10" />
+            <SizableText size={'$6'} fontWeight={'bold'}>
+              Attempts: {attempts}
+            </SizableText>
+          </XStack>
+          <Separator />
+          <XStack gap={8} padding={4} display="flex" alignItems="center">
+            <BarChart2 size="$2" color="$orange10" />
+            <SizableText size={'$6'} fontWeight={'bold'}>
+              Grade: {grade}
+            </SizableText>
+          </XStack>
         </YStack>
         <Card
           width={16}
@@ -42,4 +50,4 @@ const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
   );
 };
 
-export default JournaldClimbItem;
+export default ClimbCardSmall;
