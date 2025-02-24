@@ -103,7 +103,6 @@ const AddClimbPopover = (props: IAddClimbPopover) => {
 
       const result = await response.json();
       console.log('Climb added:', result);
-      alert('Climb added successfully!');
       setGrade(null);
       setAttempts(0);
       props.handleRefresh();
