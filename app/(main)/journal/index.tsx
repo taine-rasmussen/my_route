@@ -7,11 +7,10 @@ import { getFromSecureStore } from '@/app/utils';
 import { useUser } from '@/app/contexts/UserContext';
 import ClimbCardSmall from './ClimbCardSmall';
 
-// A24 design princples
-
 const Journal = () => {
   const [climbs, setClimbs] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [climbCardView, setClimbCardView] = useState<boolean>(false);
   const { user } = useUser();
 
   const getClimbsData = useCallback(async () => {
@@ -53,7 +52,11 @@ const Journal = () => {
 
   return (
     <SafeAreaWrapper>
-      <JournalHeader handleRefresh={handleRefresh} />
+      <JournalHeader
+        handleRefresh={handleRefresh}
+        setClimbCardView={setClimbCardView}
+        climbCardView={climbCardView}
+      />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 24 }}
         showsVerticalScrollIndicator={false}
@@ -61,10 +64,13 @@ const Journal = () => {
         <YStack gap={16} paddingBlockStart={24}>
           {loading && <SizableText>Loading...</SizableText>}
           {!loading &&
-            climbs.map((climb, index) => (
-              // <JournaldClimbItem key={index} climb={climb} />
-              <ClimbCardSmall key={index} climb={climb} />
-            ))}
+            climbs.map((climb, index) =>
+              climbCardView ? (
+                <JournaldClimbItem key={index} climb={climb} />
+              ) : (
+                <ClimbCardSmall key={index} climb={climb} />
+              ),
+            )}
         </YStack>
       </ScrollView>
     </SafeAreaWrapper>
