@@ -78,3 +78,10 @@ export interface IUser {
   home_gym: string;
   grade_style: GradeStyle;
 }
+
+export interface IClimbData {
+  attempts: number;
+  created_at: string;
+  grade: string;
+  id: number;
+}

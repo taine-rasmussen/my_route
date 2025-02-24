@@ -5,6 +5,9 @@ import { YStack, ScrollView, SizableText } from 'tamagui';
 import JournalHeader from './header/JournalHeader';
 import { getFromSecureStore } from '@/app/utils';
 import { useUser } from '@/app/contexts/UserContext';
+import ClimbCardSmall from './ClimbCardSmall';
+
+// A24 design princples
 
 const Journal = () => {
   const [climbs, setClimbs] = useState<any[]>([]);
@@ -59,7 +62,8 @@ const Journal = () => {
           {loading && <SizableText>Loading...</SizableText>}
           {!loading &&
             climbs.map((climb, index) => (
-              <JournaldClimbItem key={index} climb={climb} />
+              // <JournaldClimbItem key={index} climb={climb} />
+              <ClimbCardSmall key={index} climb={climb} />
             ))}
         </YStack>
       </ScrollView>
