@@ -1,14 +1,13 @@
+import { Card, XStack, YStack, SizableText, Separator } from 'tamagui';
+import { BarChart2, Goal } from '@tamagui/lucide-icons';
 import { IClimbData } from '@/app/types';
-import { SizableText, Card, XStack, YStack } from 'tamagui';
 
-interface IJournaldClimbItem {
+interface IClimbCardLarge {
   climb: IClimbData;
 }
 
-const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
-  const { attempts, created_at, grade, id } = climb;
-
-  const formattedDate = new Date(created_at).toLocaleDateString();
+const ClimbCardLarge = ({ climb }: IClimbCardLarge) => {
+  const { attempts, grade, created_at } = climb;
 
   const getGradeColor = (grade: string): string => {
     const gradeNumber = parseInt(grade.replace('V', ''));
@@ -22,11 +21,12 @@ const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
   };
   const gradeColor = getGradeColor(grade);
 
+  const formattedDate = new Date(created_at).toLocaleDateString();
+
   return (
     <Card padding={16} elevate size="$5" bordered>
       <XStack gap={12} alignItems="center">
         <YStack flex={1} gap={4}>
-          <SizableText fontWeight="bold">Climb #{id}</SizableText>
           <SizableText>Attempts: {attempts}</SizableText>
           <SizableText>Date: {formattedDate}</SizableText>
           <SizableText>Grade: {grade}</SizableText>
@@ -42,4 +42,4 @@ const JournaldClimbItem = ({ climb }: IJournaldClimbItem) => {
   );
 };
 
-export default JournaldClimbItem;
+export default ClimbCardLarge;
