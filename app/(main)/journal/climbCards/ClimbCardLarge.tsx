@@ -1,5 +1,5 @@
 import { Card, XStack, YStack, SizableText, Separator } from 'tamagui';
-import { BarChart2, Goal } from '@tamagui/lucide-icons';
+import { BarChart2, Goal, CalendarDays } from '@tamagui/lucide-icons';
 import { IClimbData } from '@/app/types';
 
 interface IClimbCardLarge {
@@ -27,9 +27,24 @@ const ClimbCardLarge = ({ climb }: IClimbCardLarge) => {
     <Card padding={16} elevate size="$5" bordered>
       <XStack gap={12} alignItems="center">
         <YStack flex={1} gap={4}>
-          <SizableText>Attempts: {attempts}</SizableText>
-          <SizableText>Date: {formattedDate}</SizableText>
-          <SizableText>Grade: {grade}</SizableText>
+          <XStack gap={8} padding={4} display="flex" alignItems="center">
+            <BarChart2 size="$2" color="$orange10" />
+            <SizableText size={'$6'} fontWeight={'bold'}>
+              {grade}
+            </SizableText>
+          </XStack>
+          <XStack gap={8} padding={4} display="flex" alignItems="center">
+            <CalendarDays size="$2" color="$orange10" />
+            <SizableText size={'$6'} fontWeight={'bold'}>
+              {formattedDate}
+            </SizableText>
+          </XStack>
+          <XStack gap={8} padding={4} display="flex" alignItems="center">
+            <Goal size="$2" color="$orange10" />
+            <SizableText size={'$6'} fontWeight={'bold'}>
+              Attempts: {attempts}
+            </SizableText>
+          </XStack>
         </YStack>
         <Card
           width={16}
