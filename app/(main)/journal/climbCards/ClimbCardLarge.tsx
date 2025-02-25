@@ -1,6 +1,8 @@
-import { Card, XStack, YStack, SizableText, Separator } from 'tamagui';
-import { BarChart2, Goal, CalendarDays } from '@tamagui/lucide-icons';
+import { Card, XStack, YStack, Separator } from 'tamagui';
+import { BarChart2, Goal, CalendarDays, MapPin } from '@tamagui/lucide-icons';
 import { IClimbData } from '@/app/types';
+import { useUser } from '@/app/contexts/UserContext';
+import { ItemWrapper, StyledIcon, StyledText } from './utils';
 
 interface IClimbCardLarge {
   climb: IClimbData;
@@ -8,7 +10,7 @@ interface IClimbCardLarge {
 
 const ClimbCardLarge = ({ climb }: IClimbCardLarge) => {
   const { attempts, grade, created_at } = climb;
-
+  const { user } = useUser();
   const getGradeColor = (grade: string): string => {
     const gradeNumber = parseInt(grade.replace('V', ''));
 
@@ -27,24 +29,23 @@ const ClimbCardLarge = ({ climb }: IClimbCardLarge) => {
     <Card padding={16} elevate size="$5" bordered>
       <XStack gap={12} alignItems="center">
         <YStack flex={1} gap={4}>
-          <XStack gap={8} padding={4} display="flex" alignItems="center">
-            <BarChart2 size="$2" color="$orange10" />
-            <SizableText size={'$6'} fontWeight={'bold'}>
-              {grade}
-            </SizableText>
-          </XStack>
-          <XStack gap={8} padding={4} display="flex" alignItems="center">
-            <CalendarDays size="$2" color="$orange10" />
-            <SizableText size={'$6'} fontWeight={'bold'}>
-              {formattedDate}
-            </SizableText>
-          </XStack>
-          <XStack gap={8} padding={4} display="flex" alignItems="center">
-            <Goal size="$2" color="$orange10" />
-            <SizableText size={'$6'} fontWeight={'bold'}>
-              Attempts: {attempts}
-            </SizableText>
-          </XStack>
+          <ItemWrapper>
+            <StyledIcon Icon={Goal} />
+            <StyledText>{attempts}</StyledText>
+          </ItemWrapper>
+          <ItemWrapper>
+            <StyledIcon Icon={BarChart2} />
+            <StyledText>{grade}</StyledText>
+          </ItemWrapper>
+          <Separator />
+          <ItemWrapper>
+            <StyledIcon Icon={CalendarDays} />
+            <StyledText>{formattedDate}</StyledText>
+          </ItemWrapper>
+          <ItemWrapper>
+            <StyledIcon Icon={MapPin} />
+            <StyledText>{user?.home_gym}</StyledText>
+          </ItemWrapper>
         </YStack>
         <Card
           width={16}
