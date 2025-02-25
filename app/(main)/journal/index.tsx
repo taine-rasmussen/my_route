@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
-import JournaldClimbItem from './JournaldClimbItem';
 import { YStack, ScrollView, SizableText } from 'tamagui';
 import JournalHeader from './header/JournalHeader';
 import { getFromSecureStore } from '@/app/utils';
 import { useUser } from '@/app/contexts/UserContext';
-import ClimbCardSmall from './ClimbCardSmall';
+import ClimbCardSmall from './climbCards/ClimbCardSmall';
+import ClimbCardLarge from './climbCards/ClimbCardLarge';
 
 const Journal = () => {
   const [climbs, setClimbs] = useState<any[]>([]);
@@ -66,7 +66,7 @@ const Journal = () => {
           {!loading &&
             climbs.map((climb, index) =>
               climbCardView ? (
-                <JournaldClimbItem key={index} climb={climb} />
+                <ClimbCardLarge key={index} climb={climb} />
               ) : (
                 <ClimbCardSmall key={index} climb={climb} />
               ),

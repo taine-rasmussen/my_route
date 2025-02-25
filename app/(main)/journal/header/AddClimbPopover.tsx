@@ -51,6 +51,7 @@ const AddClimbPopover = (props: IAddClimbPopover) => {
   const [attempts, setAttempts] = useState<number>(0);
   const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
   const { themePreference, user } = useUser();
   const userGrade = user?.grade_style ?? 'V Scale';
@@ -115,9 +116,21 @@ const AddClimbPopover = (props: IAddClimbPopover) => {
   const styles = getStyles(isDarkMode);
 
   return (
-    <Popover size="$5" allowFlip stayInFrame offset={10} placement="bottom">
+    <Popover
+      size="$5"
+      allowFlip
+      stayInFrame
+      offset={10}
+      placement="bottom"
+      onOpenChange={setIsPopoverOpen}
+    >
       <Popover.Trigger asChild>
-        <Button icon={CirclePlus} scaleIcon={2} circular padding={8} />
+        <Button
+          icon={<CirclePlus color={isPopoverOpen ? '$orange10' : ''} />}
+          scaleIcon={2}
+          circular
+          padding={8}
+        />
       </Popover.Trigger>
 
       <Popover.Content
