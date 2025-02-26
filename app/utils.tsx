@@ -118,3 +118,14 @@ export const getClimbingGrades = (gradeStyle: GradeStyle) => {
       return vScaleGrades;
   }
 };
+
+export const getGradeColor = (grade: string): string => {
+  const gradeNumber = parseInt(grade.replace('V', ''));
+
+  if (gradeNumber <= 2) return 'blue'; // V0-V2
+  if (gradeNumber <= 5) return 'green'; // V3-V5
+  if (gradeNumber <= 8) return 'yellow'; // V6-V8
+  if (gradeNumber <= 11) return 'orange'; // V9-V11
+  if (gradeNumber <= 14) return 'red'; // V12-V14
+  return 'purple'; // V15-V17
+};
