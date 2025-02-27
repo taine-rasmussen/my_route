@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { GradeStyle } from './types';
+import { GradeStyle, VGrade } from './types';
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -119,7 +119,7 @@ export const getClimbingGrades = (gradeStyle: GradeStyle) => {
   }
 };
 
-export const getGradeColor = (grade: string): string => {
+export const getGradeColor = (grade: VGrade): string => {
   const gradeNumber = parseInt(grade.replace('V', ''));
 
   if (gradeNumber <= 2) return 'blue'; // V0-V2
