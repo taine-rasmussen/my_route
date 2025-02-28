@@ -82,6 +82,6 @@ export interface IUser {
 export interface IClimbData {
   attempts: number;
   created_at: string;
-  grade: string;
+  grade: VGrade;
   id: number;
 }

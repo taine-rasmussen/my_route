@@ -3,6 +3,7 @@ import { BarChart2, Goal, CalendarDays, MapPin } from '@tamagui/lucide-icons';
 import { IClimbData } from '@/app/types';
 import { useUser } from '@/app/contexts/UserContext';
 import { ItemWrapper, StyledIcon, StyledText } from './utils';
+import { getGradeColor } from '@/app/utils';
 
 interface IClimbCardLarge {
   climb: IClimbData;
@@ -11,16 +12,7 @@ interface IClimbCardLarge {
 const ClimbCardLarge = ({ climb }: IClimbCardLarge) => {
   const { attempts, grade, created_at } = climb;
   const { user } = useUser();
-  const getGradeColor = (grade: string): string => {
-    const gradeNumber = parseInt(grade.replace('V', ''));
 
-    if (gradeNumber <= 2) return 'blue'; // V0-V2
-    if (gradeNumber <= 5) return 'green'; // V3-V5
-    if (gradeNumber <= 8) return 'yellow'; // V6-V8
-    if (gradeNumber <= 11) return 'orange'; // V9-V11
-    if (gradeNumber <= 14) return 'red'; // V12-V14
-    return 'purple'; // V15-V17
-  };
   const gradeColor = getGradeColor(grade);
 
   const formattedDate = new Date(created_at).toLocaleDateString();

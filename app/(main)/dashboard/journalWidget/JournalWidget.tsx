@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SizableText, Card, XStack, YStack } from 'tamagui';
-import { getFromSecureStore } from '@/app/utils';
+import { getFromSecureStore, getGradeColor } from '@/app/utils';
 import { useUser } from '@/app/contexts/UserContext';
 
 const JournalWidget = () => {
@@ -44,18 +44,6 @@ const JournalWidget = () => {
 
   const { attempts, created_at, grade, id } = recentClimb;
   const formattedDate = new Date(created_at).toLocaleDateString();
-
-  // move to utils
-  const getGradeColor = (grade: string): string => {
-    const gradeNumber = parseInt(grade.replace('V', ''));
-
-    if (gradeNumber <= 2) return 'blue'; // V0-V2
-    if (gradeNumber <= 5) return 'green'; // V3-V5
-    if (gradeNumber <= 8) return 'yellow'; // V6-V8
-    if (gradeNumber <= 11) return 'orange'; // V9-V11
-    if (gradeNumber <= 14) return 'red'; // V12-V14
-    return 'purple'; // V15-V17
-  };
 
   const gradeColor = getGradeColor(grade);
 
