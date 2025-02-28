@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SizableText, Card, XStack, YStack } from 'tamagui';
 import { getFromSecureStore, getGradeColor } from '@/app/utils';
 import { useUser } from '@/app/contexts/UserContext';
+import { GradeStyle } from '@/app/types';
 
 const JournalWidget = () => {
   const [recentClimb, setRecentClimb] = useState<any | null>(null);
@@ -45,7 +46,7 @@ const JournalWidget = () => {
   const { attempts, created_at, grade, id } = recentClimb;
   const formattedDate = new Date(created_at).toLocaleDateString();
 
-  const gradeColor = getGradeColor(grade);
+  const gradeColor = getGradeColor(grade, user?.grade_style as GradeStyle);
 
   return (
     <Card padding={16} elevate size="$5" bordered width="45%" margin="auto">

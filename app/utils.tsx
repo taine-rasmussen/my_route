@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import { GradeStyle, VGrade } from './types';
+import { FontGrades, GradeStyle, VGrade } from './types';
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -119,13 +119,53 @@ export const getClimbingGrades = (gradeStyle: GradeStyle) => {
   }
 };
 
-export const getGradeColor = (grade: VGrade): string => {
-  const gradeNumber = parseInt(grade.replace('V', ''));
-
-  if (gradeNumber <= 2) return 'blue'; // V0-V2
-  if (gradeNumber <= 5) return 'green'; // V3-V5
-  if (gradeNumber <= 8) return 'yellow'; // V6-V8
-  if (gradeNumber <= 11) return 'orange'; // V9-V11
-  if (gradeNumber <= 14) return 'red'; // V12-V14
-  return 'purple'; // V15-V17
+export const getGradeColor = (
+  grade: FontGrades | VGrade,
+  style: GradeStyle,
+): string => {
+  if (style === ('V Scale' as GradeStyle)) {
+    const gradeNumber = parseInt(grade.replace('V', ''), 10);
+    if (gradeNumber <= 2) return 'blue';
+    if (gradeNumber <= 5) return 'green';
+    if (gradeNumber <= 8) return 'yellow';
+    if (gradeNumber <= 11) return 'orange';
+    if (gradeNumber <= 14) return 'red';
+    return 'purple';
+  } else {
+    const fontScaleColors: Record<FontGrades, string> = {
+      '1': 'blue',
+      '2': 'blue',
+      '3': 'blue',
+      '4a': 'blue',
+      '4b': 'blue',
+      '4c': 'blue',
+      '5a': 'green',
+      '5b': 'green',
+      '5c': 'green',
+      '6a': 'yellow',
+      '6a+': 'yellow',
+      '6b': 'yellow',
+      '6b+': 'yellow',
+      '6c': 'yellow',
+      '6c+': 'yellow',
+      '7a': 'orange',
+      '7a+': 'orange',
+      '7b': 'orange',
+      '7b+': 'orange',
+      '7c': 'orange',
+      '7c+': 'orange',
+      '8a': 'red',
+      '8a+': 'red',
+      '8b': 'red',
+      '8b+': 'red',
+      '8c': 'red',
+      '8c+': 'red',
+      '9a': 'purple',
+      '9a+': 'purple',
+      '9b': 'purple',
+      '9b+': 'purple',
+      '9c': 'purple',
+    };
+    return fontScaleColors[grade as FontGrades] || 'gray';
+  }
 };
