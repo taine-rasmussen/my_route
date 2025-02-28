@@ -1,6 +1,6 @@
 import { Card, XStack, YStack, Separator } from 'tamagui';
 import { BarChart2, Goal, CalendarDays, MapPin } from '@tamagui/lucide-icons';
-import { IClimbData } from '@/app/types';
+import { GradeStyle, IClimbData } from '@/app/types';
 import { useUser } from '@/app/contexts/UserContext';
 import { ItemWrapper, StyledIcon, StyledText } from './utils';
 import { getGradeColor } from '@/app/utils';
@@ -13,7 +13,7 @@ const ClimbCardLarge = ({ climb }: IClimbCardLarge) => {
   const { attempts, grade, created_at } = climb;
   const { user } = useUser();
 
-  const gradeColor = getGradeColor(grade);
+  const gradeColor = getGradeColor(grade, user?.grade_style as GradeStyle);
 
   const formattedDate = new Date(created_at).toLocaleDateString();
 

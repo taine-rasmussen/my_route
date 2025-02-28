@@ -1,7 +1,8 @@
 import { Card, XStack, YStack, SizableText, Separator } from 'tamagui';
 import { BarChart2, Goal } from '@tamagui/lucide-icons';
-import { IClimbData } from '@/app/types';
+import { GradeStyle, IClimbData } from '@/app/types';
 import { getGradeColor } from '@/app/utils';
+import { useUser } from '@/app/contexts/UserContext';
 
 interface IClimbCardSmall {
   climb: IClimbData;
@@ -9,8 +10,9 @@ interface IClimbCardSmall {
 
 const ClimbCardSmall = ({ climb }: IClimbCardSmall) => {
   const { attempts, grade } = climb;
+  const { user } = useUser();
 
-  const gradeColor = getGradeColor(grade);
+  const gradeColor = getGradeColor(grade, user?.grade_style as GradeStyle);
 
   return (
     <Card padding={16} elevate size="$5" bordered>
