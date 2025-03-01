@@ -108,64 +108,67 @@ const vScaleGrades = [
   'V17',
 ].map((grade) => ({ value: grade, label: grade }));
 
-export const getClimbingGrades = (gradeStyle: GradeStyle) => {
-  switch (gradeStyle) {
-    case 'V Scale':
-      return vScaleGrades;
-    case 'Font Scale':
-      return fontClimbingGrades;
-    default:
-      return vScaleGrades;
-  }
+export const getVScaleColor = (grade: VGrade): string => {
+  const gradeNumber = parseInt(grade.replace('V', ''), 10);
+
+  if (gradeNumber <= 2) return 'blue';
+  if (gradeNumber <= 5) return 'green';
+  if (gradeNumber <= 8) return 'yellow';
+  if (gradeNumber <= 11) return 'orange';
+  if (gradeNumber <= 14) return 'red';
+
+  return 'purple';
+};
+
+export const getFontScaleColor = (grade: FontGrades): string => {
+  const fontScaleColors: Record<FontGrades, string> = {
+    '1': 'blue',
+    '2': 'blue',
+    '3': 'blue',
+    '4a': 'blue',
+    '4b': 'blue',
+    '4c': 'blue',
+    '5a': 'green',
+    '5b': 'green',
+    '5c': 'green',
+    '6a': 'yellow',
+    '6a+': 'yellow',
+    '6b': 'yellow',
+    '6b+': 'yellow',
+    '6c': 'yellow',
+    '6c+': 'yellow',
+    '7a': 'orange',
+    '7a+': 'orange',
+    '7b': 'orange',
+    '7b+': 'orange',
+    '7c': 'orange',
+    '7c+': 'orange',
+    '8a': 'red',
+    '8a+': 'red',
+    '8b': 'red',
+    '8b+': 'red',
+    '8c': 'red',
+    '8c+': 'red',
+    '9a': 'purple',
+    '9a+': 'purple',
+    '9b': 'purple',
+    '9b+': 'purple',
+    '9c': 'purple',
+  };
+
+  return fontScaleColors[grade] || 'gray';
 };
 
 export const getGradeColor = (
   grade: FontGrades | VGrade,
   style: GradeStyle,
 ): string => {
-  if (style === ('V Scale' as GradeStyle)) {
-    const gradeNumber = parseInt(grade.replace('V', ''), 10);
-    if (gradeNumber <= 2) return 'blue';
-    if (gradeNumber <= 5) return 'green';
-    if (gradeNumber <= 8) return 'yellow';
-    if (gradeNumber <= 11) return 'orange';
-    if (gradeNumber <= 14) return 'red';
-    return 'purple';
-  } else {
-    const fontScaleColors: Record<FontGrades, string> = {
-      '1': 'blue',
-      '2': 'blue',
-      '3': 'blue',
-      '4a': 'blue',
-      '4b': 'blue',
-      '4c': 'blue',
-      '5a': 'green',
-      '5b': 'green',
-      '5c': 'green',
-      '6a': 'yellow',
-      '6a+': 'yellow',
-      '6b': 'yellow',
-      '6b+': 'yellow',
-      '6c': 'yellow',
-      '6c+': 'yellow',
-      '7a': 'orange',
-      '7a+': 'orange',
-      '7b': 'orange',
-      '7b+': 'orange',
-      '7c': 'orange',
-      '7c+': 'orange',
-      '8a': 'red',
-      '8a+': 'red',
-      '8b': 'red',
-      '8b+': 'red',
-      '8c': 'red',
-      '8c+': 'red',
-      '9a': 'purple',
-      '9a+': 'purple',
-      '9b': 'purple',
-      '9b+': 'purple',
-      '9c': 'purple',
-    };
-    return fontScaleColors[grade as FontGrades] || 'gray';
+  switch (style) {
+    case 'V Scale':
+      return getVScaleColor(grade as VGrade);
+    case 'Font Scale':
+      return getFontScaleColor(grade as FontGrades);
+    default:
+      return 'gray';
   }
 };
