@@ -13,7 +13,7 @@ const Journal = () => {
   const [climbCardView, setClimbCardView] = useState<boolean>(false);
   const { user } = useUser();
 
-  // why are you checking my git history
+  // why are you checking my git history, stop it
 
   const getClimbsData = useCallback(async () => {
     try {
