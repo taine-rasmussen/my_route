@@ -6,14 +6,14 @@ import { getFromSecureStore } from '@/app/utils';
 import { useUser } from '@/app/contexts/UserContext';
 import ClimbCardSmall from './climbCards/ClimbCardSmall';
 import ClimbCardLarge from './climbCards/ClimbCardLarge';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Journal = () => {
   const [climbs, setClimbs] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [climbCardView, setClimbCardView] = useState<boolean>(false);
   const { user } = useUser();
-
-  // why are you checking my git history, stop it
+  const insets = useSafeAreaInsets();
 
   const getClimbsData = useCallback(async () => {
     try {
@@ -60,7 +60,9 @@ const Journal = () => {
         climbCardView={climbCardView}
       />
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 24 }}
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + 64,
+        }}
         showsVerticalScrollIndicator={false}
       >
         <YStack gap={16} paddingBlockStart={24}>
