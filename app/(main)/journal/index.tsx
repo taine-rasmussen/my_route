@@ -58,7 +58,7 @@ const Journal = () => {
         climbCardView={climbCardView}
       />
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 24 }}
+        contentContainerStyle={{ paddingBottom: 80 }}
         showsVerticalScrollIndicator={false}
       >
         <YStack gap={16} paddingBlockStart={24}>

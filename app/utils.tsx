@@ -108,6 +108,15 @@ const vScaleGrades = [
   'V17',
 ].map((grade) => ({ value: grade, label: grade }));
 
+export const getClimbingGrades = (grade: GradeStyle) => {
+  switch (grade) {
+    case 'V Scale':
+      return vScaleGrades;
+    case 'Font Scale':
+      return fontClimbingGrades;
+  }
+};
+
 export const getVScaleColor = (grade: VGrade): string => {
   const gradeNumber = parseInt(grade.replace('V', ''), 10);
 
