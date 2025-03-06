@@ -1,13 +1,18 @@
-import { Settings2 } from '@tamagui/lucide-icons';
+import {
+  Settings2,
+  ChevronDown,
+  ChevronUp,
+  CalendarDays,
+  BarChart2,
+} from '@tamagui/lucide-icons';
 import { useState } from 'react';
 import {
   Popover,
   YStack,
   SizableText,
   XStack,
-  Label,
-  Input,
   Button,
+  Separator,
 } from 'tamagui';
 
 const FilterWidget = () => {
@@ -46,7 +51,14 @@ const FilterWidget = () => {
       >
         <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
         <YStack gap="$3" width={'100%'}>
-          <SizableText size={'$8'}>Filter</SizableText>
+          <SizableText size={'$8'}>Filters</SizableText>
+          <XStack display="flex" justifyContent="space-between">
+            <ChevronDown size={'$2'} />
+            <ChevronUp size={'$2'} />
+            <Separator vertical borderColor={'$orange10'} />
+            <BarChart2 size={'$2'} />
+            <CalendarDays size={'$2'} />
+          </XStack>
 
           <Popover.Close asChild>
             <Button size="$3" onPress={handleSubmit}>
