@@ -1,7 +1,14 @@
-import { SizableText, XStack, Card } from 'tamagui';
-import AddClimbPopover from './AddClimbPopover';
-import { Columns4, Columns2 } from '@tamagui/lucide-icons';
-import FilterPopover from './FilterPopover';
+import { SizableText, XStack, Card, Button } from 'tamagui';
+import {
+  Columns4,
+  Columns2,
+  Settings2,
+  CirclePlus,
+} from '@tamagui/lucide-icons';
+import { useState } from 'react';
+import PopoverWrapper from './PopoverWrapper';
+import FilterPopoverContent from './FilterPopoverContent';
+import AddClimbPopoverContent from './AddClimbPopoverContent';
 
 interface IJournalHeader {
   handleRefresh: () => void;
@@ -13,6 +20,19 @@ const JournalHeader = (props: IJournalHeader) => {
   const handleViewChange = () => {
     props.setClimbCardView(!props.climbCardView);
   };
+
+  const [openPopover, setOpenPopover] = useState<'filter' | 'addClimb' | null>(
+    null,
+  );
+
+  const handleFilterOpenChange = (open: boolean) => {
+    setOpenPopover(open ? 'filter' : null);
+  };
+
+  const handleAddClimbOpenChange = (open: boolean) => {
+    setOpenPopover(open ? 'addClimb' : null);
+  };
+
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -38,8 +58,42 @@ const JournalHeader = (props: IJournalHeader) => {
               style={{ transform: [{ rotate: '90deg' }] }}
             />
           )}
-          <FilterPopover />
-          <AddClimbPopover handleRefresh={props.handleRefresh} />
+          <PopoverWrapper
+            isOpen={openPopover === 'filter'}
+            onOpenChange={handleFilterOpenChange}
+            trigger={
+              <Button
+                icon={
+                  <Settings2
+                    color={openPopover === 'filter' ? '$orange10' : ''}
+                  />
+                }
+                scaleIcon={2}
+                circular
+                padding={8}
+              />
+            }
+            content={<FilterPopoverContent />}
+          />
+          <PopoverWrapper
+            isOpen={openPopover === 'addClimb'}
+            onOpenChange={handleAddClimbOpenChange}
+            trigger={
+              <Button
+                icon={
+                  <CirclePlus
+                    color={openPopover === 'addClimb' ? '$orange10' : ''}
+                  />
+                }
+                scaleIcon={2}
+                circular
+                padding={8}
+              />
+            }
+            content={
+              <AddClimbPopoverContent handleRefresh={props.handleRefresh} />
+            }
+          />
         </XStack>
       </XStack>
     </Card>
