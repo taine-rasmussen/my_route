@@ -1,12 +1,11 @@
-import { CirclePlus } from '@tamagui/lucide-icons';
 import {
-  Popover,
-  SizableText,
   YStack,
+  SizableText,
   XStack,
   Label,
   Button,
   Input,
+  Popover,
 } from 'tamagui';
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -43,16 +42,14 @@ const getStyles = (isDarkMode: boolean) => {
   };
 };
 
-interface IAddClimbPopover {
+interface IAddClimbPopoverContent {
   handleRefresh: () => void;
 }
 
-const AddClimbPopover = (props: IAddClimbPopover) => {
+const AddClimbPopoverContent = (props: IAddClimbPopoverContent) => {
   const [attempts, setAttempts] = useState<number>(0);
   const [grade, setGrade] = useState<VGrade | null>(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
-
   const { themePreference, user } = useUser();
   const userGrade = user?.grade_style ?? 'V Scale';
   const dropDownItems = getClimbingGrades(userGrade as GradeStyle);
@@ -116,77 +113,45 @@ const AddClimbPopover = (props: IAddClimbPopover) => {
   const styles = getStyles(isDarkMode);
 
   return (
-    <Popover
-      size="$5"
-      allowFlip
-      stayInFrame
-      offset={10}
-      placement="bottom"
-      onOpenChange={setIsPopoverOpen}
-    >
-      <Popover.Trigger asChild>
-        <Button
-          icon={<CirclePlus color={isPopoverOpen ? '$orange10' : ''} />}
-          scaleIcon={2}
-          circular
-          padding={8}
+    <YStack gap="$3" width={'100%'}>
+      <SizableText size={'$8'}>Log new climb</SizableText>
+      <XStack gap="$3" alignItems="center">
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { borderColor: isDarkMode ? 'white' : 'black' },
+          ]}
+          containerStyle={styles.dropdownContainerStyle}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          itemTextStyle={styles.itemTextStyle}
+          data={dropDownItems}
+          labelField="label"
+          valueField="value"
+          placeholder="Select a grade"
+          value={grade}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={handleChange}
+          activeColor={isDarkMode ? 'black' : 'white'}
         />
-      </Popover.Trigger>
-
-      <Popover.Content
-        borderWidth={1}
-        borderColor="$borderColor"
-        width={250}
-        height={250}
-        enterStyle={{ y: -10, opacity: 0 }}
-        exitStyle={{ y: -10, opacity: 0 }}
-        elevate
-        animation={['bouncy', { opacity: { overshootClamping: true } }]}
-      >
-        <Popover.Arrow borderWidth={1} borderColor="$borderColor" />
-        <YStack gap="$3" width={'100%'}>
-          <SizableText size={'$8'}>Log new climb</SizableText>
-          <XStack gap="$3" alignItems="center">
-            <Dropdown
-              style={[
-                styles.dropdown,
-                isFocus && { borderColor: isDarkMode ? 'white' : 'black' },
-              ]}
-              containerStyle={styles.dropdownContainerStyle}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              itemTextStyle={styles.itemTextStyle}
-              data={dropDownItems}
-              labelField="label"
-              valueField="value"
-              placeholder="Select a grade"
-              value={grade}
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={handleChange}
-              activeColor={isDarkMode ? 'black' : 'white'}
-            />
-          </XStack>
-
-          <XStack gap="$3">
-            <Label size="$3">Attempts</Label>
-            <Input
-              keyboardType="numeric"
-              width={80}
-              value={attempts.toString()}
-              onChangeText={(text) => setAttempts(Number(text) || 0)}
-            />
-          </XStack>
-
-          <Popover.Close asChild>
-            <Button size="$3" onPress={handleSubmit}>
-              Save
-            </Button>
-          </Popover.Close>
-        </YStack>
-      </Popover.Content>
-    </Popover>
+      </XStack>
+      <XStack gap="$3">
+        <Label size="$3">Attempts</Label>
+        <Input
+          keyboardType="numeric"
+          width={80}
+          value={attempts.toString()}
+          onChangeText={(text) => setAttempts(Number(text) || 0)}
+        />
+      </XStack>
+      <Popover.Close asChild>
+        <Button size="$3" onPress={handleSubmit}>
+          Save
+        </Button>
+      </Popover.Close>
+    </YStack>
   );
 };
 
-export default AddClimbPopover;
+export default AddClimbPopoverContent;
