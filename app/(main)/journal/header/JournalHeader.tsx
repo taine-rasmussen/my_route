@@ -1,7 +1,7 @@
 import { SizableText, XStack, Card } from 'tamagui';
 import AddClimbPopover from './AddClimbPopover';
 import { Columns4, Columns2 } from '@tamagui/lucide-icons';
-import FilterWidget from './FilterWidget';
+import FilterPopover from './FilterPopover';
 
 interface IJournalHeader {
   handleRefresh: () => void;
@@ -38,7 +38,7 @@ const JournalHeader = (props: IJournalHeader) => {
               style={{ transform: [{ rotate: '90deg' }] }}
             />
           )}
-          <FilterWidget />
+          <FilterPopover />
           <AddClimbPopover handleRefresh={props.handleRefresh} />
         </XStack>
       </XStack>

@@ -15,7 +15,7 @@ import {
   Separator,
 } from 'tamagui';
 
-const FilterWidget = () => {
+const FilterPopover = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const handleSubmit = () => {
     console.log('save filter');
@@ -71,4 +71,4 @@ const FilterWidget = () => {
   );
 };
 
-export default FilterWidget;
+export default FilterPopover;
