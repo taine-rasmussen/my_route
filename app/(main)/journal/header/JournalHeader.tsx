@@ -1,4 +1,4 @@
-import { SizableText, XStack, Card, Button, Separator } from 'tamagui';
+import { XStack, Card, Button } from 'tamagui';
 import {
   Columns4,
   Columns2,
@@ -23,6 +23,7 @@ const JournalHeader = (props: IJournalHeader) => {
   };
 
   const [openPopover, setOpenPopover] = useState<boolean>(false);
+
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -31,16 +32,13 @@ const JournalHeader = (props: IJournalHeader) => {
         alignItems="center"
         padding={8}
       >
-        <XStack
-          gap={8}
-          display="flex"
-          justifyContent="center"
-          alignContent="center"
-        >
+        <XStack gap={12}>
           <Button icon={<ChevronDown />} scaleIcon={2} circular padding={8} />
           <Button icon={<ChevronUp />} scaleIcon={2} circular padding={8} />
           <Button icon={<CalendarDays />} scaleIcon={2} circular padding={8} />
-          <Separator />
+        </XStack>
+
+        <XStack gap={12}>
           {props.climbCardView ? (
             <Button
               icon={
@@ -66,6 +64,7 @@ const JournalHeader = (props: IJournalHeader) => {
               padding={8}
             />
           )}
+
           <PopoverWrapper
             isOpen={openPopover}
             onOpenChange={setOpenPopover}
