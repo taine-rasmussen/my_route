@@ -37,30 +37,14 @@ const JournalHeader = (props: IJournalHeader) => {
           justifyContent="center"
           alignContent="center"
         >
-          <Button
-            icon={<ChevronDown color={openPopover ? '$orange10' : ''} />}
-            scaleIcon={2}
-            circular
-            padding={8}
-          />
-          <Button
-            icon={<ChevronUp color={openPopover ? '$orange10' : ''} />}
-            scaleIcon={2}
-            circular
-            padding={8}
-          />
-          <Button
-            icon={<CalendarDays color={openPopover ? '$orange10' : ''} />}
-            scaleIcon={2}
-            circular
-            padding={8}
-          />
+          <Button icon={<ChevronDown />} scaleIcon={2} circular padding={8} />
+          <Button icon={<ChevronUp />} scaleIcon={2} circular padding={8} />
+          <Button icon={<CalendarDays />} scaleIcon={2} circular padding={8} />
           <Separator />
           {props.climbCardView ? (
             <Button
               icon={
                 <Columns4
-                  color={openPopover ? '$orange10' : ''}
                   onPress={handleViewChange}
                   style={{ transform: [{ rotate: '90deg' }] }}
                 />
@@ -73,7 +57,6 @@ const JournalHeader = (props: IJournalHeader) => {
             <Button
               icon={
                 <Columns2
-                  color={openPopover ? '$orange10' : ''}
                   onPress={handleViewChange}
                   style={{ transform: [{ rotate: '90deg' }] }}
                 />
