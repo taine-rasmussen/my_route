@@ -7,7 +7,6 @@ import {
 } from '@tamagui/lucide-icons';
 import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
-import FilterPopoverContent from './FilterPopoverContent';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
 
 interface IJournalHeader {
@@ -21,18 +20,7 @@ const JournalHeader = (props: IJournalHeader) => {
     props.setClimbCardView(!props.climbCardView);
   };
 
-  const [openPopover, setOpenPopover] = useState<'filter' | 'addClimb' | null>(
-    null,
-  );
-
-  const handleFilterOpenChange = (open: boolean) => {
-    setOpenPopover(open ? 'filter' : null);
-  };
-
-  const handleAddClimbOpenChange = (open: boolean) => {
-    setOpenPopover(open ? 'addClimb' : null);
-  };
-
+  const [openPopover, setOpenPopover] = useState<boolean>(false);
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -59,32 +47,11 @@ const JournalHeader = (props: IJournalHeader) => {
             />
           )}
           <PopoverWrapper
-            isOpen={openPopover === 'filter'}
-            onOpenChange={handleFilterOpenChange}
+            isOpen={openPopover}
+            onOpenChange={setOpenPopover}
             trigger={
               <Button
-                icon={
-                  <Settings2
-                    color={openPopover === 'filter' ? '$orange10' : ''}
-                  />
-                }
-                scaleIcon={2}
-                circular
-                padding={8}
-              />
-            }
-            content={<FilterPopoverContent />}
-          />
-          <PopoverWrapper
-            isOpen={openPopover === 'addClimb'}
-            onOpenChange={handleAddClimbOpenChange}
-            trigger={
-              <Button
-                icon={
-                  <CirclePlus
-                    color={openPopover === 'addClimb' ? '$orange10' : ''}
-                  />
-                }
+                icon={<CirclePlus color={openPopover ? '$orange10' : ''} />}
                 scaleIcon={2}
                 circular
                 padding={8}
