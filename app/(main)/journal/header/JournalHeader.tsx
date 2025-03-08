@@ -1,8 +1,10 @@
-import { SizableText, XStack, Card, Button } from 'tamagui';
+import { SizableText, XStack, Card, Button, Separator } from 'tamagui';
 import {
   Columns4,
   Columns2,
-  Settings2,
+  ChevronDown,
+  ChevronUp,
+  CalendarDays,
   CirclePlus,
 } from '@tamagui/lucide-icons';
 import { useState } from 'react';
@@ -29,21 +31,56 @@ const JournalHeader = (props: IJournalHeader) => {
         alignItems="center"
         padding={8}
       >
-        <SizableText size={'$9'}>Journal</SizableText>
-        <XStack gap={8}>
+        <XStack
+          gap={8}
+          display="flex"
+          justifyContent="center"
+          alignContent="center"
+        >
+          <Button
+            icon={<ChevronDown color={openPopover ? '$orange10' : ''} />}
+            scaleIcon={2}
+            circular
+            padding={8}
+          />
+          <Button
+            icon={<ChevronUp color={openPopover ? '$orange10' : ''} />}
+            scaleIcon={2}
+            circular
+            padding={8}
+          />
+          <Button
+            icon={<CalendarDays color={openPopover ? '$orange10' : ''} />}
+            scaleIcon={2}
+            circular
+            padding={8}
+          />
+          <Separator />
           {props.climbCardView ? (
-            <Columns4
-              size="$3"
-              color="$orange10"
-              onPress={handleViewChange}
-              style={{ transform: [{ rotate: '90deg' }] }}
+            <Button
+              icon={
+                <Columns4
+                  color={openPopover ? '$orange10' : ''}
+                  onPress={handleViewChange}
+                  style={{ transform: [{ rotate: '90deg' }] }}
+                />
+              }
+              scaleIcon={2}
+              circular
+              padding={8}
             />
           ) : (
-            <Columns2
-              size="$3"
-              color="$orange10"
-              onPress={handleViewChange}
-              style={{ transform: [{ rotate: '90deg' }] }}
+            <Button
+              icon={
+                <Columns2
+                  color={openPopover ? '$orange10' : ''}
+                  onPress={handleViewChange}
+                  style={{ transform: [{ rotate: '90deg' }] }}
+                />
+              }
+              scaleIcon={2}
+              circular
+              padding={8}
             />
           )}
           <PopoverWrapper
