@@ -15,13 +15,11 @@ interface IDatePickerFilter {
 const DatePickerFilter = (props: IDatePickerFilter) => {
   const defaultStyles = getDefaultStyles();
 
-  // ✅ Local state to manage "temp" selections before applying them
   const [tempDateRange, setTempDateRange] = useState<IDateRange>({
     startDate: props.dateRange.startDate,
     endDate: props.dateRange.endDate,
   });
 
-  // ✅ Sync local state with parent state when it changes
   useEffect(() => {
     setTempDateRange({
       startDate: props.dateRange.startDate,
@@ -43,22 +41,19 @@ const DatePickerFilter = (props: IDatePickerFilter) => {
   };
 
   const handleApply = () => {
-    // ✅ Apply the temp state to the parent state
     props.setDateRange(tempDateRange);
-    props.onClose(); // Close the popover
+    props.onClose();
   };
 
   const handleCancel = () => {
-    // ✅ Reset to whatever the parent state was originally
     setTempDateRange({
       startDate: props.dateRange.startDate,
       endDate: props.dateRange.endDate,
     });
-    props.onClose(); // Close the popover
+    props.onClose();
   };
 
   const handleClear = () => {
-    // ✅ Completely clear the date picker and parent state
     setTempDateRange({
       startDate: null,
       endDate: null,
@@ -67,7 +62,7 @@ const DatePickerFilter = (props: IDatePickerFilter) => {
       startDate: null,
       endDate: null,
     });
-    props.onClose(); // Close the popover
+    props.onClose();
   };
 
   return (
