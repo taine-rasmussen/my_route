@@ -6,14 +6,18 @@ import {
   ChevronUp,
   CalendarDays,
   CirclePlus,
+  ArrowDown01,
 } from '@tamagui/lucide-icons';
 import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
+import { SortOrder } from '@/app/types';
 
 interface IJournalHeader {
-  handleRefresh: () => void;
+  sortOrder: SortOrder;
   climbCardView: boolean;
+  handleRefresh: () => void;
+  onSortChange: (sort: SortOrder) => void;
   setClimbCardView: (bol: boolean) => void;
 }
 
@@ -33,9 +37,28 @@ const JournalHeader = (props: IJournalHeader) => {
         padding={8}
       >
         <XStack gap={12}>
-          <Button icon={<ChevronDown />} scaleIcon={2} circular padding={8} />
-          <Button icon={<ChevronUp />} scaleIcon={2} circular padding={8} />
+          <Button
+            icon={<ChevronDown />}
+            scaleIcon={2}
+            circular
+            padding={8}
+            backgroundColor={
+              props.sortOrder === 'newest' ? '$orange10' : 'transparent'
+            }
+            onPress={() => props.onSortChange('newest')}
+          />
+          <Button
+            icon={<ChevronUp />}
+            scaleIcon={2}
+            circular
+            padding={8}
+            backgroundColor={
+              props.sortOrder === 'oldest' ? '$orange10' : 'transparent'
+            }
+            onPress={() => props.onSortChange('oldest')}
+          />
           <Button icon={<CalendarDays />} scaleIcon={2} circular padding={8} />
+          <Button icon={<ArrowDown01 />} scaleIcon={2} circular padding={8} />
         </XStack>
 
         <XStack gap={12}>

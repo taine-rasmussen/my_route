@@ -93,3 +93,5 @@ export interface IClimbData {
   grade: VGrade;
   id: number;
 }
+
+export type SortOrder = 'newest' | 'oldest';

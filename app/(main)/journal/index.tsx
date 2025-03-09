@@ -7,11 +7,13 @@ import { useUser } from '@/app/contexts/UserContext';
 import ClimbCardSmall from './climbCards/ClimbCardSmall';
 import ClimbCardLarge from './climbCards/ClimbCardLarge';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { IClimbData, SortOrder } from '@/app/types';
 
 const Journal = () => {
-  const [climbs, setClimbs] = useState<any[]>([]);
+  const [climbs, setClimbs] = useState<IClimbData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [climbCardView, setClimbCardView] = useState<boolean>(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
   const { user } = useUser();
   const insets = useSafeAreaInsets();
 
@@ -56,8 +58,10 @@ const Journal = () => {
     <SafeAreaWrapper>
       <JournalHeader
         handleRefresh={handleRefresh}
-        setClimbCardView={setClimbCardView}
         climbCardView={climbCardView}
+        setClimbCardView={setClimbCardView}
+        sortOrder={sortOrder}
+        onSortChange={setSortOrder}
       />
       <ScrollView
         contentContainerStyle={{
