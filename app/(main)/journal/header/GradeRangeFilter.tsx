@@ -2,18 +2,18 @@ import { YStack, SizableText, XStack, Button, Label } from 'tamagui';
 import { useState } from 'react';
 import { MultiSelect } from 'react-native-element-dropdown';
 import { GradeStyle, VGrade } from '@/app/types';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, useWindowDimensions } from 'react-native';
 import { useUser } from '@/app/contexts/UserContext';
 import { getClimbingGrades } from '@/app/utils';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IGradeRangeFilter {
   gradeRange: VGrade[];
   setGradeRange: (grades: VGrade[]) => void;
 }
 
-const getStyles = (isDarkMode: boolean) => ({
+const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
   dropdown: {
-    height: 40,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 8,
@@ -23,15 +23,15 @@ const getStyles = (isDarkMode: boolean) => ({
     backgroundColor: isDarkMode ? 'black' : 'white',
   },
   placeholderStyle: {
-    fontSize: 14,
+    fontSize: isExpanded ? 16 : 14,
     color: isDarkMode ? 'white' : 'black',
   },
   selectedTextStyle: {
-    fontSize: 14,
+    fontSize: isExpanded ? 16 : 14,
     color: isDarkMode ? 'white' : 'black',
   },
   itemTextStyle: {
-    fontSize: 14,
+    fontSize: isExpanded ? 16 : 14,
     color: isDarkMode ? 'white' : 'black',
   },
 });
@@ -44,11 +44,15 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const systemColorScheme = useColorScheme();
+  const { width, height } = useWindowDimensions();
+  const { top, bottom } = useSafeAreaInsets();
+
   const colorScheme =
     themePreference === 'system' ? systemColorScheme : themePreference;
 
   const isDarkMode = colorScheme === 'dark';
-  const styles = getStyles(isDarkMode);
+  const isExpanded = isFocus || props.gradeRange.length > 0;
+  const styles = getStyles(isDarkMode, isExpanded);
 
   const handleChange = (selected: string[]) => {
     const selectedGrades = dropDownItems
@@ -65,9 +69,16 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
 
   const hasSelection = props.gradeRange.length > 0;
 
+  const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
+
   return (
-    <YStack gap="$3">
-      <Label size="$3">Grade Range</Label>
+    <YStack
+      gap="$3"
+      width={Math.min(width * 0.8, 400)}
+      maxHeight={height * 0.6}
+      height={height * 0.2}
+    >
+      <Label size="$5">Grade Range</Label>
       <MultiSelect
         style={[
           styles.dropdown,
@@ -86,13 +97,13 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         onBlur={() => setIsFocus(false)}
         onChange={handleChange}
         activeColor={isDarkMode ? 'black' : 'white'}
-        mode="modal"
-        maxHeight={300}
+        mode="auto"
+        maxHeight={dropdownMaxHeight}
         alwaysRenderSelectedItem
         visibleSelectedItem
       />
       <XStack gap="$3" justifyContent="flex-end">
-        <Button size="$2" disabled={!hasSelection} onPress={handleClear}>
+        <Button size="$4" disabled={!hasSelection} onPress={handleClear}>
           Clear
         </Button>
       </XStack>
