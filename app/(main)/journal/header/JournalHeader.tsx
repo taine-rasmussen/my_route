@@ -75,6 +75,7 @@ const JournalHeader = (props: IJournalHeader) => {
             }
             content={
               <DatePickerFilter
+                onClose={() => setOpenDatePicker(false)}
                 dateRange={props.dateRange}
                 setDateRange={props.setDateRange}
               />
