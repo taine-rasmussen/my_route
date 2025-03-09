@@ -66,6 +66,7 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenDatePicker}
             trigger={
               <Button
+                backgroundColor={openDatePicker ? '$orange10' : 'transparent'}
                 icon={<CalendarDays />}
                 scaleIcon={2}
                 circular

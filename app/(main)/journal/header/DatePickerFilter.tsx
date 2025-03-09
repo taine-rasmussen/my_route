@@ -13,8 +13,17 @@ interface IDatePickerFilter {
 const DatePickerFilter = (props: IDatePickerFilter) => {
   const defaultStyles = getDefaultStyles();
 
-  const handleDateChange = (e: any) => {
-    console.log(e);
+  const handleDateChange = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: DateType;
+    endDate: DateType;
+  }) => {
+    props.setDateRange({
+      startDate,
+      endDate,
+    });
   };
 
   return (
