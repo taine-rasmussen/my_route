@@ -45,7 +45,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
 
   const systemColorScheme = useColorScheme();
   const { width, height } = useWindowDimensions();
-  const { top, bottom } = useSafeAreaInsets(); // Get safe area insets
+  const { top, bottom } = useSafeAreaInsets();
 
   const colorScheme =
     themePreference === 'system' ? systemColorScheme : themePreference;
