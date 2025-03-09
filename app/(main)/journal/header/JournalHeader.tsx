@@ -91,6 +91,7 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenGradeRangePicker}
             trigger={
               <Button
+                backgroundColor={openGradeRangePicker ? '$orange10' : '#2a2a2a'}
                 icon={<ArrowDown01 />}
                 scaleIcon={2}
                 circular
