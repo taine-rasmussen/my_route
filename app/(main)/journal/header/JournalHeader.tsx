@@ -11,10 +11,13 @@ import {
 import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
-import { IDateRange, SortOrder } from '@/app/types';
+import { IDateRange, SortOrder, VGrade } from '@/app/types';
 import DatePickerFilter from './DatePickerFilter';
+import GradeRangeFilter from './GradeRangeFilter';
 
 interface IJournalHeader {
+  gradeRange: VGrade[];
+  setGradeRange: (grades: VGrade[]) => void;
   dateRange: IDateRange;
   setDateRange: (date: IDateRange) => void;
   sortOrder: SortOrder;
@@ -31,6 +34,7 @@ const JournalHeader = (props: IJournalHeader) => {
 
   const [openPopover, setOpenPopover] = useState<boolean>(false);
   const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
+  const [openGradeRangePicker, setOpenGradeRangePicker] = useState(false);
 
   const calendarIsActive =
     openDatePicker || (props.dateRange.startDate && props.dateRange.endDate);
@@ -50,7 +54,7 @@ const JournalHeader = (props: IJournalHeader) => {
             circular
             padding={8}
             backgroundColor={
-              props.sortOrder === 'newest' ? '$orange10' : 'transparent'
+              props.sortOrder === 'newest' ? '$orange10' : '#2a2a2a'
             }
             onPress={() => props.onSortChange('newest')}
           />
@@ -60,7 +64,7 @@ const JournalHeader = (props: IJournalHeader) => {
             circular
             padding={8}
             backgroundColor={
-              props.sortOrder === 'oldest' ? '$orange10' : 'transparent'
+              props.sortOrder === 'oldest' ? '$orange10' : '#2a2a2a'
             }
             onPress={() => props.onSortChange('oldest')}
           />
@@ -69,7 +73,7 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenDatePicker}
             trigger={
               <Button
-                backgroundColor={calendarIsActive ? '$orange10' : 'transparent'}
+                backgroundColor={calendarIsActive ? '$orange10' : '#2a2a2a'}
                 icon={<CalendarDays />}
                 scaleIcon={2}
                 circular
@@ -84,7 +88,25 @@ const JournalHeader = (props: IJournalHeader) => {
               />
             }
           />
-          <Button icon={<ArrowDown01 />} scaleIcon={2} circular padding={8} />
+          <PopoverWrapper
+            isOpen={openGradeRangePicker}
+            onOpenChange={setOpenGradeRangePicker}
+            trigger={
+              <Button
+                backgroundColor={openGradeRangePicker ? '$orange10' : '#2a2a2a'}
+                icon={<ArrowDown01 />}
+                scaleIcon={2}
+                circular
+                padding={8}
+              />
+            }
+            content={
+              <GradeRangeFilter
+                setGradeRange={props.setGradeRange}
+                gradeRange={props.gradeRange}
+              />
+            }
+          />
         </XStack>
 
         <XStack gap={12}>
