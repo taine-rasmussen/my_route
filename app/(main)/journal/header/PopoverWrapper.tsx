@@ -6,6 +6,8 @@ interface IPopoverWrapper {
   content: React.ReactNode;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  width?: string;
+  height?: string;
 }
 
 const PopoverWrapper = (props: IPopoverWrapper) => {
@@ -23,8 +25,8 @@ const PopoverWrapper = (props: IPopoverWrapper) => {
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
-        width={'auto'}
-        height={'auto'}
+        width={props.width ?? 'auto'}
+        height={props.height ?? 'auto'}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate
