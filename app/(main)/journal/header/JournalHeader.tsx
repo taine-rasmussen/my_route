@@ -11,13 +11,12 @@ import {
 import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
-import { SortOrder } from '@/app/types';
+import { IDateRange, SortOrder } from '@/app/types';
 import DatePickerFilter from './DatePickerFilter';
-import { DateType } from 'react-native-ui-datepicker';
 
 interface IJournalHeader {
-  dateRange: DateType;
-  setDateRange: (date: DateType) => void;
+  dateRange: IDateRange;
+  setDateRange: (date: IDateRange) => void;
   sortOrder: SortOrder;
   climbCardView: boolean;
   handleRefresh: () => void;

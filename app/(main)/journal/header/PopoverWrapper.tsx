@@ -23,8 +23,8 @@ const PopoverWrapper = (props: IPopoverWrapper) => {
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
-        width={250}
-        height={250}
+        width={'auto'}
+        height={'auto'}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         elevate

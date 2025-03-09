@@ -1,3 +1,5 @@
+import { DateType } from 'react-native-ui-datepicker';
+
 export type InputErrorKeys =
   | 'firstName'
   | 'lastName'
@@ -95,3 +97,8 @@ export interface IClimbData {
 }
 
 export type SortOrder = 'newest' | 'oldest';
+
+export interface IDateRange {
+  startDate: DateType;
+  endDate: DateType;
+}
