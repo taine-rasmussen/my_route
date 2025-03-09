@@ -12,8 +12,12 @@ import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
 import { SortOrder } from '@/app/types';
+import DatePickerFilter from './DatePickerFilter';
+import { DateType } from 'react-native-ui-datepicker';
 
 interface IJournalHeader {
+  dateRange: DateType;
+  setDateRange: (date: DateType) => void;
   sortOrder: SortOrder;
   climbCardView: boolean;
   handleRefresh: () => void;
@@ -27,6 +31,7 @@ const JournalHeader = (props: IJournalHeader) => {
   };
 
   const [openPopover, setOpenPopover] = useState<boolean>(false);
+  const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
 
   return (
     <Card padding={4} elevate size="$2" bordered padded>
@@ -57,7 +62,24 @@ const JournalHeader = (props: IJournalHeader) => {
             }
             onPress={() => props.onSortChange('oldest')}
           />
-          <Button icon={<CalendarDays />} scaleIcon={2} circular padding={8} />
+          <PopoverWrapper
+            isOpen={openDatePicker}
+            onOpenChange={setOpenDatePicker}
+            trigger={
+              <Button
+                icon={<CalendarDays />}
+                scaleIcon={2}
+                circular
+                padding={8}
+              />
+            }
+            content={
+              <DatePickerFilter
+                dateRange={props.dateRange}
+                setDateRange={props.setDateRange}
+              />
+            }
+          />
           <Button icon={<ArrowDown01 />} scaleIcon={2} circular padding={8} />
         </XStack>
 

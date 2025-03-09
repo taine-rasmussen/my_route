@@ -8,12 +8,14 @@ import ClimbCardSmall from './climbCards/ClimbCardSmall';
 import ClimbCardLarge from './climbCards/ClimbCardLarge';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { IClimbData, SortOrder } from '@/app/types';
+import { DateType } from 'react-native-ui-datepicker';
 
 const Journal = () => {
   const [climbs, setClimbs] = useState<IClimbData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [climbCardView, setClimbCardView] = useState<boolean>(false);
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+  const [dateRange, setDateRange] = useState<DateType>();
   const { user } = useUser();
   const insets = useSafeAreaInsets();
 
@@ -59,6 +61,8 @@ const Journal = () => {
   return (
     <SafeAreaWrapper>
       <JournalHeader
+        dateRange={dateRange}
+        setDateRange={setDateRange}
         handleRefresh={handleRefresh}
         climbCardView={climbCardView}
         setClimbCardView={setClimbCardView}
