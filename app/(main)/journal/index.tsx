@@ -54,6 +54,8 @@ const Journal = () => {
     setLoading(false);
   };
 
+  const sortedClimbs = sortOrder === 'oldest' ? [...climbs].reverse() : climbs;
+
   return (
     <SafeAreaWrapper>
       <JournalHeader
@@ -72,7 +74,7 @@ const Journal = () => {
         <YStack gap={16} paddingBlockStart={24}>
           {loading && <SizableText>Loading...</SizableText>}
           {!loading &&
-            climbs.map((climb, index) =>
+            sortedClimbs.map((climb, index) =>
               climbCardView ? (
                 <ClimbCardLarge key={index} climb={climb} />
               ) : (
