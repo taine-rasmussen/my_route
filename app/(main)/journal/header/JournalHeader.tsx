@@ -6,14 +6,21 @@ import {
   ChevronUp,
   CalendarDays,
   CirclePlus,
+  ArrowDown01,
 } from '@tamagui/lucide-icons';
 import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
+import { IDateRange, SortOrder } from '@/app/types';
+import DatePickerFilter from './DatePickerFilter';
 
 interface IJournalHeader {
-  handleRefresh: () => void;
+  dateRange: IDateRange;
+  setDateRange: (date: IDateRange) => void;
+  sortOrder: SortOrder;
   climbCardView: boolean;
+  handleRefresh: () => void;
+  onSortChange: (sort: SortOrder) => void;
   setClimbCardView: (bol: boolean) => void;
 }
 
@@ -23,6 +30,7 @@ const JournalHeader = (props: IJournalHeader) => {
   };
 
   const [openPopover, setOpenPopover] = useState<boolean>(false);
+  const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
 
   return (
     <Card padding={4} elevate size="$2" bordered padded>
@@ -33,9 +41,46 @@ const JournalHeader = (props: IJournalHeader) => {
         padding={8}
       >
         <XStack gap={12}>
-          <Button icon={<ChevronDown />} scaleIcon={2} circular padding={8} />
-          <Button icon={<ChevronUp />} scaleIcon={2} circular padding={8} />
-          <Button icon={<CalendarDays />} scaleIcon={2} circular padding={8} />
+          <Button
+            icon={<ChevronDown />}
+            scaleIcon={2}
+            circular
+            padding={8}
+            backgroundColor={
+              props.sortOrder === 'newest' ? '$orange10' : 'transparent'
+            }
+            onPress={() => props.onSortChange('newest')}
+          />
+          <Button
+            icon={<ChevronUp />}
+            scaleIcon={2}
+            circular
+            padding={8}
+            backgroundColor={
+              props.sortOrder === 'oldest' ? '$orange10' : 'transparent'
+            }
+            onPress={() => props.onSortChange('oldest')}
+          />
+          <PopoverWrapper
+            isOpen={openDatePicker}
+            onOpenChange={setOpenDatePicker}
+            trigger={
+              <Button
+                backgroundColor={openDatePicker ? '$orange10' : 'transparent'}
+                icon={<CalendarDays />}
+                scaleIcon={2}
+                circular
+                padding={8}
+              />
+            }
+            content={
+              <DatePickerFilter
+                dateRange={props.dateRange}
+                setDateRange={props.setDateRange}
+              />
+            }
+          />
+          <Button icon={<ArrowDown01 />} scaleIcon={2} circular padding={8} />
         </XStack>
 
         <XStack gap={12}>

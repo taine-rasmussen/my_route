@@ -7,11 +7,18 @@ import { useUser } from '@/app/contexts/UserContext';
 import ClimbCardSmall from './climbCards/ClimbCardSmall';
 import ClimbCardLarge from './climbCards/ClimbCardLarge';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { IClimbData, IDateRange, SortOrder } from '@/app/types';
+import { DateType } from 'react-native-ui-datepicker';
 
 const Journal = () => {
-  const [climbs, setClimbs] = useState<any[]>([]);
+  const [climbs, setClimbs] = useState<IClimbData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [climbCardView, setClimbCardView] = useState<boolean>(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+  const [dateRange, setDateRange] = useState<IDateRange>({
+    startDate: null,
+    endDate: null,
+  });
   const { user } = useUser();
   const insets = useSafeAreaInsets();
 
@@ -52,12 +59,18 @@ const Journal = () => {
     setLoading(false);
   };
 
+  const sortedClimbs = sortOrder === 'oldest' ? [...climbs].reverse() : climbs;
+
   return (
     <SafeAreaWrapper>
       <JournalHeader
+        dateRange={dateRange}
+        setDateRange={setDateRange}
         handleRefresh={handleRefresh}
-        setClimbCardView={setClimbCardView}
         climbCardView={climbCardView}
+        setClimbCardView={setClimbCardView}
+        sortOrder={sortOrder}
+        onSortChange={setSortOrder}
       />
       <ScrollView
         contentContainerStyle={{
@@ -68,7 +81,7 @@ const Journal = () => {
         <YStack gap={16} paddingBlockStart={24}>
           {loading && <SizableText>Loading...</SizableText>}
           {!loading &&
-            climbs.map((climb, index) =>
+            sortedClimbs.map((climb, index) =>
               climbCardView ? (
                 <ClimbCardLarge key={index} climb={climb} />
               ) : (
