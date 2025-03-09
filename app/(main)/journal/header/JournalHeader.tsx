@@ -11,11 +11,13 @@ import {
 import { useState } from 'react';
 import PopoverWrapper from './PopoverWrapper';
 import AddClimbPopoverContent from './AddClimbPopoverContent';
-import { IDateRange, SortOrder } from '@/app/types';
+import { IDateRange, SortOrder, VGrade } from '@/app/types';
 import DatePickerFilter from './DatePickerFilter';
 import GradeRangeFilter from './GradeRangeFilter';
 
 interface IJournalHeader {
+  gradeRange: VGrade[];
+  setGradeRange: (grades: VGrade[]) => void;
   dateRange: IDateRange;
   setDateRange: (date: IDateRange) => void;
   sortOrder: SortOrder;
@@ -98,7 +100,12 @@ const JournalHeader = (props: IJournalHeader) => {
                 padding={8}
               />
             }
-            content={<GradeRangeFilter />}
+            content={
+              <GradeRangeFilter
+                setGradeRange={props.setGradeRange}
+                gradeRange={props.gradeRange}
+              />
+            }
           />
         </XStack>
 

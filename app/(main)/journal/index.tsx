@@ -7,8 +7,7 @@ import { useUser } from '@/app/contexts/UserContext';
 import ClimbCardSmall from './climbCards/ClimbCardSmall';
 import ClimbCardLarge from './climbCards/ClimbCardLarge';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { IClimbData, IDateRange, SortOrder } from '@/app/types';
-import { DateType } from 'react-native-ui-datepicker';
+import { IClimbData, IDateRange, SortOrder, VGrade } from '@/app/types';
 
 const Journal = () => {
   const [climbs, setClimbs] = useState<IClimbData[]>([]);
@@ -19,6 +18,7 @@ const Journal = () => {
     startDate: null,
     endDate: null,
   });
+  const [gradeRange, setGradeRange] = useState<VGrade[]>([]);
   const { user } = useUser();
   const insets = useSafeAreaInsets();
 
@@ -64,6 +64,8 @@ const Journal = () => {
   return (
     <SafeAreaWrapper>
       <JournalHeader
+        gradeRange={gradeRange}
+        setGradeRange={setGradeRange}
         dateRange={dateRange}
         setDateRange={setDateRange}
         handleRefresh={handleRefresh}
