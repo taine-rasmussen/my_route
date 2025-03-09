@@ -32,6 +32,9 @@ const JournalHeader = (props: IJournalHeader) => {
   const [openPopover, setOpenPopover] = useState<boolean>(false);
   const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
 
+  const calendarIsActive =
+    openDatePicker || (props.dateRange.startDate && props.dateRange.endDate);
+
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -66,7 +69,7 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenDatePicker}
             trigger={
               <Button
-                backgroundColor={openDatePicker ? '$orange10' : 'transparent'}
+                backgroundColor={calendarIsActive ? '$orange10' : 'transparent'}
                 icon={<CalendarDays />}
                 scaleIcon={2}
                 circular
