@@ -20,19 +20,19 @@ const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
     flex: 1,
   },
   dropdownContainerStyle: {
-    backgroundColor: isDarkMode ? 'black' : 'white',
+    backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
   },
   placeholderStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? 'white' : '#2a2a2a',
   },
   selectedTextStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? 'white' : '#2a2a2a',
   },
   itemTextStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? 'white' : '#2a2a2a',
   },
 });
 

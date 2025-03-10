@@ -39,6 +39,8 @@ const JournalHeader = (props: IJournalHeader) => {
   const calendarIsActive =
     openDatePicker || (props.dateRange.startDate && props.dateRange.endDate);
 
+  const gradeRangeIsActive = openGradeRangePicker || props.gradeRange.length;
+
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -93,7 +95,7 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenGradeRangePicker}
             trigger={
               <Button
-                backgroundColor={openGradeRangePicker ? '$orange10' : '#2a2a2a'}
+                backgroundColor={gradeRangeIsActive ? '$orange10' : '#2a2a2a'}
                 icon={<ArrowDown01 />}
                 scaleIcon={2}
                 circular
