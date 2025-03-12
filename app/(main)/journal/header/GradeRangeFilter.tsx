@@ -14,25 +14,26 @@ interface IGradeRangeFilter {
 
 const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
   dropdown: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 8,
     flex: 1,
+    padding: 16,
   },
   dropdownContainerStyle: {
-    backgroundColor: isDarkMode ? 'black' : 'white',
+    backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
   },
   placeholderStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? 'white' : '#2a2a2a',
   },
   selectedTextStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? 'white' : '#2a2a2a',
   },
   itemTextStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : 'black',
+    color: isDarkMode ? 'white' : '#2a2a2a',
   },
 });
 
@@ -72,17 +73,11 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
   const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
 
   return (
-    <YStack
-      gap="$3"
-      width={Math.min(width * 0.8, 400)}
-      maxHeight={height * 0.6}
-      height={height * 0.2}
-    >
-      <Label size="$5">Grade Range</Label>
+    <YStack gap="$3" width={Math.min(width * 0.8, 400)}>
       <MultiSelect
         style={[
           styles.dropdown,
-          isFocus && { borderColor: isDarkMode ? 'white' : 'black' },
+          isFocus && { borderColor: isDarkMode ? 'white' : '#2a2a2a' },
         ]}
         containerStyle={styles.dropdownContainerStyle}
         placeholderStyle={styles.placeholderStyle}

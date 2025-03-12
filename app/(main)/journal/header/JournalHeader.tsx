@@ -39,6 +39,8 @@ const JournalHeader = (props: IJournalHeader) => {
   const calendarIsActive =
     openDatePicker || (props.dateRange.startDate && props.dateRange.endDate);
 
+  const gradeRangeIsActive = openGradeRangePicker || props.gradeRange.length;
+
   return (
     <Card padding={4} elevate size="$2" bordered padded>
       <XStack
@@ -54,8 +56,9 @@ const JournalHeader = (props: IJournalHeader) => {
             circular
             padding={8}
             backgroundColor={
-              props.sortOrder === 'newest' ? '$orange10' : '#2a2a2a'
+              props.sortOrder === 'newest' ? '$orange10' : '$background'
             }
+            color={props.sortOrder === 'newest' ? '$background' : 'darkgrey'}
             onPress={() => props.onSortChange('newest')}
           />
           <Button
@@ -64,8 +67,9 @@ const JournalHeader = (props: IJournalHeader) => {
             circular
             padding={8}
             backgroundColor={
-              props.sortOrder === 'oldest' ? '$orange10' : '#2a2a2a'
+              props.sortOrder === 'oldest' ? '$orange10' : '$background'
             }
+            color={props.sortOrder === 'oldest' ? '$background' : '$color10'}
             onPress={() => props.onSortChange('oldest')}
           />
           <PopoverWrapper
@@ -73,7 +77,8 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenDatePicker}
             trigger={
               <Button
-                backgroundColor={calendarIsActive ? '$orange10' : '#2a2a2a'}
+                backgroundColor={calendarIsActive ? '$orange10' : '$background'}
+                color={calendarIsActive ? '$background' : '$color10'}
                 icon={<CalendarDays />}
                 scaleIcon={2}
                 circular
@@ -93,7 +98,10 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenGradeRangePicker}
             trigger={
               <Button
-                backgroundColor={openGradeRangePicker ? '$orange10' : '#2a2a2a'}
+                backgroundColor={
+                  gradeRangeIsActive ? '$orange10' : '$background'
+                }
+                color={gradeRangeIsActive ? '$background' : 'darkgrey'}
                 icon={<ArrowDown01 />}
                 scaleIcon={2}
                 circular
@@ -121,6 +129,8 @@ const JournalHeader = (props: IJournalHeader) => {
               scaleIcon={2}
               circular
               padding={8}
+              backgroundColor="$background"
+              color="darkgrey"
             />
           ) : (
             <Button
@@ -133,6 +143,8 @@ const JournalHeader = (props: IJournalHeader) => {
               scaleIcon={2}
               circular
               padding={8}
+              backgroundColor="$background"
+              color="darkgrey"
             />
           )}
 
@@ -141,10 +153,12 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenPopover}
             trigger={
               <Button
-                icon={<CirclePlus color={openPopover ? '$orange10' : ''} />}
+                icon={<CirclePlus />}
                 scaleIcon={2}
                 circular
                 padding={8}
+                backgroundColor={openPopover ? '$orange10' : '$background'}
+                color={openPopover ? '$background' : 'darkgrey'}
               />
             }
             content={
