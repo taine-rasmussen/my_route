@@ -3,6 +3,7 @@ import { getFromSecureStore } from '../utils';
 import { jwtDecode } from 'jwt-decode';
 import { useAuth } from './AuthContext';
 import { ThemePreference, IUser } from '../types';
+import { useColorScheme } from 'react-native';
 
 interface TokenUser {
   email: string;
@@ -18,6 +19,7 @@ interface UserContextType {
   themePreference: string;
   toggleTheme: (preference: ThemePreference) => void;
   loading: boolean;
+  isDarkMode: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -39,6 +41,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [themePreference, setThemePreference] =
     useState<ThemePreference>('system');
+
+  const systemColorScheme = useColorScheme();
+  const colorScheme =
+    themePreference === 'system' ? systemColorScheme : themePreference;
+
+  const isDarkMode = colorScheme === 'dark';
 
   const toggleTheme = (preference: ThemePreference) => {
     setThemePreference(preference);
@@ -112,6 +120,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         themePreference,
         toggleTheme,
         loading,
+        isDarkMode,
       }}
     >
       {children}
