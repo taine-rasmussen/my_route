@@ -14,6 +14,7 @@ import AddClimbPopoverContent from './AddClimbPopoverContent';
 import { IDateRange, SortOrder, VGrade } from '@/app/types';
 import DatePickerFilter from './DatePickerFilter';
 import GradeRangeFilter from './GradeRangeFilter';
+import { useUser } from '@/app/contexts/UserContext';
 
 interface IJournalHeader {
   gradeRange: VGrade[];
@@ -31,15 +32,23 @@ const JournalHeader = (props: IJournalHeader) => {
   const handleViewChange = () => {
     props.setClimbCardView(!props.climbCardView);
   };
-
-  const [openPopover, setOpenPopover] = useState<boolean>(false);
-  const [openDatePicker, setOpenDatePicker] = useState<boolean>(false);
+  const { isDarkMode } = useUser();
+  const [openPopover, setOpenPopover] = useState(false);
+  const [openDatePicker, setOpenDatePicker] = useState(false);
   const [openGradeRangePicker, setOpenGradeRangePicker] = useState(false);
 
-  const calendarIsActive =
-    openDatePicker || (props.dateRange.startDate && props.dateRange.endDate);
+  const calendarIsActive = !!(
+    openDatePicker ||
+    (props.dateRange.startDate && props.dateRange.endDate)
+  );
+  const gradeRangeIsActive = !!(
+    openGradeRangePicker || props.gradeRange.length
+  );
 
-  const gradeRangeIsActive = openGradeRangePicker || props.gradeRange.length;
+  const getButtonStyles = (isActive: boolean) => ({
+    backgroundColor: isActive ? '$orange10' : '$background',
+    color: isActive ? 'white' : isDarkMode ? 'white' : '#909090',
+  });
 
   return (
     <Card padding={4} elevate size="$2" bordered padded>
@@ -55,10 +64,7 @@ const JournalHeader = (props: IJournalHeader) => {
             scaleIcon={2}
             circular
             padding={8}
-            backgroundColor={
-              props.sortOrder === 'newest' ? '$orange10' : '$background'
-            }
-            color={props.sortOrder === 'newest' ? '$background' : 'darkgrey'}
+            {...getButtonStyles(props.sortOrder === 'newest')}
             onPress={() => props.onSortChange('newest')}
           />
           <Button
@@ -66,10 +72,7 @@ const JournalHeader = (props: IJournalHeader) => {
             scaleIcon={2}
             circular
             padding={8}
-            backgroundColor={
-              props.sortOrder === 'oldest' ? '$orange10' : '$background'
-            }
-            color={props.sortOrder === 'oldest' ? '$background' : '$color10'}
+            {...getButtonStyles(props.sortOrder === 'oldest')}
             onPress={() => props.onSortChange('oldest')}
           />
           <PopoverWrapper
@@ -77,12 +80,11 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenDatePicker}
             trigger={
               <Button
-                backgroundColor={calendarIsActive ? '$orange10' : '$background'}
-                color={calendarIsActive ? '$background' : '$color10'}
                 icon={<CalendarDays />}
                 scaleIcon={2}
                 circular
                 padding={8}
+                {...getButtonStyles(calendarIsActive)}
               />
             }
             content={
@@ -98,14 +100,11 @@ const JournalHeader = (props: IJournalHeader) => {
             onOpenChange={setOpenGradeRangePicker}
             trigger={
               <Button
-                backgroundColor={
-                  gradeRangeIsActive ? '$orange10' : '$background'
-                }
-                color={gradeRangeIsActive ? '$background' : 'darkgrey'}
                 icon={<ArrowDown01 />}
                 scaleIcon={2}
                 circular
                 padding={8}
+                {...getButtonStyles(gradeRangeIsActive)}
               />
             }
             content={
@@ -118,36 +117,20 @@ const JournalHeader = (props: IJournalHeader) => {
         </XStack>
 
         <XStack gap={12}>
-          {props.climbCardView ? (
-            <Button
-              icon={
-                <Columns4
-                  onPress={handleViewChange}
-                  style={{ transform: [{ rotate: '90deg' }] }}
-                />
-              }
-              scaleIcon={2}
-              circular
-              padding={8}
-              backgroundColor="$background"
-              color="darkgrey"
-            />
-          ) : (
-            <Button
-              icon={
-                <Columns2
-                  onPress={handleViewChange}
-                  style={{ transform: [{ rotate: '90deg' }] }}
-                />
-              }
-              scaleIcon={2}
-              circular
-              padding={8}
-              backgroundColor="$background"
-              color="darkgrey"
-            />
-          )}
-
+          <Button
+            icon={
+              props.climbCardView ? (
+                <Columns4 style={{ transform: [{ rotate: '90deg' }] }} />
+              ) : (
+                <Columns2 style={{ transform: [{ rotate: '90deg' }] }} />
+              )
+            }
+            scaleIcon={2}
+            circular
+            padding={8}
+            {...getButtonStyles(false)}
+            onPress={handleViewChange}
+          />
           <PopoverWrapper
             isOpen={openPopover}
             onOpenChange={setOpenPopover}
@@ -157,8 +140,7 @@ const JournalHeader = (props: IJournalHeader) => {
                 scaleIcon={2}
                 circular
                 padding={8}
-                backgroundColor={openPopover ? '$orange10' : '$background'}
-                color={openPopover ? '$background' : 'darkgrey'}
+                {...getButtonStyles(openPopover)}
               />
             }
             content={
