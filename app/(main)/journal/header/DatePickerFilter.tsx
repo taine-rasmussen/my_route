@@ -6,6 +6,7 @@ import DateTimePicker, {
 } from 'react-native-ui-datepicker';
 import { IDateRange } from '@/app/types';
 import { useUser } from '@/app/contexts/UserContext';
+import { TextStyle } from 'react-native';
 
 interface IDatePickerFilter {
   dateRange: IDateRange;
@@ -40,7 +41,7 @@ const DatePickerFilter = (props: IDatePickerFilter) => {
           },
           selected_label: {
             color: '#fff',
-            fontWeight: 'bold',
+            fontWeight: 'bold' as TextStyle['fontWeight'],
           },
           today: {
             borderColor: '#007AFF',
