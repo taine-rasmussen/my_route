@@ -5,6 +5,8 @@ import DateTimePicker, {
   getDefaultStyles,
 } from 'react-native-ui-datepicker';
 import { IDateRange } from '@/app/types';
+import { useUser } from '@/app/contexts/UserContext';
+import { TextStyle } from 'react-native';
 
 interface IDatePickerFilter {
   dateRange: IDateRange;
@@ -14,11 +16,63 @@ interface IDatePickerFilter {
 
 const DatePickerFilter = (props: IDatePickerFilter) => {
   const defaultStyles = getDefaultStyles();
-
+  const { isDarkMode } = useUser();
   const [tempDateRange, setTempDateRange] = useState<IDateRange>({
     startDate: props.dateRange.startDate,
     endDate: props.dateRange.endDate,
   });
+
+  const customStyles = {
+    ...(isDarkMode
+      ? defaultStyles
+      : {
+          container: {
+            backgroundColor: '#fff',
+          },
+          header: {
+            backgroundColor: '#f0f0f0',
+          },
+          dayText: {
+            color: '#000',
+          },
+          selected: {
+            backgroundColor: '#007AFF',
+            borderRadius: 5,
+          },
+          selected_label: {
+            color: '#fff',
+            fontWeight: 'bold' as TextStyle['fontWeight'],
+          },
+          today: {
+            borderColor: '#007AFF',
+            borderWidth: 2.5,
+            borderRadius: 5,
+          },
+          range_fill: {
+            backgroundColor: '#e6f7ff',
+          },
+          range_middle: {
+            backgroundColor: '#e6f7ff',
+          },
+          range_middle_label: {
+            color: '#000',
+          },
+          range_start: {
+            backgroundColor: '#007AFF',
+            borderRadius: 5,
+          },
+          range_start_label: {
+            color: '#fff',
+          },
+          range_end: {
+            backgroundColor: '#007AFF',
+            borderRadius: 5,
+          },
+          range_end_label: {
+            color: '#fff',
+          },
+        }),
+  };
 
   useEffect(() => {
     setTempDateRange({
@@ -72,7 +126,7 @@ const DatePickerFilter = (props: IDatePickerFilter) => {
         startDate={tempDateRange.startDate}
         endDate={tempDateRange.endDate}
         onChange={handleDateChange}
-        styles={defaultStyles}
+        styles={customStyles}
       />
 
       <XStack justifyContent="space-between" paddingTop={12}>
