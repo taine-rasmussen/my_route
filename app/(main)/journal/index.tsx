@@ -22,17 +22,27 @@ const Journal = () => {
   const { user } = useUser();
   const insets = useSafeAreaInsets();
 
+  console.log(gradeRange, dateRange);
+
   const getClimbsData = useCallback(async () => {
     try {
       const accessToken = await getFromSecureStore('access_token');
 
+      const filters = {
+        start_date: dateRange.startDate || null,
+        end_date: dateRange.endDate || null,
+        grade_range: gradeRange.length > 0 ? gradeRange : null,
+      };
+
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}get_climbs/?user_id=${user?.id}`,
         {
-          method: 'GET',
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify(filters),
         },
       );
 
@@ -47,7 +57,7 @@ const Journal = () => {
     } finally {
       setLoading(false);
     }
-  }, [user?.id]);
+  }, [user?.id, dateRange, gradeRange]);
 
   useEffect(() => {
     getClimbsData();

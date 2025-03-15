@@ -138,7 +138,6 @@ const DatePickerFilter = (props: IDatePickerFilter) => {
         >
           Clear Dates
         </Button>
-
         <XStack gap={8}>
           <Button
             size="$3"

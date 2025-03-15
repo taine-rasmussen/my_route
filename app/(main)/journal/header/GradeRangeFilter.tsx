@@ -1,8 +1,8 @@
-import { YStack, SizableText, XStack, Button, Label } from 'tamagui';
+import { YStack, XStack, Button } from 'tamagui';
 import { useState } from 'react';
 import { MultiSelect } from 'react-native-element-dropdown';
 import { GradeStyle, VGrade } from '@/app/types';
-import { useColorScheme, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { useUser } from '@/app/contexts/UserContext';
 import { getClimbingGrades } from '@/app/utils';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -38,37 +38,44 @@ const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
 });
 
 const GradeRangeFilter = (props: IGradeRangeFilter) => {
-  const { themePreference, user } = useUser();
+  const { isDarkMode, user } = useUser();
   const userGrade = user?.grade_style ?? 'V Scale';
   const dropDownItems = getClimbingGrades(userGrade as GradeStyle);
 
-  const [isFocus, setIsFocus] = useState(false);
-
-  const systemColorScheme = useColorScheme();
-  const { width, height } = useWindowDimensions();
   const { top, bottom } = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
+  const [isFocus, setIsFocus] = useState<boolean>(false);
+  const [gradeRangePreview, setGradeRangePreview] = useState<VGrade[]>([]);
 
-  const colorScheme =
-    themePreference === 'system' ? systemColorScheme : themePreference;
-
-  const isDarkMode = colorScheme === 'dark';
   const isExpanded = isFocus || props.gradeRange.length > 0;
   const styles = getStyles(isDarkMode, isExpanded);
 
   const handleChange = (selected: string[]) => {
+    console.log('hitting?');
     const selectedGrades = dropDownItems
       .filter((item) => selected.includes(item.value))
       .map((item) => item.value as VGrade);
 
-    props.setGradeRange(selectedGrades);
+    setGradeRangePreview(selectedGrades);
     setIsFocus(false);
   };
 
   const handleClear = () => {
     props.setGradeRange([]);
+    setGradeRangePreview([]);
   };
 
+  const handleApply = () => {
+    if (gradeRangePreview?.length) {
+      props.setGradeRange(gradeRangePreview);
+      setIsFocus(false);
+    }
+  };
+
+  console.log(gradeRangePreview);
+
   const hasSelection = props.gradeRange.length > 0;
+  const isApplyEnabled = gradeRangePreview?.length > 0;
 
   const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
 
@@ -98,8 +105,16 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         visibleSelectedItem
       />
       <XStack gap="$3" justifyContent="flex-end">
-        <Button size="$4" disabled={!hasSelection} onPress={handleClear}>
+        <Button
+          size="$4"
+          disabled={!hasSelection}
+          onPress={handleClear}
+          backgroundColor="$red10"
+        >
           Clear
+        </Button>
+        <Button size="$4" disabled={isApplyEnabled} onPress={handleApply}>
+          Apply
         </Button>
       </XStack>
     </YStack>
