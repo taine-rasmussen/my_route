@@ -20,7 +20,7 @@ const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
     flex: 1,
     padding: 16,
   },
-  activeColor: 'red',
+  activeColor: isDarkMode ? '#444444' : '#666666',
   dropdownContainerStyle: {
     backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
   },
@@ -30,11 +30,14 @@ const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
   },
   selectedTextStyle: {
     fontSize: isExpanded ? 16 : 14,
-    color: isDarkMode ? 'white' : '#2a2a2a',
+    color: isDarkMode ? 'white' : 'white',
   },
   itemTextStyle: {
     fontSize: isExpanded ? 16 : 14,
     color: isDarkMode ? 'white' : '#2a2a2a',
+  },
+  itemContainerStyle: {
+    backgroundColor: isDarkMode ? '#333333' : 'white',
   },
 });
 
@@ -82,6 +85,8 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         itemTextStyle={styles.itemTextStyle}
+        itemContainerStyle={styles.itemContainerStyle} // Apply custom item container style
+        activeColor={styles.activeColor} // Highlight selected item with dark gray background
         data={dropDownItems}
         labelField="label"
         valueField="value"
@@ -90,12 +95,12 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={handleChange}
-        activeColor={isDarkMode ? 'black' : 'white'}
         mode="auto"
         maxHeight={dropdownMaxHeight}
         alwaysRenderSelectedItem
         visibleSelectedItem
       />
+
       <XStack gap="$3" justifyContent="flex-end">
         <Button size="$4" onPress={handleClear} backgroundColor="$red10">
           Clear
