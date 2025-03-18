@@ -39,25 +39,21 @@ const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
 
 const GradeRangeFilter = (props: IGradeRangeFilter) => {
   const { isDarkMode, user } = useUser();
-  const userGrade = user?.grade_style ?? 'V Scale';
-  const dropDownItems = getClimbingGrades(userGrade as GradeStyle);
-
   const { top, bottom } = useSafeAreaInsets();
+  const userGrade = user?.grade_style ?? 'V Scale';
   const { width, height } = useWindowDimensions();
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  const [gradeRangePreview, setGradeRangePreview] = useState<VGrade[]>([]);
-
   const isExpanded = isFocus || props.gradeRange.length > 0;
   const styles = getStyles(isDarkMode, isExpanded);
+  const dropDownItems = getClimbingGrades(userGrade as GradeStyle);
+  const [gradeRangePreview, setGradeRangePreview] = useState<VGrade[]>([]);
 
   const handleChange = (selected: string[]) => {
-    console.log('hitting?');
     const selectedGrades = dropDownItems
       .filter((item) => selected.includes(item.value))
       .map((item) => item.value as VGrade);
 
     setGradeRangePreview(selectedGrades);
-    setIsFocus(false);
   };
 
   const handleClear = () => {
@@ -69,14 +65,11 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
     if (gradeRangePreview?.length) {
       props.setGradeRange(gradeRangePreview);
       setIsFocus(false);
+      console.log(props.gradeRange);
     }
   };
 
-  console.log(gradeRangePreview);
-
   const hasSelection = props.gradeRange.length > 0;
-  const isApplyEnabled = gradeRangePreview?.length > 0;
-
   const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
 
   return (
@@ -94,7 +87,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         labelField="label"
         valueField="value"
         placeholder="Select grade range"
-        value={props.gradeRange}
+        value={gradeRangePreview}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={handleChange}
@@ -113,7 +106,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         >
           Clear
         </Button>
-        <Button size="$4" disabled={isApplyEnabled} onPress={handleApply}>
+        <Button size="$4" onPress={handleApply}>
           Apply
         </Button>
       </XStack>
