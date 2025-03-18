@@ -54,7 +54,6 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
       .map((item) => item.value as VGrade);
 
     setGradeRangePreview(selectedGrades);
-    setIsFocus(false);
   };
 
   const handleClear = () => {
@@ -71,7 +70,6 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
   };
 
   const hasSelection = props.gradeRange.length > 0;
-  const isApplyEnabled = gradeRangePreview?.length > 0;
   const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
 
   return (
@@ -89,7 +87,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         labelField="label"
         valueField="value"
         placeholder="Select grade range"
-        value={props.gradeRange}
+        value={gradeRangePreview}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={handleChange}
