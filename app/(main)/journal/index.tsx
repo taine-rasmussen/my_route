@@ -22,8 +22,6 @@ const Journal = () => {
   const { user } = useUser();
   const insets = useSafeAreaInsets();
 
-  console.log(gradeRange, dateRange);
-
   const getClimbsData = useCallback(async () => {
     try {
       const accessToken = await getFromSecureStore('access_token');
