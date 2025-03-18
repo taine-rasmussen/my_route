@@ -20,6 +20,7 @@ const getStyles = (isDarkMode: boolean, isExpanded: boolean) => ({
     flex: 1,
     padding: 16,
   },
+  activeColor: 'red',
   dropdownContainerStyle: {
     backgroundColor: isDarkMode ? '#2a2a2a' : 'white',
   },
@@ -68,7 +69,6 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
     }
   };
 
-  const hasSelection = props.gradeRange.length > 0;
   const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
 
   return (
@@ -97,12 +97,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         visibleSelectedItem
       />
       <XStack gap="$3" justifyContent="flex-end">
-        <Button
-          size="$4"
-          disabled={!hasSelection}
-          onPress={handleClear}
-          backgroundColor="$red10"
-        >
+        <Button size="$4" onPress={handleClear} backgroundColor="$red10">
           Clear
         </Button>
         <Button size="$4" onPress={handleApply}>
