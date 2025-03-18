@@ -85,8 +85,8 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         itemTextStyle={styles.itemTextStyle}
-        itemContainerStyle={styles.itemContainerStyle} // Apply custom item container style
-        activeColor={styles.activeColor} // Highlight selected item with dark gray background
+        itemContainerStyle={styles.itemContainerStyle}
+        activeColor={styles.activeColor}
         data={dropDownItems}
         labelField="label"
         valueField="value"
