@@ -65,7 +65,6 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
     if (gradeRangePreview?.length) {
       props.setGradeRange(gradeRangePreview);
       setIsFocus(false);
-      console.log(props.gradeRange);
     }
   };
 
