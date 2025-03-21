@@ -13,13 +13,21 @@ const JournalWidget = () => {
     try {
       const accessToken = await getFromSecureStore('access_token');
 
+      const filters = {
+        start_date: null,
+        end_date: null,
+        grade_range: null,
+      };
+
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}get_climbs/?user_id=${user?.id}`,
         {
-          method: 'GET',
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
           },
+          body: JSON.stringify(filters),
         },
       );
 
