@@ -51,7 +51,7 @@ const JournalWidget = () => {
     return <SizableText>Loading...</SizableText>;
   }
 
-  const { attempts, created_at, grade, id } = recentClimb;
+  const { attempts, created_at, grade } = recentClimb;
   const formattedDate = new Date(created_at).toLocaleDateString();
 
   const gradeColor = getGradeColor(grade, user?.grade_style as GradeStyle);
