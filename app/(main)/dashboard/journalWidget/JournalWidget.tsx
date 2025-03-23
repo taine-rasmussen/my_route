@@ -8,7 +8,6 @@ const JournalWidget = () => {
   const [recentClimb, setRecentClimb] = useState<any | null>(null);
   const { user } = useUser();
 
-  // create route for preview data instead of fetching all climbs
   const getRecentClimb = async () => {
     try {
       const accessToken = await getFromSecureStore('access_token');
