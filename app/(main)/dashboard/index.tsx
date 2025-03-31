@@ -24,7 +24,6 @@ const Dashboard = () => {
           <UserWidget />
           <XStack gap={16}>
             <JournalWidget />
-            <JournalWidget />
           </XStack>
         </YStack>
       )}
