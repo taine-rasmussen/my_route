@@ -24,6 +24,10 @@ const Dashboard = () => {
           <UserWidget />
           <XStack gap={16}>
             <JournalWidget />
+            {/* // last climb
+            // average {month} changeable - New setting? manage widgets - layout menu
+            // current project
+            // graph of climbs over past {month} same as above */}
           </XStack>
         </YStack>
       )}
