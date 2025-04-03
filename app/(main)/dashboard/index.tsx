@@ -4,7 +4,8 @@ import UserWidget from './userWidget/UserWidget';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { Spinner, View, YStack, XStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
-import JournalWidget from './journalWidget/JournalWidget';
+import JournalWidget from './widgets/journalWidget/JournalWidget';
+import AverageClimbWidget from './widgets/journalWidget/AverageClimbWidget';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
@@ -24,6 +25,7 @@ const Dashboard = () => {
           <UserWidget />
           <XStack gap={16}>
             <JournalWidget />
+            <AverageClimbWidget />
             {/* // last climb
             // average {month} changeable - New setting? manage widgets - layout menu
             // current project
