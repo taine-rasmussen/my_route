@@ -6,6 +6,7 @@ import { Spinner, View, YStack, XStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
 import JournalWidget from './widgets/journalWidget/JournalWidget';
 import AverageClimbWidget from './widgets/journalWidget/AverageClimbWidget';
+import LineChartWidget from './widgets/journalWidget/LineChartWidget';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
@@ -23,13 +24,10 @@ const Dashboard = () => {
       ) : (
         <YStack gap={26}>
           <UserWidget />
-          <XStack gap={16}>
+          <XStack gap={16} flexWrap="wrap" display="flex">
             <JournalWidget />
             <AverageClimbWidget />
-            {/* // last climb
-            // average {month} changeable - New setting? manage widgets - layout menu
-            // current project
-            // graph of climbs over past {month} same as above */}
+            <LineChartWidget />
           </XStack>
         </YStack>
       )}

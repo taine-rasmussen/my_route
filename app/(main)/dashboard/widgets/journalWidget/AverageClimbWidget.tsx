@@ -11,7 +11,7 @@ const AverageClimbWidget = () => {
     async function fetchAverageGrade() {
       const filters = {
         start_date: moment().subtract(1, 'months').format('YYYY-MM-DD'),
-        end_date: moment().format('YYYY-MM-DD'),
+        end_date: moment().add(1, 'days').format('YYYY-MM-DD'),
       };
 
       try {
