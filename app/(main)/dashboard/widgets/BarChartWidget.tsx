@@ -2,8 +2,8 @@ import { useUser } from '@/app/contexts/UserContext';
 import { getFromSecureStore } from '@/app/utils';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { Card, SizableText } from 'tamagui';
-import { Dimensions, View, Text } from 'react-native';
+import { Card, XStack, Group, Button } from 'tamagui';
+import { Dimensions, View } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 
 const BarChartWidget = () => {
@@ -51,7 +51,6 @@ const BarChartWidget = () => {
     getClimbsData();
   }, []);
 
-  // 🔍 Process data for Attempts and Count by Grade
   const processData = () => {
     const attemptsByGrade: { [grade: string]: number } = {};
     const climbsByGrade: { [grade: string]: number } = {};
@@ -68,7 +67,6 @@ const BarChartWidget = () => {
       climbsByGrade[climb.grade] += 1;
     });
 
-    // Sort grades (V0 → V17)
     const sortedGrades = Object.keys(attemptsByGrade).sort((a, b) => {
       const valA = parseInt(a.replace('V', ''));
       const valB = parseInt(b.replace('V', ''));
@@ -88,39 +86,45 @@ const BarChartWidget = () => {
   const chartWidth = screenWidth * 0.9;
 
   return (
-    <Card elevate bordered width="100%" alignSelf="center" p="$4">
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginBottom: 12,
-        }}
-      >
-        <Text
-          onPress={() => setViewType('attempts')}
-          style={{
-            color: viewType === 'attempts' ? '#fff' : '#888',
-            fontWeight: 'bold',
-            marginHorizontal: 10,
-            textDecorationLine: viewType === 'attempts' ? 'underline' : 'none',
-          }}
+    <Card
+      elevate
+      bordered
+      borderRadius="$4"
+      shadowColor="$shadowColor"
+      shadowRadius="$4"
+      p={'$4'}
+    >
+      <XStack gap={16} alignSelf="center" paddingBottom={'$4'}>
+        <Group
+          orientation="horizontal"
+          borderRadius="$2"
+          overflow="hidden"
+          borderColor="$gray8"
         >
-          Attempts
-        </Text>
-        <Text
-          onPress={() => setViewType('count')}
-          style={{
-            color: viewType === 'count' ? '#fff' : '#888',
-            fontWeight: 'bold',
-            marginHorizontal: 10,
-            textDecorationLine: viewType === 'count' ? 'underline' : 'none',
-          }}
-        >
-          Climb Count
-        </Text>
-      </View>
-
-      {/* Chart wrapper with padding to ensure balance */}
+          <Group.Item>
+            <Button
+              onPress={() => setViewType('attempts')}
+              backgroundColor={viewType === 'attempts' ? '$orange4' : '$gray2'}
+              borderRightWidth={1}
+              borderColor="$gray8"
+              color={viewType === 'attempts' ? '$orange10' : '$gray10'}
+            >
+              Attempts
+            </Button>
+          </Group.Item>
+          <Group.Item>
+            <Button
+              onPress={() => setViewType('count')}
+              backgroundColor={viewType === 'count' ? '$orange4' : '$gray2'}
+              borderLeftWidth={1}
+              borderColor="$gray8"
+              color={viewType === 'count' ? '$orange10' : '$gray10'}
+            >
+              Count
+            </Button>
+          </Group.Item>
+        </Group>
+      </XStack>
       <View style={{ paddingHorizontal: 12 }}>
         <BarChart
           data={{
