@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Card, SizableText } from 'tamagui';
 import { Dimensions, View, Text } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 
 const LineChartWidget = () => {
   const [climbData, setClimbData] = useState([]);
@@ -48,21 +48,29 @@ const LineChartWidget = () => {
     getClimbsData();
   }, []);
 
-  // Prepare data for the chart
   const processData = () => {
-    const attemptsByMonth: { [key: string]: number } = {};
+    const attemptsByGrade: { [grade: string]: number } = {};
 
-    climbData.forEach((item: any) => {
-      // or item: Climb if typed
-      const month = moment(item.created_at).format('MMMM YYYY');
-      if (!attemptsByMonth[month]) {
-        attemptsByMonth[month] = 0;
+    climbData.forEach((climb: any) => {
+      if (!climb.grade || !climb.attempts) return;
+
+      if (!attemptsByGrade[climb.grade]) {
+        attemptsByGrade[climb.grade] = 0;
       }
-      attemptsByMonth[month] += item.attempts;
+
+      attemptsByGrade[climb.grade] += climb.attempts;
     });
 
-    const labels = Object.keys(attemptsByMonth);
-    const data = Object.values(attemptsByMonth) as number[];
+    // Sort grades numerically (V0 to V17)
+    const sortedGrades = Object.keys(attemptsByGrade).sort((a, b) => {
+      const getGradeValue = (grade: string) => parseInt(grade.replace('V', ''));
+      return getGradeValue(a) - getGradeValue(b);
+    });
+
+    const labels = sortedGrades;
+    const data = sortedGrades.map((grade) =>
+      Math.round(attemptsByGrade[grade]),
+    );
 
     if (labels.length === 0 || data.length === 0) {
       return { labels: ['No Data'], data: [0] };
@@ -80,7 +88,7 @@ const LineChartWidget = () => {
       <SizableText>Climb Attempts Over the Last Month</SizableText>
       <View>
         <Text>Attempts by Month</Text>
-        <LineChart
+        <BarChart
           data={{
             labels: chartData.labels,
             datasets: [
@@ -93,24 +101,23 @@ const LineChartWidget = () => {
           height={220}
           yAxisLabel=""
           yAxisSuffix=""
-          yAxisInterval={1} // optional, defaults to 1
+          yAxisInterval={1}
+          fromZero
           chartConfig={{
-            backgroundColor: '#e26a00',
-            backgroundGradientFrom: '#fb8c00',
-            backgroundGradientTo: '#ffa726',
-            decimalPlaces: 2,
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            backgroundColor: '#1e1e1e',
+            backgroundGradientFrom: '#1e1e1e',
+            backgroundGradientTo: '#1e1e1e',
+            decimalPlaces: 0,
+            barPercentage: 0.7,
+            color: (opacity = 1) => `rgba(0, 200, 255, ${opacity})`, // 👈 bar color
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // 👈 label color
             style: {
               borderRadius: 16,
             },
-            propsForDots: {
-              r: '6',
-              strokeWidth: '2',
-              stroke: '#ffa726',
+            propsForBackgroundLines: {
+              stroke: '#444',
             },
           }}
-          bezier
           style={{
             marginVertical: 8,
             borderRadius: 16,
