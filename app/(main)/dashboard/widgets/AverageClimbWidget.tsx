@@ -43,7 +43,7 @@ const AverageClimbWidget = () => {
   // TODO: press on card has pop up to show toggle hard coded dates for average range / custom - reuse date picker.
 
   return (
-    <Card padding={16} elevate size="$5" bordered width="45%" margin="auto">
+    <Card padding={16} elevate size="$5" bordered width="47.5%">
       <XStack gap={12} alignItems="center">
         <SizableText>
           Last months average:

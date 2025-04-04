@@ -4,9 +4,10 @@ import UserWidget from './userWidget/UserWidget';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { Spinner, View, YStack, XStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
-import JournalWidget from './widgets/journalWidget/JournalWidget';
-import AverageClimbWidget from './widgets/journalWidget/AverageClimbWidget';
-import LineChartWidget from './widgets/journalWidget/LineChartWidget';
+import JournalWidget from './widgets/JournalWidget';
+import AverageClimbWidget from './widgets/AverageClimbWidget';
+import BarChartWidget from './widgets/BarChartWidget';
+import HeatMapWidget from './widgets/HeatMapWidget';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
@@ -22,13 +23,14 @@ const Dashboard = () => {
           <Spinner size="large" color="$orange10" />
         </View>
       ) : (
-        <YStack gap={26}>
+        <YStack gap={16}>
           <UserWidget />
-          <XStack gap={16} flexWrap="wrap" display="flex">
+          <XStack gap={16}>
             <JournalWidget />
             <AverageClimbWidget />
-            <LineChartWidget />
           </XStack>
+          <BarChartWidget />
+          <HeatMapWidget />
         </YStack>
       )}
     </SafeAreaWrapper>
