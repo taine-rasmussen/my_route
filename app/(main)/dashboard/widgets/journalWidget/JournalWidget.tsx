@@ -56,7 +56,7 @@ const JournalWidget = () => {
   const gradeColor = getGradeColor(grade, user?.grade_style as GradeStyle);
 
   return (
-    <Card padding={16} elevate size="$5" bordered width="45%" margin="auto">
+    <Card padding={16} elevate size="$5" bordered width="47.5%">
       <XStack gap={12} alignItems="center">
         <YStack flex={1} gap={4}>
           <SizableText>Attempts: {attempts}</SizableText>

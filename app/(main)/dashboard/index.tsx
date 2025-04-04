@@ -22,13 +22,13 @@ const Dashboard = () => {
           <Spinner size="large" color="$orange10" />
         </View>
       ) : (
-        <YStack gap={26}>
+        <YStack gap={16}>
           <UserWidget />
-          <XStack gap={16} flexWrap="wrap" display="flex">
+          <XStack gap={16}>
             <JournalWidget />
             <AverageClimbWidget />
-            <BarChartWidget />
           </XStack>
+          <BarChartWidget />
         </YStack>
       )}
     </SafeAreaWrapper>
