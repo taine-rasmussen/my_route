@@ -4,9 +4,9 @@ import UserWidget from './userWidget/UserWidget';
 import { useAuth } from '@/app/contexts/AuthContext';
 import { Spinner, View, YStack, XStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
-import JournalWidget from './widgets/journalWidget/JournalWidget';
-import AverageClimbWidget from './widgets/journalWidget/AverageClimbWidget';
-import BarChartWidget from './widgets/journalWidget/BarChartWidget';
+import JournalWidget from './widgets/JournalWidget';
+import AverageClimbWidget from './widgets/AverageClimbWidget';
+import BarChartWidget from './widgets/BarChartWidget';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
