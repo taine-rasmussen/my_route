@@ -2,9 +2,12 @@ import { useUser } from '@/app/contexts/UserContext';
 import { getFromSecureStore } from '@/app/utils';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { Card, XStack, Group, Button } from 'tamagui';
+import { Card, XStack, Group } from 'tamagui';
 import { Dimensions, View } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
+import { AnimatePresence, MotiView } from 'moti';
+import { MotiPressable } from 'moti/interactions';
+import { Text } from 'react-native';
 
 const BarChartWidget = () => {
   const screenWidth = Dimensions.get('window').width;
@@ -101,66 +104,100 @@ const BarChartWidget = () => {
           overflow="hidden"
           borderColor="$gray8"
         >
-          <Group.Item>
-            <Button
-              onPress={() => setViewType('attempts')}
-              backgroundColor={viewType === 'attempts' ? '$orange4' : '$gray2'}
-              borderRightWidth={1}
-              borderColor="$gray8"
-              color={viewType === 'attempts' ? '$orange10' : '$gray10'}
-            >
-              Attempts
-            </Button>
-          </Group.Item>
-          <Group.Item>
-            <Button
-              onPress={() => setViewType('count')}
-              backgroundColor={viewType === 'count' ? '$orange4' : '$gray2'}
-              borderLeftWidth={1}
-              borderColor="$gray8"
-              color={viewType === 'count' ? '$orange10' : '$gray10'}
-            >
-              Count
-            </Button>
-          </Group.Item>
+          {(['attempts', 'count'] as const).map((type, index) => {
+            const isActive = viewType === type;
+
+            return (
+              <Group.Item key={type}>
+                <MotiPressable
+                  onPress={() => setViewType(type)}
+                  animate={({ pressed }) => {
+                    'worklet';
+                    return {
+                      scale: pressed ? 0.96 : 1,
+                      backgroundColor: isActive ? '#FFA94D' : '#E0E0E0',
+                    };
+                  }}
+                  transition={{
+                    type: 'timing',
+                    duration: 150,
+                  }}
+                  style={{
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderLeftWidth: index === 1 ? 2 : 0,
+                    borderRightWidth: index === 1 ? 0 : 2,
+                    borderColor: '#ccc',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: isActive ? '#FFF' : '#333',
+                      fontWeight: '600',
+                    }}
+                  >
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </Text>
+                </MotiPressable>
+              </Group.Item>
+            );
+          })}
         </Group>
       </XStack>
+
       <View style={{ paddingHorizontal: 12 }}>
-        <BarChart
-          data={{
-            labels: chart.labels,
-            datasets: [
-              {
-                data:
-                  viewType === 'attempts'
-                    ? chart.attemptData
-                    : chart.climbDataCount,
-              },
-            ],
-          }}
-          width={chartWidth}
-          height={screenHeight * 0.25}
-          fromZero
-          yAxisInterval={1}
-          yAxisLabel=""
-          yAxisSuffix=""
-          chartConfig={{
-            backgroundColor: '#1e1e1e',
-            backgroundGradientFrom: '#1e1e1e',
-            backgroundGradientTo: '#1e1e1e',
-            decimalPlaces: 0,
-            barPercentage: 0.7,
-            color: (opacity = 1) => `rgba(72, 219, 251, ${opacity})`,
-            labelColor: () => '#ffffff',
-            propsForBackgroundLines: {
-              stroke: '#333',
-            },
-          }}
-          style={{
-            borderRadius: 8,
-            marginLeft: -10,
-          }}
-        />
+        <AnimatePresence exitBeforeEnter>
+          <MotiView
+            key={viewType}
+            from={{ opacity: 0, translateX: 40 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            exit={{ opacity: 0, translateX: -40 }}
+            transition={{
+              type: 'spring',
+              damping: 15,
+              stiffness: 200,
+              mass: 0.5,
+            }}
+          >
+            <BarChart
+              data={{
+                labels: chart.labels,
+                datasets: [
+                  {
+                    data:
+                      viewType === 'attempts'
+                        ? chart.attemptData
+                        : chart.climbDataCount,
+                  },
+                ],
+              }}
+              width={chartWidth}
+              height={screenHeight * 0.25}
+              fromZero
+              yAxisInterval={1}
+              yAxisLabel=""
+              yAxisSuffix=""
+              chartConfig={{
+                backgroundColor: '#1e1e1e',
+                backgroundGradientFrom: '#1e1e1e',
+                backgroundGradientTo: '#1e1e1e',
+                decimalPlaces: 0,
+                barPercentage: 0.7,
+                color: (opacity = 1) => `rgba(72, 219, 251, ${opacity})`,
+                labelColor: () => '#ffffff',
+                propsForBackgroundLines: {
+                  stroke: '#333',
+                },
+              }}
+              style={{
+                borderRadius: 8,
+                marginLeft: -10,
+              }}
+            />
+          </MotiView>
+        </AnimatePresence>
       </View>
     </Card>
   );
