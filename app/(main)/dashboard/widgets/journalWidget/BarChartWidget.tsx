@@ -7,11 +7,12 @@ import { Dimensions, View, Text } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 
 const BarChartWidget = () => {
+  const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
   const [climbData, setClimbData] = useState([]);
   const [viewType, setViewType] = useState<'attempts' | 'count'>('attempts');
 
   const { user } = useUser();
-  const screenWidth = Dimensions.get('window').width;
 
   const getClimbsData = async () => {
     try {
@@ -84,9 +85,10 @@ const BarChartWidget = () => {
   };
 
   const chart = processData();
+  const chartWidth = screenWidth * 0.9;
 
   return (
-    <Card elevate size="$5" bordered width="95%" alignSelf="center" p="$4">
+    <Card elevate bordered width="100%" alignSelf="center" p="$4">
       <View
         style={{
           flexDirection: 'row',
@@ -118,45 +120,44 @@ const BarChartWidget = () => {
         </Text>
       </View>
 
-      <SizableText size="$6" mb="$2" fontWeight="600">
-        Attempts by Grade (Past Month)
-      </SizableText>
-
-      <BarChart
-        data={{
-          labels: chart.labels,
-          datasets: [
-            {
-              data:
-                viewType === 'attempts'
-                  ? chart.attemptData
-                  : chart.climbDataCount,
+      {/* Chart wrapper with padding to ensure balance */}
+      <View style={{ paddingHorizontal: 12 }}>
+        <BarChart
+          data={{
+            labels: chart.labels,
+            datasets: [
+              {
+                data:
+                  viewType === 'attempts'
+                    ? chart.attemptData
+                    : chart.climbDataCount,
+              },
+            ],
+          }}
+          width={chartWidth}
+          height={screenHeight * 0.25}
+          fromZero
+          yAxisInterval={1}
+          yAxisLabel=""
+          yAxisSuffix=""
+          chartConfig={{
+            backgroundColor: '#1e1e1e',
+            backgroundGradientFrom: '#1e1e1e',
+            backgroundGradientTo: '#1e1e1e',
+            decimalPlaces: 0,
+            barPercentage: 0.7,
+            color: (opacity = 1) => `rgba(72, 219, 251, ${opacity})`,
+            labelColor: () => '#ffffff',
+            propsForBackgroundLines: {
+              stroke: '#333',
             },
-          ],
-        }}
-        width={screenWidth * 0.95}
-        height={240}
-        fromZero
-        yAxisInterval={1}
-        yAxisLabel=""
-        yAxisSuffix=""
-        chartConfig={{
-          backgroundColor: '#1e1e1e',
-          backgroundGradientFrom: '#1e1e1e',
-          backgroundGradientTo: '#1e1e1e',
-          decimalPlaces: 0,
-          barPercentage: 0.7,
-          color: (opacity = 1) => `rgba(72, 219, 251, ${opacity})`,
-          labelColor: () => '#ffffff',
-          propsForBackgroundLines: {
-            stroke: '#333',
-          },
-        }}
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
+          }}
+          style={{
+            borderRadius: 8,
+            marginLeft: -10,
+          }}
+        />
+      </View>
     </Card>
   );
 };

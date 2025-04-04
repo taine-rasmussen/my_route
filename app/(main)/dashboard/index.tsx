@@ -6,7 +6,6 @@ import { Spinner, View, YStack, XStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
 import JournalWidget from './widgets/journalWidget/JournalWidget';
 import AverageClimbWidget from './widgets/journalWidget/AverageClimbWidget';
-import LineChartWidget from './widgets/journalWidget/BarChartWidget';
 import BarChartWidget from './widgets/journalWidget/BarChartWidget';
 
 const Dashboard = () => {
