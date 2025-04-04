@@ -7,6 +7,7 @@ import { useUser } from '@/app/contexts/UserContext';
 import JournalWidget from './widgets/JournalWidget';
 import AverageClimbWidget from './widgets/AverageClimbWidget';
 import BarChartWidget from './widgets/BarChartWidget';
+import HeatMapWidget from './widgets/HeatMapWidget';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
@@ -29,6 +30,7 @@ const Dashboard = () => {
             <AverageClimbWidget />
           </XStack>
           <BarChartWidget />
+          <HeatMapWidget />
         </YStack>
       )}
     </SafeAreaWrapper>
