@@ -9,6 +9,8 @@ import { AnimatePresence, MotiView } from 'moti';
 import { MotiPressable } from 'moti/interactions';
 import { Text } from 'react-native';
 
+// USE CANVA GPT FOR SMALL CARD DESIGNS
+
 const BarChartWidget = () => {
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
