@@ -47,11 +47,9 @@ const HeatMapWidget = () => {
     getClimbsData();
   }, []);
 
-  // Transform the climb data into heatmap data (number of climbs per day)
   const heatmapData = useMemo(() => {
     const dateCounts = {};
     climbData.forEach((item) => {
-      // Extract just the date part (YYYY-MM-DD)
       const date = new Date(item.created_at).toISOString().split('T')[0];
       dateCounts[date] = (dateCounts[date] || 0) + 1;
     });
@@ -66,9 +64,9 @@ const HeatMapWidget = () => {
       <SizableText>Climb Activity Heatmap</SizableText>
       <ContributionGraph
         values={heatmapData}
-        endDate={new Date()} // set to today's date or adjust as needed
-        numDays={60} // adjust number of days to display
-        width={screenWidth - 40} // responsive width with some margin
+        endDate={new Date()}
+        numDays={60}
+        width={screenWidth - 40}
         height={220}
         chartConfig={{
           backgroundColor: '#ffffff',
@@ -83,6 +81,7 @@ const HeatMapWidget = () => {
         tooltipDataAttrs={(value: ContributionChartValue) => ({
           onPress: () => alert(`${value.date}: ${value.count} climbs`),
           // handle nulls
+          // use toast instead of alerts - single toast at a time
         })}
       />
     </Card>
