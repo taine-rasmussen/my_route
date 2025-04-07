@@ -9,6 +9,8 @@ import { AnimatePresence, MotiView } from 'moti';
 import { MotiPressable } from 'moti/interactions';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+// USE CANVA GPT FOR SMALL CARD DESIGNS
+
 const BarChartWidget = () => {
   const screenWidth = Dimensions.get('window').width;
   const screenHeight = Dimensions.get('window').height;
@@ -87,6 +89,8 @@ const BarChartWidget = () => {
 
   const chart = processData();
   const chartWidth = screenWidth * 0.9;
+
+  // Updated icon mapping to better represent the data
   const iconMapping = {
     attempts: 'show-chart',
     count: 'check-circle',
@@ -100,49 +104,17 @@ const BarChartWidget = () => {
       shadowColor="$shadowColor"
       shadowRadius="$4"
       p={'$4'}
-      style={{ position: 'relative' }}
     >
+      {/* Header row with title on the left and icon toggles on the right */}
       <View
         style={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
           flexDirection: 'row',
-          zIndex: 10,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 12,
+          marginBottom: 12,
         }}
       >
-        {(['attempts', 'count'] as const).map((type, index) => {
-          const isActive = viewType === type;
-          return (
-            <View key={type} style={{ marginLeft: index === 0 ? 0 : 10 }}>
-              <MotiPressable
-                onPress={() => setViewType(type)}
-                animate={({ pressed }) => {
-                  'worklet';
-                  return {
-                    scale: pressed ? 0.96 : 1,
-                    backgroundColor: isActive ? '#FFA94D' : '#E0E0E0',
-                  };
-                }}
-                transition={{ type: 'timing', duration: 150 }}
-                style={{
-                  padding: 10,
-                  borderRadius: 4,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Icon
-                  name={iconMapping[type]}
-                  size={20}
-                  color={isActive ? '#FFF' : '#333'}
-                />
-              </MotiPressable>
-            </View>
-          );
-        })}
-      </View>
-      <View style={{ paddingHorizontal: 12, marginTop: 40 }}>
         <AnimatePresence exitBeforeEnter>
           <MotiView
             key={`label-${viewType}`}
@@ -151,32 +123,61 @@ const BarChartWidget = () => {
             exit={{ opacity: 0, translateY: -10 }}
             transition={{ type: 'spring', damping: 15, stiffness: 200 }}
           >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 14,
-                color: '#fff',
-                marginBottom: 10,
-              }}
-            >
+            <Text style={{ textAlign: 'left', fontSize: 16, color: '#fff' }}>
               {viewType === 'attempts'
                 ? 'Total Attempts per Grade'
                 : 'Completed Climbs per Grade'}
             </Text>
           </MotiView>
         </AnimatePresence>
+        <View style={{ flexDirection: 'row' }}>
+          {(['attempts', 'count'] as const).map((type, index) => {
+            const isActive = viewType === type;
+            return (
+              <View key={type} style={{ marginLeft: index === 0 ? 0 : 10 }}>
+                <MotiPressable
+                  onPress={() => setViewType(type)}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  animate={({ pressed }) => {
+                    'worklet';
+                    return {
+                      scale: pressed ? 0.96 : 1,
+                      backgroundColor: isActive ? '#FFA94D' : '#E0E0E0',
+                    };
+                  }}
+                  transition={{ type: 'timing', duration: 150 }}
+                  style={{
+                    padding: 10,
+                    borderRadius: 4,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    elevation: isActive ? 4 : 0,
+                    shadowOpacity: isActive ? 0.3 : 0,
+                    shadowRadius: isActive ? 4 : 0,
+                    shadowOffset: { width: 0, height: isActive ? 2 : 0 },
+                  }}
+                >
+                  <Icon
+                    name={iconMapping[type]}
+                    size={20}
+                    color={isActive ? '#FFF' : '#333'}
+                  />
+                </MotiPressable>
+              </View>
+            );
+          })}
+        </View>
+      </View>
+
+      {/* Chart Container */}
+      <View style={{ paddingHorizontal: 12 }}>
         <AnimatePresence exitBeforeEnter>
           <MotiView
             key={viewType}
-            from={{ opacity: 0, translateX: 40 }}
-            animate={{ opacity: 1, translateX: 0 }}
-            exit={{ opacity: 0, translateX: -40 }}
-            transition={{
-              type: 'spring',
-              damping: 15,
-              stiffness: 200,
-              mass: 0.5,
-            }}
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: 'timing', duration: 300 }}
           >
             <BarChart
               data={{
