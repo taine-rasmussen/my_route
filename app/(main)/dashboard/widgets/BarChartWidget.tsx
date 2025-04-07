@@ -2,14 +2,12 @@ import { useUser } from '@/app/contexts/UserContext';
 import { getFromSecureStore } from '@/app/utils';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { Card, XStack, Group } from 'tamagui';
-import { Dimensions, View } from 'react-native';
+import { Card } from 'tamagui';
+import { Dimensions, View, Text } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { AnimatePresence, MotiView } from 'moti';
 import { MotiPressable } from 'moti/interactions';
-import { Text } from 'react-native';
-
-// USE CANVA GPT FOR SMALL CARD DESIGNS
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const BarChartWidget = () => {
   const screenWidth = Dimensions.get('window').width;
@@ -89,6 +87,10 @@ const BarChartWidget = () => {
 
   const chart = processData();
   const chartWidth = screenWidth * 0.9;
+  const iconMapping = {
+    attempts: 'show-chart',
+    count: 'check-circle',
+  };
 
   return (
     <Card
@@ -98,58 +100,71 @@ const BarChartWidget = () => {
       shadowColor="$shadowColor"
       shadowRadius="$4"
       p={'$4'}
+      style={{ position: 'relative' }}
     >
-      <XStack gap={16} alignSelf="center" paddingBottom={'$4'}>
-        <Group
-          orientation="horizontal"
-          borderRadius="$2"
-          overflow="hidden"
-          borderColor="$gray8"
-        >
-          {(['attempts', 'count'] as const).map((type, index) => {
-            const isActive = viewType === type;
-
-            return (
-              <Group.Item key={type}>
-                <MotiPressable
-                  onPress={() => setViewType(type)}
-                  animate={({ pressed }) => {
-                    'worklet';
-                    return {
-                      scale: pressed ? 0.96 : 1,
-                      backgroundColor: isActive ? '#FFA94D' : '#E0E0E0',
-                    };
-                  }}
-                  transition={{
-                    type: 'timing',
-                    duration: 150,
-                  }}
-                  style={{
-                    paddingVertical: 10,
-                    paddingHorizontal: 20,
-                    borderLeftWidth: index === 1 ? 2 : 0,
-                    borderRightWidth: index === 1 ? 0 : 2,
-                    borderColor: '#ccc',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: isActive ? '#FFF' : '#333',
-                      fontWeight: '600',
-                    }}
-                  >
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </Text>
-                </MotiPressable>
-              </Group.Item>
-            );
-          })}
-        </Group>
-      </XStack>
-
-      <View style={{ paddingHorizontal: 12 }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          flexDirection: 'row',
+          zIndex: 10,
+        }}
+      >
+        {(['attempts', 'count'] as const).map((type, index) => {
+          const isActive = viewType === type;
+          return (
+            <View key={type} style={{ marginLeft: index === 0 ? 0 : 10 }}>
+              <MotiPressable
+                onPress={() => setViewType(type)}
+                animate={({ pressed }) => {
+                  'worklet';
+                  return {
+                    scale: pressed ? 0.96 : 1,
+                    backgroundColor: isActive ? '#FFA94D' : '#E0E0E0',
+                  };
+                }}
+                transition={{ type: 'timing', duration: 150 }}
+                style={{
+                  padding: 10,
+                  borderRadius: 4,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Icon
+                  name={iconMapping[type]}
+                  size={20}
+                  color={isActive ? '#FFF' : '#333'}
+                />
+              </MotiPressable>
+            </View>
+          );
+        })}
+      </View>
+      <View style={{ paddingHorizontal: 12, marginTop: 40 }}>
+        <AnimatePresence exitBeforeEnter>
+          <MotiView
+            key={`label-${viewType}`}
+            from={{ opacity: 0, translateY: -10 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            exit={{ opacity: 0, translateY: -10 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 200 }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 14,
+                color: '#fff',
+                marginBottom: 10,
+              }}
+            >
+              {viewType === 'attempts'
+                ? 'Total Attempts per Grade'
+                : 'Completed Climbs per Grade'}
+            </Text>
+          </MotiView>
+        </AnimatePresence>
         <AnimatePresence exitBeforeEnter>
           <MotiView
             key={viewType}
