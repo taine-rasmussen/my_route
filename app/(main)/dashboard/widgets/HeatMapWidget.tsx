@@ -5,6 +5,7 @@ import { Card, SizableText } from 'tamagui';
 import { ContributionGraph } from 'react-native-chart-kit';
 import { ContributionChartValue } from 'react-native-chart-kit/dist/contribution-graph/ContributionGraph';
 import { Dimensions } from 'react-native';
+import { IClimbData } from '@/app/types';
 
 const HeatMapWidget = () => {
   const { user } = useUser();
@@ -49,7 +50,7 @@ const HeatMapWidget = () => {
 
   const heatmapData = useMemo(() => {
     const dateCounts = {};
-    climbData.forEach((item) => {
+    climbData.forEach((item: IClimbData) => {
       const date = new Date(item.created_at).toISOString().split('T')[0];
       dateCounts[date] = (dateCounts[date] || 0) + 1;
     });
