@@ -85,7 +85,7 @@ const HeatMapWidget = () => {
       squareSize={16}
       chartConfig={chartConfig}
       style={{ marginVertical: 8 }}
-      tooltipDataAttrs={(value) => ({
+      tooltipDataAttrs={(value: any) => ({
         onPress: () =>
           Alert.alert('Climb Info', `${value.date}: ${value.count} climbs`),
       })}
