@@ -29,8 +29,8 @@ const Dashboard = () => {
             <JournalWidget />
             <AverageClimbWidget />
           </XStack>
-          <BarChartWidget />
           <HeatMapWidget />
+          <BarChartWidget />
         </YStack>
       )}
     </SafeAreaWrapper>

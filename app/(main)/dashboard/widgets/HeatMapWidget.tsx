@@ -1,26 +1,26 @@
-import { useUser } from '@/app/contexts/UserContext';
-import { getFromSecureStore } from '@/app/utils';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Card, SizableText } from 'tamagui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useColorScheme, useWindowDimensions, Alert } from 'react-native';
 import { ContributionGraph } from 'react-native-chart-kit';
-import { ContributionChartValue } from 'react-native-chart-kit/dist/contribution-graph/ContributionGraph';
-import { Dimensions } from 'react-native';
+import { getFromSecureStore } from '@/app/utils';
+import { useUser } from '@/app/contexts/UserContext';
 import { IClimbData } from '@/app/types';
 
 const HeatMapWidget = () => {
   const { user } = useUser();
-  const [climbData, setClimbData] = useState([]);
+  const [climbData, setClimbData] = useState<IClimbData[]>([]);
+  const { width } = useWindowDimensions();
+  const colorScheme = useColorScheme();
+
+  const isDarkMode = colorScheme === 'dark' || !colorScheme;
 
   const getClimbsData = useCallback(async () => {
     try {
       const accessToken = await getFromSecureStore('access_token');
-
       const filters = {
         start_date: null,
         end_date: null,
         grade_range: null,
       };
-
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_BASE_URL}get_climbs/?user_id=${user?.id}`,
         {
@@ -46,10 +46,10 @@ const HeatMapWidget = () => {
 
   useEffect(() => {
     getClimbsData();
-  }, []);
+  }, [getClimbsData]);
 
   const heatmapData = useMemo(() => {
-    const dateCounts = {};
+    const dateCounts: Record<string, number> = {};
     climbData.forEach((item: IClimbData) => {
       const date = new Date(item.created_at).toISOString().split('T')[0];
       dateCounts[date] = (dateCounts[date] || 0) + 1;
@@ -57,35 +57,41 @@ const HeatMapWidget = () => {
     return Object.entries(dateCounts).map(([date, count]) => ({ date, count }));
   }, [climbData]);
 
-  // Use the device width for responsive chart width
-  const screenWidth = Dimensions.get('window').width;
+  const chartConfig = {
+    backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
+    backgroundGradientFrom: isDarkMode ? '#1a1a1a' : '#ffffff',
+    backgroundGradientTo: isDarkMode ? '#1a1a1a' : '#ffffff',
+    color: (opacity = 1) =>
+      isDarkMode
+        ? `rgba(255, 255, 255, ${opacity})`
+        : `rgba(0, 0, 0, ${opacity})`,
+    labelColor: (opacity = 1) =>
+      isDarkMode
+        ? `rgba(255, 255, 255, ${opacity})`
+        : `rgba(0, 0, 0, ${opacity})`,
+    style: {
+      borderRadius: 16,
+    },
+  };
 
   return (
-    <Card padding={16} elevate size="$5" bordered width="auto" height="auto">
-      <SizableText>Climb Activity Heatmap</SizableText>
-      <ContributionGraph
-        values={heatmapData}
-        endDate={new Date()}
-        numDays={60}
-        width={screenWidth - 40}
-        height={220}
-        chartConfig={{
-          backgroundColor: '#ffffff',
-          backgroundGradientFrom: '#ffffff',
-          backgroundGradientTo: '#ffffff',
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-        }}
-        tooltipDataAttrs={(value: ContributionChartValue) => ({
-          onPress: () => alert(`${value.date}: ${value.count} climbs`),
-          // handle nulls
-          // use toast instead of alerts - single toast at a time
-        })}
-      />
-    </Card>
+    <ContributionGraph
+      values={heatmapData}
+      endDate={new Date()}
+      numDays={60}
+      width={width}
+      height={200}
+      gutterSize={2}
+      squareSize={16}
+      chartConfig={chartConfig}
+      style={{ marginVertical: 8 }}
+      tooltipDataAttrs={(value) => ({
+        onPress: () =>
+          Alert.alert('Climb Info', `${value.date}: ${value.count} climbs`),
+      })}
+      showMonthLabels={true}
+      showOutOfRangeDays={true}
+    />
   );
 };
 
