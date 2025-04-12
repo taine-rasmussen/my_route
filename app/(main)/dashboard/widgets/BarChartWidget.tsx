@@ -88,11 +88,15 @@ const BarChartWidget = () => {
   const chart = processData();
   const chartWidth = screenWidth * 0.9;
 
-  // Updated icon mapping to better represent the data
   const iconMapping = {
     attempts: 'show-chart',
     count: 'check-circle',
   };
+
+  const maxValue = Math.max(
+    ...(viewType === 'attempts' ? chart.attemptData : chart.climbDataCount),
+  );
+  const suggestedSegments = Math.min(maxValue, 5);
 
   return (
     <Card
@@ -103,7 +107,6 @@ const BarChartWidget = () => {
       shadowRadius="$4"
       p={'$4'}
     >
-      {/* Header row with title on the left and icon toggles on the right */}
       <View
         style={{
           flexDirection: 'row',
@@ -166,8 +169,6 @@ const BarChartWidget = () => {
           })}
         </View>
       </View>
-
-      {/* Chart Container */}
       <View style={{ paddingHorizontal: 12 }}>
         <AnimatePresence exitBeforeEnter>
           <MotiView
@@ -192,6 +193,7 @@ const BarChartWidget = () => {
               width={chartWidth}
               height={screenHeight * 0.25}
               fromZero
+              segments={suggestedSegments}
               yAxisInterval={1}
               yAxisLabel=""
               yAxisSuffix=""
