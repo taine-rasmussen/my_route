@@ -10,7 +10,6 @@ const HeatMapWidget = () => {
   const [climbData, setClimbData] = useState<IClimbData[]>([]);
   const { width } = useWindowDimensions();
   const colorScheme = useColorScheme();
-
   const isDarkMode = colorScheme === 'dark' || !colorScheme;
 
   const getClimbsData = useCallback(async () => {
@@ -74,11 +73,18 @@ const HeatMapWidget = () => {
     },
   };
 
+  // Calculate a future end date one year from now
+  const futureEndDate = useMemo(() => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() + 1);
+    return date;
+  }, []);
+
   return (
     <ContributionGraph
       values={heatmapData}
       endDate={new Date()}
-      numDays={60}
+      numDays={127}
       width={width}
       height={200}
       gutterSize={2}

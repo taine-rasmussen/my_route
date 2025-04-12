@@ -25,12 +25,8 @@ const Dashboard = () => {
       ) : (
         <YStack gap={16}>
           <UserWidget />
-          <XStack gap={16}>
-            <JournalWidget />
-            <AverageClimbWidget />
-          </XStack>
-          <HeatMapWidget />
           <BarChartWidget />
+          <HeatMapWidget />
         </YStack>
       )}
     </SafeAreaWrapper>
