@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import UserWidget from './userWidget/UserWidget';
 import { useAuth } from '@/app/contexts/AuthContext';
-import { Spinner, View, YStack, XStack } from 'tamagui';
+import { Spinner, View, YStack } from 'tamagui';
 import { useUser } from '@/app/contexts/UserContext';
-import JournalWidget from './widgets/JournalWidget';
-import AverageClimbWidget from './widgets/AverageClimbWidget';
 import BarChartWidget from './widgets/BarChartWidget';
 import HeatMapWidget from './widgets/HeatMapWidget';
+import { useToast } from 'react-native-toast-notifications';
 
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
   const { user, loading: userLoading } = useUser();
+  const toast = useToast();
 
   const isLoading =
     authLoading || userLoading || user == null || user == undefined;
+
+  useEffect(() => {
+    toast.show('Hello World');
+  }, []);
 
   return (
     <SafeAreaWrapper>

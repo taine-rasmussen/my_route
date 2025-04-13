@@ -9,6 +9,7 @@ import {
 import { tamaguiConfig } from '../tamagui.config';
 import { UserProvider, useUser } from './contexts/UserContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ToastProvider } from 'react-native-toast-notifications';
 
 const AppContent = () => {
   const systemColorScheme = useColorScheme();
@@ -37,10 +38,20 @@ const AppContent = () => {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <UserProvider>
-        <AppContent />
-      </UserProvider>
-    </AuthProvider>
+    <ToastProvider
+      placement="top"
+      duration={3000}
+      animationType="slide-in"
+      swipeEnabled={true}
+      animationDuration={500}
+      offset={50}
+      textStyle={{ fontSize: 20 }}
+    >
+      <AuthProvider>
+        <UserProvider>
+          <AppContent />
+        </UserProvider>
+      </AuthProvider>
+    </ToastProvider>
   );
 }
