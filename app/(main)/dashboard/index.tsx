@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import SafeAreaWrapper from '@/components/SafeAreaWrapper';
 import UserWidget from './userWidget/UserWidget';
 import { useAuth } from '@/app/contexts/AuthContext';
@@ -11,14 +11,9 @@ import { useToast } from 'react-native-toast-notifications';
 const Dashboard = () => {
   const { loading: authLoading } = useAuth();
   const { user, loading: userLoading } = useUser();
-  const toast = useToast();
 
   const isLoading =
     authLoading || userLoading || user == null || user == undefined;
-
-  useEffect(() => {
-    toast.show('Hello World');
-  }, []);
 
   return (
     <SafeAreaWrapper>

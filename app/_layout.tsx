@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { Spinner, TamaguiProvider } from 'tamagui';
+import { SizableText, Spinner, TamaguiProvider, View } from 'tamagui';
 import { useColorScheme } from 'react-native';
 import {
   DarkTheme,
@@ -39,13 +39,38 @@ const AppContent = () => {
 export default function RootLayout() {
   return (
     <ToastProvider
-      placement="top"
-      duration={3000}
+      placement="bottom"
+      duration={4000}
       animationType="slide-in"
-      swipeEnabled={true}
-      animationDuration={500}
+      animationDuration={250}
       offset={50}
-      textStyle={{ fontSize: 20 }}
+      successColor="green"
+      dangerColor="red"
+      warningColor="orange"
+      normalColor="gray"
+      textStyle={{
+        fontSize: 20,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+      }}
+      swipeEnabled={true}
+      renderType={{
+        custom_type: (toast) => (
+          <View
+            style={{
+              paddingHorizontal: 20,
+              paddingVertical: 14,
+              backgroundColor: '#444',
+              borderRadius: 16,
+              marginHorizontal: 20,
+            }}
+          >
+            <SizableText style={{ color: '#fff', fontSize: 20 }}>
+              {toast.message}
+            </SizableText>
+          </View>
+        ),
+      }}
     >
       <AuthProvider>
         <UserProvider>
