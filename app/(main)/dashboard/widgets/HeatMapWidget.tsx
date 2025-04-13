@@ -56,14 +56,46 @@ const HeatMapWidget = () => {
     return Object.entries(dateCounts).map(([date, count]) => ({ date, count }));
   }, [climbData]);
 
+  const interpolateColor = (
+    start: string,
+    end: string,
+    factor: number,
+  ): string => {
+    const hex = (color: string) =>
+      color
+        .slice(1)
+        .match(/.{2}/g)
+        ?.map((x) => parseInt(x, 16)) ?? [0, 0, 0];
+    const [r1, g1, b1] = hex(start);
+    const [r2, g2, b2] = hex(end);
+    const r = Math.round(r1 + (r2 - r1) * factor);
+    const g = Math.round(g1 + (g2 - g1) * factor);
+    const b = Math.round(b1 + (b2 - b1) * factor);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
   const chartConfig = {
     backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
     backgroundGradientFrom: isDarkMode ? '#1a1a1a' : '#ffffff',
     backgroundGradientTo: isDarkMode ? '#1a1a1a' : '#ffffff',
-    color: (opacity = 1) =>
-      isDarkMode
-        ? `rgba(255, 255, 255, ${opacity})`
-        : `rgba(0, 0, 0, ${opacity})`,
+    color: (opacity = 1) => {
+      const interpolateColor = (start: any, end: any, factor: any) => {
+        const result = start
+          .slice(1)
+          .match(/.{2}/g)
+          .map((hex: any, i: number) => {
+            const startVal = parseInt(hex, 16);
+            const endVal = parseInt(end.slice(1).match(/.{2}/g)[i], 16);
+            const interpolated = Math.round(
+              startVal + (endVal - startVal) * factor,
+            );
+            return interpolated.toString(16).padStart(2, '0');
+          });
+        return `#${result.join('')}`;
+      };
+
+      return interpolateColor('#100c08', '#ffffff', opacity);
+    },
     labelColor: (opacity = 1) =>
       isDarkMode
         ? `rgba(255, 255, 255, ${opacity})`
