@@ -93,10 +93,19 @@ const BarChartWidget = () => {
     count: 'check-circle',
   };
 
-  const maxValue = Math.max(
-    ...(viewType === 'attempts' ? chart.attemptData : chart.climbDataCount),
-  );
-  const suggestedSegments = Math.min(maxValue, 5);
+  const dataArray =
+    viewType === 'attempts' ? chart.attemptData : chart.climbDataCount;
+  const maxValue = dataArray.length > 0 ? Math.max(...dataArray) : 0;
+  const validMaxValue =
+    Number.isFinite(maxValue) && maxValue > 0 ? maxValue : 1;
+  const suggestedSegments = Math.min(validMaxValue, 5);
+
+  const hasValidChartData =
+    chart &&
+    chart.labels.length > 0 &&
+    (viewType === 'attempts'
+      ? chart.attemptData.every((val) => typeof val === 'number')
+      : chart.climbDataCount.every((val) => typeof val === 'number'));
 
   return (
     <Card
@@ -178,42 +187,44 @@ const BarChartWidget = () => {
             exit={{ opacity: 0 }}
             transition={{ type: 'timing', duration: 300 }}
           >
-            <BarChart
-              data={{
-                labels: chart.labels,
-                datasets: [
-                  {
-                    data:
-                      viewType === 'attempts'
-                        ? chart.attemptData
-                        : chart.climbDataCount,
+            {hasValidChartData && (
+              <BarChart
+                data={{
+                  labels: chart.labels,
+                  datasets: [
+                    {
+                      data:
+                        viewType === 'attempts'
+                          ? chart.attemptData
+                          : chart.climbDataCount,
+                    },
+                  ],
+                }}
+                width={chartWidth}
+                height={screenHeight * 0.25}
+                fromZero
+                segments={suggestedSegments}
+                yAxisInterval={1}
+                yAxisLabel=""
+                yAxisSuffix=""
+                chartConfig={{
+                  backgroundColor: '#1e1e1e',
+                  backgroundGradientFrom: '#1e1e1e',
+                  backgroundGradientTo: '#1e1e1e',
+                  decimalPlaces: 0,
+                  barPercentage: 0.7,
+                  color: (opacity = 1) => `rgba(72, 219, 251, ${opacity})`,
+                  labelColor: () => '#ffffff',
+                  propsForBackgroundLines: {
+                    stroke: '#333',
                   },
-                ],
-              }}
-              width={chartWidth}
-              height={screenHeight * 0.25}
-              fromZero
-              segments={suggestedSegments}
-              yAxisInterval={1}
-              yAxisLabel=""
-              yAxisSuffix=""
-              chartConfig={{
-                backgroundColor: '#1e1e1e',
-                backgroundGradientFrom: '#1e1e1e',
-                backgroundGradientTo: '#1e1e1e',
-                decimalPlaces: 0,
-                barPercentage: 0.7,
-                color: (opacity = 1) => `rgba(72, 219, 251, ${opacity})`,
-                labelColor: () => '#ffffff',
-                propsForBackgroundLines: {
-                  stroke: '#333',
-                },
-              }}
-              style={{
-                borderRadius: 8,
-                marginLeft: -10,
-              }}
-            />
+                }}
+                style={{
+                  borderRadius: 8,
+                  marginLeft: -10,
+                }}
+              />
+            )}
           </MotiView>
         </AnimatePresence>
       </View>
