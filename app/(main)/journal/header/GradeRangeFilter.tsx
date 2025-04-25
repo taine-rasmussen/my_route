@@ -105,7 +105,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
         <Button size="$4" onPress={handleClear} backgroundColor="$red10">
           Clear
         </Button>
-        <Button size="$4" onPress={handleApply}>
+        <Button size="$4" onPress={handleApply} disabled={true}>
           Apply
         </Button>
       </XStack>
