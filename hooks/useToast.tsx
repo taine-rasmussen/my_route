@@ -7,13 +7,13 @@ const DEFAULT_OPTIONS = {
   duration: 4000,
   offset: 30,
   animationType: 'slide-in',
-};
+} as const;
 
 const useCustomToast = () => {
   const toast = useToast();
 
   const showToast = useCallback(
-    (message, options = {}) => {
+    (message: string, options = {}) => {
       return toast.show(message, {
         ...DEFAULT_OPTIONS,
         ...options,
@@ -23,7 +23,7 @@ const useCustomToast = () => {
   );
 
   const showSuccess = useCallback(
-    (message, options = {}) => {
+    (message: string, options = {}) => {
       return toast.show(message, {
         ...DEFAULT_OPTIONS,
         type: 'success',
@@ -34,7 +34,7 @@ const useCustomToast = () => {
   );
 
   const showError = useCallback(
-    (message, options = {}) => {
+    (message: string, options = {}) => {
       return toast.show(message, {
         ...DEFAULT_OPTIONS,
         type: 'danger',
@@ -45,7 +45,7 @@ const useCustomToast = () => {
   );
 
   const showWarning = useCallback(
-    (message, options = {}) => {
+    (message: string, options = {}) => {
       return toast.show(message, {
         ...DEFAULT_OPTIONS,
         type: 'warning',
@@ -56,7 +56,7 @@ const useCustomToast = () => {
   );
 
   const showCustom = useCallback(
-    (message, data = {}, options = {}) => {
+    (message: string, data = {}, options = {}) => {
       return toast.show(message, {
         ...DEFAULT_OPTIONS,
         type: 'custom_type',
@@ -68,7 +68,7 @@ const useCustomToast = () => {
   );
 
   const updateToast = useCallback(
-    (id, message, options = {}) => {
+    (id: string, message: string, options = {}) => {
       toast.update(id, message, {
         ...DEFAULT_OPTIONS,
         ...options,
@@ -78,7 +78,7 @@ const useCustomToast = () => {
   );
 
   const hideToast = useCallback(
-    (id) => {
+    (id: string) => {
       toast.hide(id);
     },
     [toast],
