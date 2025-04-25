@@ -1,5 +1,5 @@
 import { YStack, XStack } from 'tamagui';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { MultiSelect } from 'react-native-element-dropdown';
 import { GradeStyle, VGrade } from '@/app/types';
 import { useWindowDimensions } from 'react-native';
