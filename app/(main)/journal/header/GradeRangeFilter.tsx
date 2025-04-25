@@ -1,11 +1,12 @@
-import { YStack, XStack, Button } from 'tamagui';
-import { useState } from 'react';
+import { YStack, XStack } from 'tamagui';
+import { useRef, useState } from 'react';
 import { MultiSelect } from 'react-native-element-dropdown';
 import { GradeStyle, VGrade } from '@/app/types';
 import { useWindowDimensions } from 'react-native';
 import { useUser } from '@/app/contexts/UserContext';
 import { getClimbingGrades } from '@/app/utils';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Button from '@/app/components/Button';
 
 interface IGradeRangeFilter {
   gradeRange: VGrade[];
@@ -72,6 +73,7 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
     }
   };
 
+  const isDisabled = !gradeRangePreview.length;
   const dropdownMaxHeight = Math.min(height * 0.3, height - top - bottom - 50);
 
   return (
@@ -102,10 +104,10 @@ const GradeRangeFilter = (props: IGradeRangeFilter) => {
       />
 
       <XStack gap="$3" justifyContent="flex-end">
-        <Button size="$4" onPress={handleClear} backgroundColor="$red10">
+        <Button size="$4" onPress={handleClear} type="cancel">
           Clear
         </Button>
-        <Button size="$4" onPress={handleApply} disabled={true}>
+        <Button size="$4" onPress={handleApply} disabled={isDisabled}>
           Apply
         </Button>
       </XStack>
