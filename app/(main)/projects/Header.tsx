@@ -2,13 +2,20 @@ import Button from '@/app/components/Button';
 import { CirclePlus, FolderClosed, FolderOpen } from '@tamagui/lucide-icons';
 import { Card, SizableText, XStack } from 'tamagui';
 import { useProjects } from '@/app/contexts/ProjectsContext';
+import { ProjectFilters } from '@/app/types';
 
 const Header = () => {
   const {
     projectFilters: { showClosedProjects, showOpenProjects },
+    setProjectFilters,
   } = useProjects();
 
-  console.log(showClosedProjects, showOpenProjects);
+  const handleFilterPress = (type: keyof ProjectFilters) => {
+    setProjectFilters((prev: ProjectFilters) => ({
+      ...prev,
+      [type]: !prev[type],
+    }));
+  };
 
   return (
     <Card padding="$4" bordered>
@@ -21,6 +28,7 @@ const Header = () => {
             circular
             padding={8}
             backgroundColor={showOpenProjects ? '$orange10' : '$background'}
+            onPress={() => handleFilterPress('showOpenProjects')}
           />
           <Button
             icon={<FolderClosed />}
@@ -28,6 +36,7 @@ const Header = () => {
             circular
             padding={8}
             backgroundColor={showClosedProjects ? '$orange10' : '$background'}
+            onPress={() => handleFilterPress('showClosedProjects')}
           />
           <Button icon={<CirclePlus />} scaleIcon={2} circular padding={8} />
         </XStack>

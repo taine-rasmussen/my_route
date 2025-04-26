@@ -1,9 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-
-interface ProjectFilters {
-  showOpenProjects: boolean;
-  showClosedProjects: boolean;
-}
+import { ProjectFilters } from '../types';
 
 interface ProjectsContextType {
   projectFilters: ProjectFilters;
