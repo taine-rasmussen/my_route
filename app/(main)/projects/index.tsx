@@ -1,11 +1,12 @@
-import React from "react";
-import { Text } from "tamagui";
-import SafeAreaWrapper from "@/components/SafeAreaWrapper";
+import React from 'react';
+import { Card, SizableText } from 'tamagui';
+import SafeAreaWrapper from '@/components/SafeAreaWrapper';
+import Header from './Header';
 
 const Projects = () => {
   return (
     <SafeAreaWrapper>
-      <Text>Projects</Text>;
+      <Header />
     </SafeAreaWrapper>
   );
 };
