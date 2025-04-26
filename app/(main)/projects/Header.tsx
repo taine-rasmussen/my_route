@@ -3,18 +3,37 @@ import { CirclePlus, FolderClosed, FolderOpen } from '@tamagui/lucide-icons';
 import { Card, SizableText, XStack } from 'tamagui';
 import { useProjects } from '@/app/contexts/ProjectsContext';
 import { ProjectFilters } from '@/app/types';
+import useCustomToast from '@/hooks/useToast';
 
 const Header = () => {
   const {
     projectFilters: { showClosedProjects, showOpenProjects },
     setProjectFilters,
   } = useProjects();
+  const { showSuccess, showError } = useCustomToast();
 
   const handleFilterPress = (type: keyof ProjectFilters) => {
-    setProjectFilters((prev: ProjectFilters) => ({
-      ...prev,
-      [type]: !prev[type],
-    }));
+    setProjectFilters((prev: ProjectFilters) => {
+      const newValue = !prev[type];
+      if (type === 'showOpenProjects') {
+        if (newValue) {
+          showSuccess('Showing open projects');
+        } else {
+          showError('Hidden open projects');
+        }
+      }
+      if (type === 'showClosedProjects') {
+        if (newValue) {
+          showSuccess('Showing closed projects');
+        } else {
+          showError('Hidden closed projects');
+        }
+      }
+      return {
+        ...prev,
+        [type]: newValue,
+      };
+    });
   };
 
   return (
