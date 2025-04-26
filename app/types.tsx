@@ -102,3 +102,8 @@ export interface IDateRange {
   startDate: DateType;
   endDate: DateType;
 }
+
+export interface ProjectFilters {
+  showOpenProjects: boolean;
+  showClosedProjects: boolean;
+}

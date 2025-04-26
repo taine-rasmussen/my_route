@@ -1,12 +1,17 @@
-import React from "react";
-import { Text } from "tamagui";
-import SafeAreaWrapper from "@/components/SafeAreaWrapper";
+import React from 'react';
+import SafeAreaWrapper from '@/components/SafeAreaWrapper';
+import Header from './Header';
+import { ProjectProvider } from '@/app/contexts/ProjectsContext';
+import ProjectsList from './ProjectsList';
 
 const Projects = () => {
   return (
-    <SafeAreaWrapper>
-      <Text>Projects</Text>;
-    </SafeAreaWrapper>
+    <ProjectProvider>
+      <SafeAreaWrapper>
+        <Header />
+        <ProjectsList />
+      </SafeAreaWrapper>
+    </ProjectProvider>
   );
 };
 
