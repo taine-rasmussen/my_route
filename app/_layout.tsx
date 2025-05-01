@@ -1,5 +1,3 @@
-// RootLayout.tsx
-
 import { Stack } from 'expo-router';
 import { SizableText, Spinner, TamaguiProvider, View } from 'tamagui';
 import { useColorScheme } from 'react-native';
